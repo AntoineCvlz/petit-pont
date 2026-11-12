@@ -53,15 +53,44 @@ npm run dev
 - Multijoueur (sécurité) vérifié avec deux sessions réelles : A ne peut ni modifier le profil de B, ni voir son journal, ni réattribuer ses cartes ; B ne peut pas changer son solde ; les RPC internes sont refusées.
 
 ### Limites connues
-- Navigation volontairement réduite à Accueil · Collection · Wiki · Profil : Boosters, Albums, Marché, Échanges et Classement n'apparaîtront qu'avec leur phase (règle « aucune fausse fonctionnalité »). Idem pour le compte à rebours du booster gratuit et la cloche de notifications.
+- Navigation volontairement réduite aux pages prêtes : Albums, Marché, Échanges et Classement n'apparaîtront qu'avec leur phase (règle « aucune fausse fonctionnalité »). Idem pour la cloche de notifications.
 - Les annonces du marché seedées existent en base mais ne sont pas encore affichées (phase 5).
 - Les propositions d'échange des comptes démo vers « le premier vrai compte » seront créées en phase 6 (trigger à l'inscription).
 - Pas de filtres/tri dans la collection (phase 3). Pas d'avatars uploadés (Storage plus tard).
 - Données joueurs illustratives : effectifs « Saison 2026 » et notes fictives.
 - Vérification visuelle automatisée dans un navigateur non faite (outil navigateur indisponible pendant la session) : rendu des pages, redirections et sessions vérifiés par un test HTTP de bout en bout avec deux comptes.
 
+## Phase 2 — Boosters ✅ (2026-11-12)
+
+### Fait
+- **Migration** `20261112010000_boosters.sql` :
+  - `open_booster(booster_id)` (RPC atomique, `SECURITY DEFINER`) : vérifie actif / dates / délai du gratuit / stock / solde, verrouille le profil (`FOR UPDATE`, sérialise les doubles clics), décrémente le stock limité de façon atomique, débite via `_apply_coins`, tire chaque carte côté serveur selon `booster_odds`, applique les garanties (les dernières places sont tirées parmi les raretés garanties, probabilités renormalisées), respecte les tirages limités, crée les exemplaires, journalise l'ouverture, publie les Légendaires / Iconiques / Spéciales dans le fil (sauf activité masquée). Renvoie les cartes avec `is_new`.
+  - `sell_duplicates(instance_ids[])` : revente au système (prix par rareté dans `app_settings`), refuse un exemplaire d'autrui, verrouillé (vente / échange) ou le dernier exemplaire d'une carte. Les exemplaires revendus sont supprimés ; leur numéro de série n'est jamais réattribué.
+  - `booster_availability(booster_id)` : état affiché (disponible, en recharge + heure, épuisé, pas commencé, terminé).
+  - Fonctions de tirage internes (`_roll_rarity`, `_pick_template`) non exposées.
+- **Boutique** `/boosters` : les 5 boosters, prix, nombre de cartes, garantie, probabilités, fin d'événement, stock limité **en direct** (Supabase Realtime).
+- **Fiche** `/boosters/[slug]` : ouverture, fiche, probabilités par carte, liste des cartes possibles par rareté (avec tirage restant des cartes limitées).
+- **Ouverture** : paquet qui tremble pendant l'appel serveur, déchirure, cartes face cachée, révélation une par une ou « Tout révéler », halo pour les hautes raretés, « Petit pont réussi ! », récapitulatif NOUVEAU / DOUBLON, bouton « Revendre les doublons (+X) ». Sons synthétisés (Web Audio, aucun fichier) si activés dans le profil. Animations coupées si `prefers-reduced-motion` ou réglage du profil.
+- **Barre supérieure** : compte à rebours du booster gratuit (lien direct quand il est prêt). **Accueil** : encart booster gratuit ; états vides qui renvoient vers les boosters.
+
+### Comment tester
+- `npm run test:db` : 50 tests pgTAP (dont 26 pour les boosters : débit, garanties sur 30 ouvertures, NOUVEAU unique, délai, solde insuffisant sans effet, stock épuisé, événement terminé, revente).
+- `npm run test:integration` (Supabase local démarré) : **concurrence réelle** en requêtes parallèles :
+  - 8 clics simultanés sur le booster gratuit → 1 seule ouverture ;
+  - 10 achats simultanés à 200 avec 1 000 pièces → exactement 5, solde à 0 ;
+  - 2 joueurs qui se disputent les 3 derniers boosters limités → exactement 3 ventes, stock à 0 ;
+  - 5 reventes simultanées du même doublon → 1 seule créditée ;
+  - Realtime : B voit le stock baisser quand A achète.
+- Navigateur : Joueur A ouvre le booster « Coupe des Étoiles » pendant que Joueur B (fenêtre privée) regarde la boutique → le stock de B baisse sans rechargement.
+
+### Limites connues
+- Juste après un `db reset`, attendre quelques secondes avant `npm run test:integration` : le conteneur Realtime redémarre et le test Realtime peut échouer s'il est lancé trop tôt.
+- Les tests d'intégration créent des comptes (`*@integration.test`) qui restent en base locale (journal immuable) : `npx supabase db reset` pour repartir de zéro.
+- Pas encore de page « historique des ouvertures » (données dans `booster_openings`).
+- La revente depuis la collection (et pas seulement depuis le récapitulatif) arrive en phase 4.
+
 ## Phases suivantes
-2. Boosters · 3. Collection et albums · 4. Économie · 5. Marché · 6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
+3. Collection et albums · 4. Économie · 5. Marché · 6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).

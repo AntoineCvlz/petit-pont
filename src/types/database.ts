@@ -875,14 +875,29 @@ isOneToOne: false
 "_mint_card":
 { Args: { "p_owner": string,"p_template": number,"p_via"?: string }; Returns: string
                            },
+"_pick_template":
+{ Args: { "p_booster": number,"p_floor_rank"?: number,"p_rarity": Database["public"]['Enums']["rarity"] }; Returns: number
+                           },
+"_roll_rarity":
+{ Args: { "p_booster": number,"p_min_rank"?: number }; Returns: Database["public"]['Enums']["rarity"]
+                           },
+"booster_availability":
+{ Args: { "p_booster": number }; Returns: Json
+                           },
 "get_setting":
 { Args: { "p_key": string }; Returns: Json
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"open_booster":
+{ Args: { "p_booster_id": number }; Returns: Json
+                           },
 "rarity_rank":
 { Args: { "r": Database["public"]['Enums']["rarity"] }; Returns: number
+                           },
+"sell_duplicates":
+{ Args: { "p_instance_ids": (string)[] }; Returns: Json
                            },
 "update_username":
 { Args: { "p_username": string }; Returns: undefined

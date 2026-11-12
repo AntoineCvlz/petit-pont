@@ -1,18 +1,23 @@
 import Link from "next/link";
 import { ActivityFeed } from "@/components/ActivityFeed";
+import { BoosterPack } from "@/components/boosters/BoosterPack";
+import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
+import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { EmptyState, PageHeader, Panel } from "@/components/ui/Panel";
 import { getActivityFeed } from "@/lib/data/activity";
+import { getFreeBoosterNextAt } from "@/lib/data/boosters";
 import { getCollectionTotal, getRecentCards } from "@/lib/data/cards";
 import { getCollectionStats, requireProfile } from "@/lib/data/profile";
 
 export default async function AccueilPage() {
   const profile = await requireProfile();
-  const [recent, total, stats, feed] = await Promise.all([
+  const [recent, total, stats, feed, freeBooster] = await Promise.all([
     getRecentCards(profile.id, 6),
     getCollectionTotal(),
     getCollectionStats(profile.id),
     getActivityFeed(12),
+    getFreeBoosterNextAt(),
   ]);
   const progress = total ? Math.round((stats.distinctCards / total) * 100) : 0;
 
@@ -22,6 +27,27 @@ export default async function AccueilPage() {
 
       <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
         <div className="space-y-5">
+          {freeBooster && (
+            <Panel className="pp-net">
+              <div className="flex items-center gap-4">
+                <BoosterPack name={freeBooster.name} kind="free" cardsCount={freeBooster.cardsCount} size="sm" />
+                <div className="space-y-2">
+                  <p className="font-display text-xl font-extrabold tracking-wide uppercase italic">
+                    {freeBooster.nextAt ? "Booster gratuit en recharge" : "Ton booster gratuit est prêt !"}
+                  </p>
+                  {freeBooster.nextAt ? (
+                    <div className="flex items-center gap-2 text-sm text-chalk-muted">
+                      Disponible dans <FreeBoosterTimer slug={freeBooster.slug} nextAt={freeBooster.nextAt} />
+                    </div>
+                  ) : (
+                    <Link href={`/boosters/${freeBooster.slug}`} className={buttonClasses("primary", "md")}>
+                      Ouvrir mon booster gratuit
+                    </Link>
+                  )}
+                </div>
+              </div>
+            </Panel>
+          )}
           <Panel title="Ta progression">
             <div className="flex flex-wrap items-end gap-x-8 gap-y-3">
               <Stat label="Cartes différentes" value={`${stats.distinctCards} / ${total}`} />
@@ -50,7 +76,12 @@ export default async function AccueilPage() {
             }
           >
             {recent.length === 0 ? (
-              <EmptyState title="Aucune carte pour l'instant">Ta collection est vide, les premières cartes arrivent bientôt.</EmptyState>
+              <EmptyState title="Aucune carte pour l'instant">
+                Ouvre ton premier booster pour lancer ta collection.{" "}
+                <Link href="/boosters" className="font-semibold text-turf hover:underline">
+                  Voir les boosters
+                </Link>
+              </EmptyState>
             ) : (
               <div className="flex gap-3 overflow-x-auto pb-1">
                 {recent.map((c) => (

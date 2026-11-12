@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Card } from "@/components/ui/Card";
 import { EmptyState, PageHeader } from "@/components/ui/Panel";
 import { getCollection, getCollectionTotal } from "@/lib/data/cards";
@@ -41,7 +42,12 @@ export default async function CollectionPage() {
       </PageHeader>
 
       {groups.length === 0 ? (
-        <EmptyState title="Ta collection est vide">Les cartes que tu obtiendras apparaîtront ici.</EmptyState>
+        <EmptyState title="Ta collection est vide">
+          Les cartes que tu obtiendras apparaîtront ici.{" "}
+          <Link href="/boosters" className="font-semibold text-turf hover:underline">
+            Ouvrir un booster
+          </Link>
+        </EmptyState>
       ) : (
         <ul className="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] justify-items-center gap-3 sm:grid-cols-[repeat(auto-fill,minmax(168px,1fr))]">
           {groups.map((g) => (
