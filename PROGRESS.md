@@ -84,13 +84,34 @@ npm run dev
 - Navigateur : Joueur A ouvre le booster « Coupe des Étoiles » pendant que Joueur B (fenêtre privée) regarde la boutique → le stock de B baisse sans rechargement.
 
 ### Limites connues
-- Juste après un `db reset`, attendre quelques secondes avant `npm run test:integration` : le conteneur Realtime redémarre et le test Realtime peut échouer s'il est lancé trop tôt.
 - Les tests d'intégration créent des comptes (`*@integration.test`) qui restent en base locale (journal immuable) : `npx supabase db reset` pour repartir de zéro.
 - Pas encore de page « historique des ouvertures » (données dans `booster_openings`).
 - La revente depuis la collection (et pas seulement depuis le récapitulatif) arrive en phase 4.
 
+## Phase 3 — Collection et albums ✅ (2026-11-12)
+
+### Fait
+- **Migration** `20261112020000_albums.sql` :
+  - `album_progress(user, album)` : emplacements remplis / total (une carte compte dès qu'on en possède un exemplaire, même en vente).
+  - `claim_album_reward(album_id)` (RPC atomique) : verrou du profil, refus si déjà réclamée ou incomplet (complétion revérifiée côté serveur), enregistrement dans `album_completions` (une seule fois, clé primaire), crédit via `_apply_coins`, événement « album complété » dans le fil (sauf activité masquée).
+- **Collection** `/collection` : composant réutilisable `FilterBar` synchronisé avec l'URL (lien partageable) : recherche sans accents (joueur, club, nation, édition), rareté, club, nation, poste, doublons uniquement, tri par rareté / note / date d'obtention / numéro / nom. Les listes club et nation ne proposent que ce que le joueur possède. Compteur d'exemplaires sur chaque carte.
+- **Détail** `/collection/[id]` : grande carte, tous les exemplaires (numéro de série, provenance, date, engagé en vente / échange), historique de chaque exemplaire.
+- **Albums** `/albums` : progression (%), récompense, statut (complété / à réclamer). `/albums/[slug]` : emplacements numérotés ; possédé = carte en couleur (lien vers le détail) ; manquant = grisé avec numéro, rareté et silhouette ; bouton « Réclamer » quand l'album est complet.
+- **Accueil** : « Albums en cours » (les 3 plus avancés).
+- Navigation : 6 entrées → sur mobile, 4 entrées + menu « Plus » (Wiki, Profil).
+
+### Comment tester
+- `npm test` : 26 tests unitaires (dont filtres / tris de collection).
+- `npm run test:db` : 61 tests pgTAP (dont 11 albums : incomplet refusé, versement unique, cartes d'un autre joueur non comptées, journal cohérent).
+- `npm run test:integration` : 6 réclamations simultanées → 1 seule récompense.
+- Navigateur : Joueur A → Collection → filtre « Doublons » + tri « Note » ; ouvrir une carte → historique. Albums → Coupe des Étoiles : emplacements grisés.
+
+### Limites connues
+- Le détail `/collection/[id]` ne montre que ses propres exemplaires ; la collection publique d'un autre joueur arrive avec les profils publics (phase 7).
+- Une fois réclamé, un album reste complété même si l'on revend ou échange ensuite une de ses cartes (choix assumé : la récompense est unique).
+
 ## Phases suivantes
-3. Collection et albums · 4. Économie · 5. Marché · 6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
+4. Économie · 5. Marché · 6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).

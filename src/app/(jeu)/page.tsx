@@ -1,24 +1,31 @@
 import Link from "next/link";
 import { ActivityFeed } from "@/components/ActivityFeed";
+import { AlbumProgress, albumPercent } from "@/components/albums/AlbumProgress";
 import { BoosterPack } from "@/components/boosters/BoosterPack";
 import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { EmptyState, PageHeader, Panel } from "@/components/ui/Panel";
 import { getActivityFeed } from "@/lib/data/activity";
+import { listAlbums } from "@/lib/data/albums";
 import { getFreeBoosterNextAt } from "@/lib/data/boosters";
 import { getCollectionTotal, getRecentCards } from "@/lib/data/cards";
 import { getCollectionStats, requireProfile } from "@/lib/data/profile";
 
 export default async function AccueilPage() {
   const profile = await requireProfile();
-  const [recent, total, stats, feed, freeBooster] = await Promise.all([
+  const [recent, total, stats, feed, freeBooster, albums] = await Promise.all([
     getRecentCards(profile.id, 6),
     getCollectionTotal(),
     getCollectionStats(profile.id),
     getActivityFeed(12),
     getFreeBoosterNextAt(),
+    listAlbums(profile.id),
   ]);
+  const inProgress = albums
+    .filter((a) => !a.completedAt)
+    .sort((a, b) => albumPercent(b.owned, b.total) - albumPercent(a.owned, a.total))
+    .slice(0, 3);
   const progress = total ? Math.round((stats.distinctCards / total) * 100) : 0;
 
   return (
@@ -64,6 +71,31 @@ export default async function AccueilPage() {
               </div>
             </div>
           </Panel>
+
+          {inProgress.length > 0 && (
+            <Panel
+              title="Albums en cours"
+              action={
+                <Link href="/albums" className="text-xs font-semibold text-turf hover:underline">
+                  Tous les albums
+                </Link>
+              }
+            >
+              <ul className="space-y-3">
+                {inProgress.map((a) => (
+                  <li key={a.id}>
+                    <Link href={`/albums/${a.slug}`} className="group block">
+                      <p className="mb-1 text-sm font-semibold group-hover:text-turf">
+                        {a.name}
+                        {a.owned === a.total && <span className="ml-2 text-xs text-turf">Récompense à réclamer</span>}
+                      </p>
+                      <AlbumProgress owned={a.owned} total={a.total} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </Panel>
+          )}
 
           <Panel
             title="Dernières cartes obtenues"

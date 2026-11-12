@@ -6,12 +6,13 @@ export type NavItem = { href: string; label: string; icon: NavIcon };
  * Navigation du jeu, dans l'ordre de la spec.
  * Règle « aucune fausse fonctionnalité » : une entrée n'est listée ici
  * qu'une fois la page réellement disponible. Les autres arrivent avec leur phase :
- *   Albums (3) · Marché (5) · Échanges (6) · Classement (7)
+ *   Marché (5) · Échanges (6) · Classement (7)
  */
 export const NAV_ITEMS: readonly NavItem[] = [
   { href: "/", label: "Accueil", icon: "home" },
   { href: "/boosters", label: "Boosters", icon: "booster" },
   { href: "/collection", label: "Collection", icon: "collection" },
+  { href: "/albums", label: "Albums", icon: "album" },
   { href: "/wiki", label: "Wiki des joueurs", icon: "wiki" },
   { href: "/profil", label: "Profil", icon: "profile" },
 ];

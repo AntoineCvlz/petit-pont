@@ -881,8 +881,16 @@ isOneToOne: false
 "_roll_rarity":
 { Args: { "p_booster": number,"p_min_rank"?: number }; Returns: Database["public"]['Enums']["rarity"]
                            },
+"album_progress":
+{ Args: { "p_album": number,"p_user": string }; Returns: {
+              "owned": number,"total": number
+            }[]
+                           },
 "booster_availability":
 { Args: { "p_booster": number }; Returns: Json
+                           },
+"claim_album_reward":
+{ Args: { "p_album_id": number }; Returns: Json
                            },
 "get_setting":
 { Args: { "p_key": string }; Returns: Json
