@@ -70,6 +70,16 @@ Panneau IONOS → Serveurs & Cloud → Réseau → Stratégies de pare-feu : aut
 | Secret | `ANON_KEY` | valeur `ANON_KEY=` de `deploy/.env` |
 | Variable | `SITE_HOST` | `petit-pont.antoine-cuvilliez.fr` |
 
+### 4 bis. Connexion Discord (obligatoire : seul mode de connexion en production)
+1. https://discord.com/developers/applications → **New Application** (nom : Petit Pont).
+2. **OAuth2** → **Redirects** → ajouter `https://petit-pont.antoine-cuvilliez.fr/auth/v1/callback`.
+3. Copier le **Client ID** et le **Client Secret** (Reset Secret) dans `/opt/petit-pont/deploy/.env` sur le VPS :
+   ```
+   DISCORD_CLIENT_ID=...
+   DISCORD_CLIENT_SECRET=...
+   ```
+Le déploiement s'arrête (sans toucher aux conteneurs) si ces deux valeurs manquent.
+
 ### 5. Lancer le premier déploiement
 GitHub → Actions → **CI/CD** → *Run workflow* sur `main` (ou un push sur `main`). Durée : ~10 min.
 Le premier déploiement initialise la base, applique les migrations, charge le seed, et Caddy obtient le certificat.
@@ -83,7 +93,7 @@ docker stats --no-stream             # mémoire
 # Sauvegarde de la base
 docker compose exec -T db pg_dump -U postgres -d postgres -Fc > ~/petit-pont-$(date +%F).dump
 ```
-- Compte admin : `admin@petitpont.test` / `petitpont` → **changer ce mot de passe** (ou créer ton compte et le promouvoir :
-  `docker compose exec db psql -U postgres -c "update public.profiles set is_admin = true where username = 'TonPseudo';"`).
+- Connexion **Discord uniquement** (fournisseur e-mail fermé côté GoTrue) : les comptes de démo ne peuvent plus se connecter.
+- Admin : se connecter une première fois avec Discord, puis
+  `docker compose exec db psql -U postgres -c "update public.profiles set is_admin = (username = 'TonPseudo') where is_admin or username = 'TonPseudo';"`.
 - Les comptes de démo se suppriment d'un clic depuis `/admin`.
-- Sans SMTP, l'inscription se fait sans e-mail de confirmation (`GOTRUE_MAILER_AUTOCONFIRM`).

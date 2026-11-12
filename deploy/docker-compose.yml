@@ -69,7 +69,8 @@ services:
       GOTRUE_DB_DRIVER: postgres
       GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@db:5432/postgres
       GOTRUE_SITE_URL: ${SITE_URL}
-      GOTRUE_URI_ALLOW_LIST: ${SITE_URL}
+      # Retour OAuth vers le site (/auth/callback?suite=…)
+      GOTRUE_URI_ALLOW_LIST: ${SITE_URL}/**
       GOTRUE_DISABLE_SIGNUP: "false"
       GOTRUE_JWT_ADMIN_ROLES: service_role
       GOTRUE_JWT_AUD: authenticated
@@ -77,9 +78,13 @@ services:
       GOTRUE_JWT_EXP: ${JWT_EXPIRY}
       GOTRUE_JWT_SECRET: ${JWT_SECRET}
       GOTRUE_JWT_ISSUER: ${SITE_URL}/auth/v1
-      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      # Connexion Discord uniquement : le fournisseur e-mail est fermé côté serveur
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "false"
+      GOTRUE_EXTERNAL_DISCORD_ENABLED: "true"
+      GOTRUE_EXTERNAL_DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      GOTRUE_EXTERNAL_DISCORD_SECRET: ${DISCORD_CLIENT_SECRET}
+      GOTRUE_EXTERNAL_DISCORD_REDIRECT_URI: ${SITE_URL}/auth/v1/callback
       GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED: "false"
-      # Pas de SMTP pour l'instant : inscription sans e-mail de confirmation
       GOTRUE_MAILER_AUTOCONFIRM: "true"
       GOTRUE_EXTERNAL_PHONE_ENABLED: "false"
       GOTRUE_PASSWORD_MIN_LENGTH: "6"

@@ -4,6 +4,8 @@ import type { Database } from "@/types/database";
 import { supabaseEnv } from "@/lib/env";
 
 const PUBLIC_PATHS = ["/connexion", "/inscription"];
+/** Retour OAuth : accessible connecté ou non (échange du code contre une session). */
+const AUTH_CALLBACK = "/auth/callback";
 
 /** Rafraîchit la session Supabase et protège les pages du jeu. */
 export async function updateSession(request: NextRequest) {
@@ -27,6 +29,7 @@ export async function updateSession(request: NextRequest) {
   const { data } = await supabase.auth.getClaims();
   const isAuthenticated = Boolean(data?.claims?.sub);
   const path = request.nextUrl.pathname;
+  if (path === AUTH_CALLBACK) return response;
   const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(`${p}/`));
 
   if (!isAuthenticated && !isPublic) {

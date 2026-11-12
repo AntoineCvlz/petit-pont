@@ -54,6 +54,7 @@ jobs:
             echo "NEXT_PUBLIC_SUPABASE_URL=$(echo "$status" | jq -r .API_URL)"
             echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$(echo "$status" | jq -r .PUBLISHABLE_KEY)"
             echo "SUPABASE_SECRET_KEY=$(echo "$status" | jq -r .SECRET_KEY)"
+            echo "AUTH_EMAIL_LOGIN=true"
           } > .env.local
 
       - run: npm run lint
@@ -141,6 +142,8 @@ jobs:
           tar -xzf bundle.tgz && rm bundle.tgz
           cd deploy
           test -f .env || { echo "deploy/.env manquant : voir deploy/DEPLOIEMENT.md"; exit 1; }
+          # Connexion Discord uniquement : sans identifiants Discord, plus personne ne pourrait se connecter
+          grep -q '^DISCORD_CLIENT_ID=.' .env && grep -q '^DISCORD_CLIENT_SECRET=.' .env             || { echo "DISCORD_CLIENT_ID / DISCORD_CLIENT_SECRET manquants dans deploy/.env : voir deploy/DEPLOIEMENT.md"; exit 1; }
           echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
           docker compose pull app
           docker compose up -d --remove-orphans

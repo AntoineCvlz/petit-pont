@@ -304,3 +304,20 @@ Les 9 phases de la spec sont livrées.
 - Quelques photos sources sont modestes (Mitoma flou, Yıldız en pleine action) : à remplacer via `overrides.json`.
 - Les logos de clubs sont des marques déposées (choix assumé, cf. CLAUDE.md règle 6).
 - Le mercato évolue : relancer `scripts/media/wikidata.mjs` et `infobox.mjs` pour comparer à nouveau.
+
+## Connexion Discord uniquement (2026-11-12)
+
+### Fait
+- Bouton « Se connecter avec Discord » (OAuth PKCE) → retour `/auth/callback` → session. Première connexion : profil créé
+  automatiquement, pseudo tiré de Discord (nom affiché, identifiant, puis e-mail), nettoyé, rendu unique, jamais de mot
+  interdit, modifiable dans `/profil` (migration `20261112110000_discord_auth.sql`, tests pgTAP `09_discord`).
+- Production : fournisseur e-mail **fermé côté GoTrue** (pas seulement masqué), `/inscription` redirige vers `/connexion`.
+- Local / CI : `AUTH_EMAIL_LOGIN=true` garde la connexion e-mail pour les comptes de test (bloc « comptes de test »).
+- Déploiement : `DISCORD_CLIENT_ID` / `DISCORD_CLIENT_SECRET` dans `deploy/.env` (le pipeline refuse de déployer sans).
+
+### Comment tester
+- Local : `/connexion` montre Discord + comptes de test. Discord en local : voir le bloc `[auth.external.discord]` de `supabase/config.toml`.
+- Annulation côté Discord → message « Connexion annulée », code invalide → message d'échec.
+
+### Limites connues
+- Les comptes de démo restent en base (classements, marché) mais ne peuvent plus se connecter en production.

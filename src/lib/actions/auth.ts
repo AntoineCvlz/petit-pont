@@ -1,6 +1,9 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { emailLoginEnabled } from "@/lib/env";
+import { publicOrigin } from "@/lib/origin";
 import { createClient } from "@/lib/supabase/server";
 import { passwordError, safeRedirectPath, usernameFormatError } from "@/lib/validation";
 
@@ -13,7 +16,24 @@ function field(formData: FormData, name: string): string {
   return typeof v === "string" ? v.trim() : "";
 }
 
+const EMAIL_DISABLED = "La connexion se fait uniquement avec Discord.";
+
+/** Connexion Discord (OAuth, PKCE) : redirige vers Discord, retour sur /auth/callback. */
+export async function signInWithDiscord(formData: FormData): Promise<void> {
+  const callback = new URL("/auth/callback", publicOrigin(await headers()));
+  callback.searchParams.set("suite", safeRedirectPath(formData.get("suite")));
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "discord",
+    options: { redirectTo: callback.toString(), scopes: "identify email" },
+  });
+  if (error || !data.url) redirect("/connexion?erreur=discord");
+  redirect(data.url);
+}
+
 export async function signIn(_prev: FormState, formData: FormData): Promise<FormState> {
+  if (!emailLoginEnabled()) return { error: EMAIL_DISABLED };
   const email = field(formData, "email");
   const password = String(formData.get("password") ?? "");
   if (!email || !password) return { error: "Renseigne ton e-mail et ton mot de passe.", fields: { email } };
@@ -28,6 +48,7 @@ export async function signIn(_prev: FormState, formData: FormData): Promise<Form
 }
 
 export async function signUp(_prev: FormState, formData: FormData): Promise<FormState> {
+  if (!emailLoginEnabled()) return { error: EMAIL_DISABLED };
   const username = field(formData, "username");
   const email = field(formData, "email");
   const password = String(formData.get("password") ?? "");

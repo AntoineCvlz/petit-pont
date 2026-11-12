@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { emailLoginEnabled } from "@/lib/env";
 import { SignupForm } from "./SignupForm";
 
 export const metadata: Metadata = { title: "Inscription" };
 
+/** Inscription par e-mail : comptes de test en développement uniquement (sinon Discord). */
 export default function InscriptionPage() {
+  if (!emailLoginEnabled()) redirect("/connexion");
   return (
     <>
       <h1 className="font-display text-2xl font-extrabold tracking-wide uppercase italic">Inscription</h1>

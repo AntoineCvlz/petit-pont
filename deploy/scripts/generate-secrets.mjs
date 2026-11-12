@@ -48,6 +48,11 @@ JWT_EXPIRY=3600
 REALTIME_DB_ENC_KEY=${randomBytes(8).toString("hex")}
 SECRET_KEY_BASE=${secret(48)}
 
+# Application Discord (https://discord.com/developers/applications → OAuth2) : connexion des joueurs
+# Redirect : https://${host}/auth/v1/callback
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+
 # Clé publique (aussi à mettre dans le secret GitHub ANON_KEY, injectée au build du site)
 ANON_KEY=${ANON_KEY}
 # Clé administrateur : contourne la RLS. Ne jamais l'exposer au navigateur ni dans GitHub.

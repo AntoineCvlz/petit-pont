@@ -8,3 +8,12 @@ export function supabaseEnv() {
   }
   return { url, key };
 }
+
+/**
+ * Connexion par e-mail / mot de passe : réservée au développement local et aux comptes de test
+ * (AUTH_EMAIL_LOGIN=true dans .env.local). En production, seule la connexion Discord est proposée,
+ * et le fournisseur e-mail est désactivé côté serveur d'authentification.
+ */
+export function emailLoginEnabled(): boolean {
+  return process.env.AUTH_EMAIL_LOGIN === "true";
+}

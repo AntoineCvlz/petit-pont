@@ -41,6 +41,8 @@ L'avancement est suivi dans `PROGRESS.md` (à créer et tenir à jour).
 - Animations < 400 ms (sauf ouverture de booster), respect de `prefers-reduced-motion`.
 
 ## Comptes de test
+Connexion **Discord uniquement** en production. En local, `AUTH_EMAIL_LOGIN=true` (`.env.local`) réactive la connexion
+e-mail pour les comptes de test (indispensable pour tester à deux comptes).
 Le seed crée des comptes de démo (`is_demo = true`). Documente dans `PROGRESS.md` au moins deux identifiants de test (ex. joueur A et joueur B) pour vérifier les interactions entre joueurs.
 
 ## Fin de chaque phase
