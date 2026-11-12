@@ -1,26 +1,228 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =============================================================================
+   Petit Pont — design system
+   Ambiance pelouse de nuit : anthracite / vert très foncé.
+   Les couleurs vives sont réservées aux raretés.
+   ============================================================================= */
+
+@theme {
+  --font-sans: var(--font-barlow), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-barlow-condensed), var(--font-barlow), ui-sans-serif, sans-serif;
+
+  /* Surfaces */
+  --color-night-950: #060b09;
+  --color-night-900: #0a120e;
+  --color-night-850: #0d1813;
+  --color-night-800: #112019;
+  --color-night-700: #172b21;
+  --color-night-600: #1f382b;
+  --color-line: #22392e;
+  --color-line-strong: #2f4d3e;
+
+  /* Texte (craie) */
+  --color-chalk: #e6eee8;
+  --color-chalk-muted: #9cb0a5;
+  --color-chalk-faint: #66796f;
+
+  /* Accent pelouse (actions principales) */
+  --color-turf: #8fd16a;
+  --color-turf-strong: #a8e283;
+  --color-turf-ink: #0b1a10;
+
+  /* Pièces */
+  --color-coin: #f0c24b;
+
+  /* Retours */
+  --color-danger: #ff6b6b;
+  --color-success: #6ee7a5;
+
+  /* Raretés */
+  --color-r-commune: #a7b5ad;
+  --color-r-rare: #4fa9ff;
+  --color-r-epique: #b673ff;
+  --color-r-legendaire: #ffb547;
+  --color-r-iconique: #ff5f7e;
+  --color-r-speciale: #7af0e0;
+
+  --radius-card: 0.9rem;
+  --animate-fade-in: fade-in 220ms ease-out both;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-night-900);
+  color: var(--color-chalk);
+  font-family: var(--font-sans);
+  /* Lignes de pelouse très discrètes */
+  background-image:
+    radial-gradient(ellipse 120% 60% at 50% -10%, rgba(143, 209, 106, 0.07), transparent 60%),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.012) 0 80px, transparent 80px 160px);
+  background-attachment: fixed;
+  min-height: 100dvh;
+}
+
+::selection {
+  background: rgba(143, 209, 106, 0.35);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-turf);
+  outline-offset: 2px;
+}
+
+/* -----------------------------------------------------------------------------
+   Cartes : cadre par rareté
+   ----------------------------------------------------------------------------- */
+.pp-card {
+  --rarity: var(--color-r-commune);
+  --frame: linear-gradient(160deg, #c9d3cd, #6f7d75 55%, #b5c0b9);
+  position: relative;
+  border-radius: var(--radius-card);
+  padding: 3px;
+  background: var(--frame);
+  box-shadow:
+    0 10px 24px -14px rgba(0, 0, 0, 0.8),
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+  isolation: isolate;
+}
+
+.pp-card[data-rarity="rare"] {
+  --rarity: var(--color-r-rare);
+  --frame: linear-gradient(160deg, #9fd2ff, #2a6fc0 50%, #7cc0ff);
+}
+.pp-card[data-rarity="epique"] {
+  --rarity: var(--color-r-epique);
+  --frame: linear-gradient(160deg, #dcb6ff, #6d2fb8 50%, #c592ff);
+}
+.pp-card[data-rarity="legendaire"] {
+  --rarity: var(--color-r-legendaire);
+  --frame: linear-gradient(160deg, #ffe2a1, #b9771a 45%, #ffd27a 70%, #a8650f);
+}
+.pp-card[data-rarity="iconique"] {
+  --rarity: var(--color-r-iconique);
+  --frame: linear-gradient(160deg, #ffc1cd, #b3203f 45%, #ff8aa1 70%, #8c1530);
+}
+.pp-card[data-rarity="speciale"] {
+  --rarity: var(--color-r-speciale);
+  --frame: linear-gradient(
+    var(--holo-angle, 135deg),
+    #7af0e0, #8fb4ff 20%, #e59bff 40%, #ffd88a 60%, #8ff0b0 80%, #7af0e0
+  );
+}
+
+.pp-card[data-rarity="legendaire"],
+.pp-card[data-rarity="iconique"],
+.pp-card[data-rarity="speciale"] {
+  box-shadow:
+    0 12px 28px -14px rgba(0, 0, 0, 0.85),
+    0 0 18px -6px color-mix(in srgb, var(--rarity) 55%, transparent);
+}
+
+.pp-card-inner {
+  position: relative;
+  height: 100%;
+  border-radius: calc(var(--radius-card) - 3px);
+  overflow: hidden;
+  background: var(--color-night-850);
+}
+
+/* Brillance discrète à partir de Rare : un reflet qui balaie la carte au survol */
+.pp-card[data-shine="true"] .pp-card-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.16) 45%,
+    rgba(255, 255, 255, 0.04) 52%,
+    transparent 60%
+  );
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  transition: background-position 380ms ease;
+  z-index: 3;
+}
+.pp-card[data-shine="true"]:hover .pp-card-inner::after {
+  background-position: -20% 0;
+}
+
+.pp-card[data-interactive="true"]:hover {
+  transform: translateY(-2px);
+}
+
+/* Spéciale : effet holographique animé (pointeur + inclinaison) */
+.pp-card[data-rarity="speciale"] {
+  transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 120ms ease-out;
+}
+.pp-card[data-rarity="speciale"] .pp-holo {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  mix-blend-mode: color-dodge;
+  opacity: 0.32;
+  background:
+    radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, 0.55), transparent 42%),
+    repeating-linear-gradient(
+      125deg,
+      #ff7ab6 0%, #ffd36e 8%, #7affc1 16%, #74c6ff 24%, #c58aff 32%, #ff7ab6 40%
+    );
+  background-size: 100% 100%, 300% 300%;
+  background-position: center, var(--hx, 50%) var(--hy, 50%);
+  animation: holo-drift 6s linear infinite;
+}
+
+@keyframes holo-drift {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+/* Motif de terrain derrière le portrait */
+.pp-pitch {
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 14px, transparent 14px 28px),
+    radial-gradient(circle at 50% 120%, transparent 38%, rgba(255, 255, 255, 0.08) 38.5%, transparent 39.5%);
+}
+
+/* Filet (texture pour les panneaux mis en avant) */
+.pp-net {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 12px),
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 12px);
+}
+
+/* -----------------------------------------------------------------------------
+   Animations réduites : préférence système OU réglage du profil
+   ----------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .pp-card[data-rarity="speciale"] { transform: none; }
+}
+
+[data-reduced-motion="true"] *,
+[data-reduced-motion="true"] *::before,
+[data-reduced-motion="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+[data-reduced-motion="true"] .pp-card[data-rarity="speciale"] {
+  transform: none;
 }
