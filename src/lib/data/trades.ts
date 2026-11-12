@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/paginate";
 import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/data/cards";
 import type { TradeStatus, TradeTab } from "@/lib/trades";
 
@@ -125,14 +126,16 @@ export type TradableCopy = { instanceId: string; serialNumber: number; template:
 /** Exemplaires libres (ni en vente) d'un joueur, proposables dans un échange. */
 export async function getTradableCopies(userId: string): Promise<TradableCopy[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("card_instances")
-    .select(`id, serial_number, card_templates!inner ( ${TEMPLATE_SELECT} )`)
-    .eq("owner_id", userId)
-    .eq("is_locked", false)
-    .order("obtained_at", { ascending: false })
-    .limit(500);
-  if (error) throw error;
+  const data = await fetchAll((from, to) =>
+    supabase
+      .from("card_instances")
+      .select(`id, serial_number, card_templates!inner ( ${TEMPLATE_SELECT} )`)
+      .eq("owner_id", userId)
+      .eq("is_locked", false)
+      .order("obtained_at", { ascending: false })
+      .order("id")
+      .range(from, to),
+  );
   return (data as unknown as { id: string; serial_number: number; card_templates: Parameters<typeof toTemplateView>[0] }[]).map((r) => ({
     instanceId: r.id,
     serialNumber: r.serial_number,
@@ -150,7 +153,8 @@ export async function getWishlistTemplateIds(userId: string): Promise<number[]> 
 /** Cartes (modèles) déjà possédées par un joueur : pour signaler « tu ne l'as pas encore ». */
 export async function getOwnedTemplateIds(userId: string): Promise<number[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from("card_instances").select("template_id").eq("owner_id", userId).limit(5000);
-  if (error) throw error;
+  const data = await fetchAll((from, to) =>
+    supabase.from("card_instances").select("id, template_id").eq("owner_id", userId).order("id").range(from, to),
+  );
   return [...new Set(data.map((r) => r.template_id))];
 }

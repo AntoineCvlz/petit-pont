@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/paginate";
 import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/data/cards";
 import type { Metric, Period } from "@/lib/leaderboard";
 import { compareRarityDesc } from "@/lib/rarity";
@@ -116,12 +117,14 @@ export type DuplicateOffer = { template: CardTemplateView; spare: number };
 /** Doublons disponibles à l'échange : exemplaires libres au-delà du premier, par carte. */
 export async function getTradeableDuplicates(userId: string): Promise<DuplicateOffer[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("card_instances")
-    .select(`template_id, is_locked, card_templates!inner ( ${TEMPLATE_SELECT} )`)
-    .eq("owner_id", userId)
-    .limit(5000);
-  if (error) throw error;
+  const data = await fetchAll((from, to) =>
+    supabase
+      .from("card_instances")
+      .select(`id, template_id, is_locked, card_templates!inner ( ${TEMPLATE_SELECT} )`)
+      .eq("owner_id", userId)
+      .order("id")
+      .range(from, to),
+  );
   const rows = data as unknown as { template_id: number; is_locked: boolean; card_templates: Parameters<typeof toTemplateView>[0] }[];
   const byTpl = new Map<number, { template: CardTemplateView; total: number; free: number }>();
   for (const r of rows) {

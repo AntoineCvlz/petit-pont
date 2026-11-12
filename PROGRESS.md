@@ -229,12 +229,46 @@ npm run dev
 - Pas de journal d'audit des actions admin.
 - Les formulaires admin ont été vérifiés par les tests unitaires de lecture et par des écritures RLS réelles avec le compte admin ; l'envoi des formulaires via le navigateur reste à faire à la main.
 
-## Phases suivantes
-9. Finitions
+## Phase 9 — Finitions ✅ (2026-11-12)
+
+Vérification réalisée dans un **vrai navigateur** (Chromium headless piloté par Playwright, desktop 1440 × 900 et mobile 390 × 844), avec captures d'écran examinées, parcours interactifs à deux joueurs et audit d'accessibilité axe-core.
+
+### Corrigé grâce à la vérification navigateur
+- **Temps réel dans le navigateur (bloquant)** : notifications, toasts et rafraîchissement des échanges ne fonctionnaient pas côté navigateur (les tests d'intégration Node appelaient `setAuth()` explicitement et masquaient le problème). Deux causes : (1) la session du client navigateur est initialisée paresseusement, la connexion Realtime partait sans le jeton du joueur et la RLS filtrait tout ; (2) un composant démonté / remonté (double montage React, navigation) fermait l'abonnement serveur partagé par son successeur. Nouveau module `src/lib/realtime.ts` : jeton transmis avant tout abonnement, **un canal par flux partagé** entre composants, fermeture différée. Les 4 composants temps réel l'utilisent.
+- **Mise en page** : débordements horizontaux (jusqu'à 512 px sur l'accueil mobile, 15 px sur toutes les pages mobiles), colonne du fil coupée sur desktop, logo en double et compte à rebours sur deux lignes dans la barre mobile, filtres illisibles sur mobile (2 par ligne désormais), badges rognés dans le composeur d'échange, silhouette des cartes.
+- **Achat** : l'acheteur voyait sa carte « Vendue » (événement Realtime plus rapide que la réponse) → « Achetée ! Voir ma collection ».
+- **Connexion** : une limite de débit de l'authentification affichait « mot de passe incorrect » → message dédié.
+
+### Accessibilité (WCAG 2.1 AA)
+- Audit axe-core sur 20 pages : **0 violation** après corrections (contraste du texte discret porté à ≥ 4,5:1, couleurs d'avatar, badge de la cloche, noms accessibles cohérents avec le texte visible, barre de progression nommée, zone défilante accessible au clavier).
+- Déjà en place : `lang="fr"`, focus visible, `prefers-reduced-motion` + réglage du profil, modales `<dialog>` (focus piégé, Échap), libellés de formulaires, `aria-live` pour les mises à jour en direct.
+
+### Performances
+- **Lecture paginée** (`src/lib/supabase/paginate.ts`) de toutes les lectures pouvant dépasser la limite PostgREST de 1 000 lignes (collection, statistiques, albums, échanges, doublons, vitrine). Vérifié avec un compte de **1 500 exemplaires** : tout est compté.
+- Collection : exemplaires lus sans jointure + catalogue joint en mémoire ; la revente groupée reçoit un résumé par rareté au lieu de tous les exemplaires (634 → 508 Ko de HTML brut). En **production** (`next start`) : collection de 1 500 exemplaires en ~0,3 s, **32 Ko transférés** (gzip) ; accueil 26 Ko ; marché 25 Ko.
+- Migration `20261112080000_performance.sql` : 22 index (clés étrangères parcourues par les suppressions en cascade, annonces par vendeur, éléments d'échange par exemplaire, échanges en attente par expiration…).
+
+### États vides et erreurs
+- `src/app/(jeu)/error.tsx` (« Faute ! », réessayer, référence de l'erreur) et `src/app/global-error.tsx` (document autonome aux couleurs du jeu).
+- Parcours « nouveau joueur » réel : inscription (pseudo pris, mot interdit, e-mail existant), accueil vide, solde de bienvenue, 7 états vides, 404.
+
+### Comment tester
+- `npm test` (47 tests), `npm run test:db` (189), `npm run test:integration` (21).
+- Parcours navigateur vérifiés : ouverture de booster sur mobile (révélation, tout révéler, récapitulatif, revente), menu « Plus », A met en vente / B achète via la modale → chez A, annonce « Vendue » + toast + cloche sans rechargement ; B compose un échange sur mobile → A le voit arriver en direct, l'accepte → B reçoit le toast.
+
+### Limites connues
+- Les scripts de vérification navigateur (Playwright) ont été exécutés hors du dépôt : ils ne font pas partie de `npm test`.
+- Pas de graphique d'historique de prix (tableau + statistiques).
+- Pas de journal d'audit des actions admin ; pas d'avatars téléversés (`avatar_url` prévu).
+
+## Bilan
+Les 9 phases de la spec sont livrées.
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).
 - Toute nouvelle fonction interne : `revoke execute … from public, anon, authenticated`.
 - Après chaque migration : `npm run db:types`.
 - Cache Components : les lectures Supabase passent par `createClient()` (qui appelle `connection()`) ; chaque route du jeu a son `loading.tsx`.
+- Temps réel : toujours passer par `subscribeToChanges` (`src/lib/realtime.ts`), jamais `supabase.channel()` directement dans un composant.
+- Lectures pouvant dépasser 1 000 lignes : `fetchAll` (`src/lib/supabase/paginate.ts`) avec un ordre stable.
 - **Un layout n'est pas une frontière d'autorisation** (pages rendues en parallèle) : chaque page protégée appelle elle-même `requireProfile()` / `requireAdmin()`, et la base revérifie (RLS / RPC).

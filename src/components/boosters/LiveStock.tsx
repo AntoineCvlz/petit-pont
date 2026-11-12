@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getBrowserClient } from "@/lib/supabase/client";
+import { subscribeToChanges } from "@/lib/realtime";
 
 /** Compteur de stock d'un booster limité, mis à jour en direct (Supabase Realtime). */
 export function LiveStock({ boosterId, initial, total }: { boosterId: number; initial: number; total: number }) {
@@ -9,23 +9,14 @@ export function LiveStock({ boosterId, initial, total }: { boosterId: number; in
   const [live, setLive] = useState<number | null>(null);
   const stock = live ?? initial;
 
-  useEffect(() => {
-    const supabase = getBrowserClient();
-    const channel = supabase
-      .channel(`booster-stock-${boosterId}`)
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "boosters", filter: `id=eq.${boosterId}` },
-        (payload) => {
-          const next = (payload.new as { stock_remaining?: number | null }).stock_remaining;
-          if (typeof next === "number") setLive(next);
-        },
-      )
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [boosterId]);
+  useEffect(
+    () =>
+      subscribeToChanges({ table: "boosters", event: "UPDATE", filter: `id=eq.${boosterId}` }, (payload) => {
+        const next = (payload.new as { stock_remaining?: number | null }).stock_remaining;
+        if (typeof next === "number") setLive(next);
+      }),
+    [boosterId],
+  );
 
   const pct = total ? (stock / total) * 100 : 0;
   return (

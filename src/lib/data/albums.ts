@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/paginate";
 import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/data/cards";
 import type { Database } from "@/types/database";
 
@@ -25,11 +26,17 @@ export type AlbumSummary = {
   completedAt: string | null;
 };
 
-async function ownedTemplateIds(userId: string): Promise<Set<number>> {
+/** Tous les modèles possédés (avec répétitions : un élément par exemplaire), lecture paginée. */
+async function ownedInstancesTemplateIds(userId: string): Promise<number[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from("card_instances").select("template_id").eq("owner_id", userId);
-  if (error) throw error;
-  return new Set(data.map((r) => r.template_id));
+  const rows = await fetchAll((from, to) =>
+    supabase.from("card_instances").select("id, template_id").eq("owner_id", userId).order("id").range(from, to),
+  );
+  return rows.map((r) => r.template_id);
+}
+
+async function ownedTemplateIds(userId: string): Promise<Set<number>> {
+  return new Set(await ownedInstancesTemplateIds(userId));
 }
 
 export async function listAlbums(userId: string): Promise<AlbumSummary[]> {
@@ -77,14 +84,13 @@ export async function getAlbum(slug: string, userId: string): Promise<AlbumDetai
   if (error) throw error;
   if (!album) return null;
 
-  const [{ data: instances, error: iError }, { data: completion, error: cError }] = await Promise.all([
-    supabase.from("card_instances").select("template_id").eq("owner_id", userId),
+  const [instances, { data: completion, error: cError }] = await Promise.all([
+    ownedInstancesTemplateIds(userId),
     supabase.from("album_completions").select("completed_at").eq("user_id", userId).eq("album_id", album.id).maybeSingle(),
   ]);
-  if (iError) throw iError;
   if (cError) throw cError;
   const counts = new Map<number, number>();
-  for (const i of instances) counts.set(i.template_id, (counts.get(i.template_id) ?? 0) + 1);
+  for (const id of instances) counts.set(id, (counts.get(id) ?? 0) + 1);
 
   const slots = album.album_slots
     .map((s) => {

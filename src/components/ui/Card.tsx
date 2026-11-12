@@ -28,7 +28,7 @@ function Silhouette({ color }: { color: string }) {
       <path d="M14 100c2-20 13-30 26-33l10 7 10-7c13 3 24 13 26 33z" fill={color} />
       <path d="M40 67l10 7 10-7-3-3H43z" fill="rgba(0,0,0,0.25)" />
       {/* Tête et cou */}
-      <rect x="43" y="52" width="14" height="14" rx="5" fill="url(#pp-sil)" />
+      <path d="M42 50h16v16l-8 6-8-6z" fill="url(#pp-sil)" />
       <ellipse cx="50" cy="38" rx="15" ry="18" fill="url(#pp-sil)" />
     </svg>
   );

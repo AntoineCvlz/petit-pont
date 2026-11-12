@@ -43,7 +43,7 @@ export default async function AccueilPage() {
     <>
       <PageHeader title={`Salut ${profile.username}`} subtitle="Le point sur ta collection et sur la communauté." />
 
-      <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
+      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px] [&>*]:min-w-0">
         <div className="space-y-5">
           {dailyBonus.available && (
             <Panel className="border-coin/30">
@@ -69,10 +69,10 @@ export default async function AccueilPage() {
           )}
           {freeBooster && (
             <Panel className="pp-net">
-              <div className="flex items-center gap-4">
+              <div className="flex min-w-0 items-center gap-4">
                 <BoosterPack name={freeBooster.name} kind="free" cardsCount={freeBooster.cardsCount} size="sm" />
-                <div className="space-y-2">
-                  <p className="font-display text-xl font-extrabold tracking-wide uppercase italic">
+                <div className="min-w-0 space-y-2">
+                  <p className="font-display text-xl font-extrabold tracking-wide break-words uppercase italic">
                     {freeBooster.nextAt ? "Booster gratuit en recharge" : "Ton booster gratuit est prêt !"}
                   </p>
                   {freeBooster.nextAt ? (
@@ -99,7 +99,7 @@ export default async function AccueilPage() {
                 <span>Progression globale</span>
                 <span className="tabular-nums">{progress} %</span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-night-700" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
+              <div className="h-2 overflow-hidden rounded-full bg-night-700" role="progressbar" aria-label="Progression globale" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
                 <div className="h-full rounded-full bg-turf" style={{ width: `${progress}%` }} />
               </div>
             </div>
@@ -161,7 +161,7 @@ export default async function AccueilPage() {
                 </Link>
               </EmptyState>
             ) : (
-              <div className="flex gap-3 overflow-x-auto pb-1">
+              <div className="flex gap-3 overflow-x-auto pb-1" tabIndex={0} role="region" aria-label="Dernières cartes obtenues (défilement horizontal)">
                 {recent.map((c) => (
                   <Card key={c.instanceId} template={c.template} collectionTotal={total} serialNumber={c.serialNumber} size="sm" />
                 ))}
@@ -185,7 +185,7 @@ export default async function AccueilPage() {
             {sales.length === 0 ? (
               <p className="text-sm text-chalk-muted">Aucune vente pour l&apos;instant.</p>
             ) : (
-              <SalesTable sales={sales} />
+              <SalesTable sales={sales} compact />
             )}
           </Panel>
         </div>

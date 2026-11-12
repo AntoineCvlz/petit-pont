@@ -41,7 +41,7 @@ export function ShowcaseEditor({ copies, initial, total }: { copies: TradableCop
           return (
             <li key={i}>
               {c ? (
-                <button type="button" onClick={() => toggle(c.instanceId)} aria-label={`Retirer ${c.template.playerName} de la vitrine`} className="block rounded-[var(--radius-card)]">
+                <button type="button" onClick={() => toggle(c.instanceId)} className="block rounded-[var(--radius-card)]">
                   <Card template={c.template} collectionTotal={total} serialNumber={c.serialNumber} size="sm" interactive={false} />
                 </button>
               ) : (

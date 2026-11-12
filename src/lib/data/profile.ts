@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/paginate";
 
 export type CurrentProfile = {
   id: string;
@@ -56,7 +57,8 @@ export type CollectionStats = { totalCopies: number; distinctCards: number };
 
 export async function getCollectionStats(ownerId: string): Promise<CollectionStats> {
   const supabase = await createClient();
-  const { data, error } = await supabase.from("card_instances").select("template_id").eq("owner_id", ownerId);
-  if (error) throw error;
+  const data = await fetchAll((from, to) =>
+    supabase.from("card_instances").select("id, template_id").eq("owner_id", ownerId).order("id").range(from, to),
+  );
   return { totalCopies: data.length, distinctCards: new Set(data.map((r) => r.template_id)).size };
 }

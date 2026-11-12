@@ -58,7 +58,7 @@ export default async function PlayerCollectionPage({ params, searchParams }: Pag
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] justify-items-center gap-3 sm:grid-cols-[repeat(auto-fill,minmax(168px,1fr))]">
             {visible.map((it) => (
               <li key={it.template.id}>
-                <Link href={`/marche/carte/${it.template.id}`} className="block rounded-[var(--radius-card)]" aria-label={`Prix de ${it.template.playerName}`}>
+                <Link href={`/marche/carte/${it.template.id}`} className="block rounded-[var(--radius-card)]">
                   <Card template={it.template} collectionTotal={total} serialNumber={it.serialNumber} copies={it.copies} className="max-sm:w-[132px]" />
                 </Link>
               </li>

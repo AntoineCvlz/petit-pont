@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
+import { fetchAll } from "@/lib/supabase/paginate";
 import type { PlayerPosition, Rarity } from "@/lib/rarity";
 import { compareRarityDesc } from "@/lib/rarity";
 
@@ -102,29 +103,41 @@ export type OwnedCardGroup = {
   copies: { id: string; serialNumber: number; obtainedAt: string; isLocked: boolean }[];
 };
 
-/** Collection d'un joueur, regroupée par carte (exemplaires et doublons). */
+/** Catalogue complet indexé par id (≈ quelques centaines de lignes, lu une fois par requête). */
+export const getTemplateCatalog = cache(async (): Promise<Map<number, CardTemplateView>> => {
+  const supabase = await createClient();
+  const rows = await fetchAll((from, to) => supabase.from("card_templates").select(TEMPLATE_SELECT).order("id").range(from, to));
+  return new Map(rows.map((r) => [r.id, toTemplateView(r as never)]));
+});
+
+/**
+ * Collection d'un joueur, regroupée par carte (exemplaires et doublons).
+ * Les exemplaires sont lus sans jointure (léger, paginé) puis associés au catalogue en mémoire :
+ * pour un gros collectionneur, on évite de rapatrier la fiche complète de chaque exemplaire.
+ */
 export async function getCollection(ownerId: string): Promise<OwnedCardGroup[]> {
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("card_instances")
-    .select(`id, serial_number, obtained_at, is_locked, card_templates!inner ( ${TEMPLATE_SELECT} )`)
-    .eq("owner_id", ownerId)
-    .order("obtained_at", { ascending: false });
-  if (error) throw error;
+  const [rows, catalog] = await Promise.all([
+    fetchAll((from, to) =>
+      supabase
+        .from("card_instances")
+        .select("id, template_id, serial_number, obtained_at, is_locked")
+        .eq("owner_id", ownerId)
+        .order("obtained_at", { ascending: false })
+        .order("id")
+        .range(from, to),
+    ),
+    getTemplateCatalog(),
+  ]);
 
   const groups = new Map<number, OwnedCardGroup>();
-  for (const row of data as unknown as Array<{
-    id: string;
-    serial_number: number;
-    obtained_at: string;
-    is_locked: boolean;
-    card_templates: TemplateRow;
-  }>) {
-    const tpl = row.card_templates;
-    let group = groups.get(tpl.id);
+  for (const row of rows) {
+    const template = catalog.get(row.template_id);
+    if (!template) continue;
+    let group = groups.get(row.template_id);
     if (!group) {
-      group = { template: toTemplateView(tpl), copies: [] };
-      groups.set(tpl.id, group);
+      group = { template, copies: [] };
+      groups.set(row.template_id, group);
     }
     group.copies.push({
       id: row.id,

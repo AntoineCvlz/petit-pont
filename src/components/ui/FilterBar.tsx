@@ -83,7 +83,7 @@ export function FilterBar({
         </>
       )}
       {selects.map((s) => (
-        <label key={s.name} className="flex-1 sm:flex-none">
+        <label key={s.name} className="min-w-0 basis-[calc(50%-0.25rem)] sm:basis-auto">
           <span className="sr-only">{s.label}</span>
           <select
             value={params.get(s.name) ?? (s.allLabel ? "" : s.options[0]?.value)}
@@ -101,7 +101,7 @@ export function FilterBar({
         </label>
       ))}
       {toggles.map((t) => (
-        <label key={t.name} className="flex h-9 cursor-pointer items-center gap-2 rounded-lg border border-line-strong px-2.5 text-sm">
+        <label key={t.name} className="flex h-9 cursor-pointer items-center gap-2 rounded-lg border border-line-strong px-2.5 text-sm whitespace-nowrap">
           <input
             type="checkbox"
             checked={params.get(t.name) === "1"}

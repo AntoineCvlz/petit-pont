@@ -23,7 +23,7 @@
   /* Texte (craie) */
   --color-chalk: #e6eee8;
   --color-chalk-muted: #9cb0a5;
-  --color-chalk-faint: #66796f;
+  --color-chalk-faint: #7d8f85; /* ≥ 4,5:1 sur les surfaces (WCAG AA) */
 
   /* Accent pelouse (actions principales) */
   --color-turf: #8fd16a;

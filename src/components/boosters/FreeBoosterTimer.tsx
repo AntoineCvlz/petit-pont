@@ -31,7 +31,7 @@ export function FreeBoosterTimer({ slug, nextAt }: { slug: string; nextAt: strin
     <Link
       href={`/boosters/${slug}`}
       className={clsx(
-        "flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-sm transition-colors duration-150",
+        "flex shrink-0 items-center gap-1 rounded-lg border px-2 py-1 text-sm whitespace-nowrap transition-colors duration-150 sm:gap-1.5 sm:px-2.5",
         ready ? "border-turf/50 bg-turf/15 font-semibold text-turf hover:bg-turf/25" : "border-line bg-night-850 text-chalk-muted hover:text-chalk",
       )}
       title={ready ? "Ton booster gratuit est prêt" : "Prochain booster gratuit"}

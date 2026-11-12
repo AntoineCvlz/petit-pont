@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { getBrowserClient } from "@/lib/supabase/client";
+import { subscribeToChanges } from "@/lib/realtime";
 
 /**
  * Rafraîchit la page dès qu'un échange me concernant change (Realtime ;
@@ -11,18 +11,14 @@ import { getBrowserClient } from "@/lib/supabase/client";
 export function LiveTradesRefresher() {
   const router = useRouter();
   useEffect(() => {
-    const supabase = getBrowserClient();
     let timer: ReturnType<typeof setTimeout> | null = null;
-    const channel = supabase
-      .channel(`trades-${Math.random().toString(36).slice(2)}`)
-      .on("postgres_changes", { event: "*", schema: "public", table: "trades" }, () => {
-        if (timer) clearTimeout(timer);
-        timer = setTimeout(() => router.refresh(), 300); // regroupe les rafales
-      })
-      .subscribe();
+    const unsubscribe = subscribeToChanges({ table: "trades", event: "*" }, () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => router.refresh(), 300); // regroupe les rafales
+    });
     return () => {
       if (timer) clearTimeout(timer);
-      void supabase.removeChannel(channel);
+      unsubscribe();
     };
   }, [router]);
   return null;

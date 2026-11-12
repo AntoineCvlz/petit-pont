@@ -6,6 +6,8 @@ import { passwordError, safeRedirectPath, usernameFormatError } from "@/lib/vali
 
 export type FormState = { error: string | null; fields?: Record<string, string> };
 
+const TOO_MANY = "Trop de tentatives d'affilée. Patiente quelques minutes avant de réessayer.";
+
 function field(formData: FormData, name: string): string {
   const v = formData.get(name);
   return typeof v === "string" ? v.trim() : "";
@@ -19,6 +21,7 @@ export async function signIn(_prev: FormState, formData: FormData): Promise<Form
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
+    if (error.status === 429) return { error: TOO_MANY, fields: { email } };
     return { error: "E-mail ou mot de passe incorrect.", fields: { email } };
   }
   redirect(safeRedirectPath(formData.get("suite")));
@@ -46,6 +49,7 @@ export async function signUp(_prev: FormState, formData: FormData): Promise<Form
     options: { data: { username } },
   });
   if (error) {
+    if (error.status === 429) return { error: TOO_MANY, fields };
     if (error.message.toLowerCase().includes("already registered")) {
       return { error: "Un compte existe déjà avec cet e-mail.", fields };
     }

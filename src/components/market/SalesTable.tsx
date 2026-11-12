@@ -3,7 +3,7 @@ import type { SaleView } from "@/lib/data/market";
 import { formatCoins, formatRelative } from "@/lib/format";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 
-export function SalesTable({ sales, showCard = true }: { sales: SaleView[]; showCard?: boolean }) {
+export function SalesTable({ sales, showCard = true, compact = false }: { sales: SaleView[]; showCard?: boolean; compact?: boolean }) {
   return (
     <table className="w-full text-sm">
       <caption className="sr-only">Ventes du marché, de la plus récente à la plus ancienne</caption>
@@ -11,7 +11,7 @@ export function SalesTable({ sales, showCard = true }: { sales: SaleView[]; show
         <tr>
           {showCard && <th scope="col" className="pb-2 font-medium">Carte</th>}
           <th scope="col" className="pb-2 text-right font-medium">Prix</th>
-          <th scope="col" className="hidden pb-2 pl-4 font-medium sm:table-cell">Vendeur → acheteur</th>
+          {!compact && <th scope="col" className="hidden pb-2 pl-4 font-medium sm:table-cell">Vendeur → acheteur</th>}
           <th scope="col" className="pb-2 text-right font-medium">Quand</th>
         </tr>
       </thead>
@@ -24,13 +24,17 @@ export function SalesTable({ sales, showCard = true }: { sales: SaleView[]; show
                   {s.template.playerName}
                 </Link>{" "}
                 <RarityBadge rarity={s.template.rarity} className="ml-1 align-middle" />
-                <span className="ml-1 text-xs text-chalk-faint">{s.template.edition === "Base" ? s.template.season : s.template.edition}</span>
+                {!compact && (
+                  <span className="ml-1 text-xs text-chalk-faint">{s.template.edition === "Base" ? s.template.season : s.template.edition}</span>
+                )}
               </td>
             )}
             <td className="py-2 text-right font-semibold text-coin tabular-nums">{formatCoins(s.price)}</td>
-            <td className="hidden py-2 pl-4 text-chalk-muted sm:table-cell">
-              {s.sellerUsername ?? "—"} → {s.buyerUsername ?? "—"}
-            </td>
+            {!compact && (
+              <td className="hidden py-2 pl-4 text-chalk-muted sm:table-cell">
+                {s.sellerUsername ?? "—"} → {s.buyerUsername ?? "—"}
+              </td>
+            )}
             <td className="py-2 pl-3 text-right whitespace-nowrap text-chalk-faint">{formatRelative(s.createdAt)}</td>
           </tr>
         ))}

@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { sellAllDuplicates } from "@/lib/actions/economy";
-import { previewBulkSale, type DuplicateCopy } from "@/lib/economy";
+import { previewFromSummary, type DuplicateSummary } from "@/lib/economy";
 import { formatCoins } from "@/lib/format";
 import { RARITIES, RARITY_LABELS, type Rarity } from "@/lib/rarity";
 import { Button } from "@/components/ui/Button";
@@ -11,15 +11,15 @@ import { CoinIcon } from "@/components/ui/CoinAmount";
 import { Modal } from "@/components/ui/Modal";
 
 /** Revente groupée des doublons, avec plafond de rareté et confirmation. */
-export function BulkSellButton({ copies, prices }: { copies: DuplicateCopy[]; prices: Partial<Record<Rarity, number>> }) {
+export function BulkSellButton({ summary, prices }: { summary: DuplicateSummary; prices: Partial<Record<Rarity, number>> }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [maxRarity, setMaxRarity] = useState<Rarity>("rare");
   const [pending, start] = useTransition();
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
 
-  const any = previewBulkSale(copies, "speciale", prices).count > 0;
-  const preview = previewBulkSale(copies, maxRarity, prices);
+  const any = previewFromSummary(summary, "speciale", prices).count > 0;
+  const preview = previewFromSummary(summary, maxRarity, prices);
 
   function confirm() {
     start(async () => {

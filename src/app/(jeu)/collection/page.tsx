@@ -8,6 +8,7 @@ import { EmptyState, PageHeader } from "@/components/ui/Panel";
 import { applyCollectionQuery, filterOptions, parseCollectionQuery, SORTS, type CollectionItem } from "@/lib/collection";
 import { getDuplicatePrices } from "@/lib/data/boosters";
 import { getCollection, getCollectionTotal } from "@/lib/data/cards";
+import { summarizeDuplicates } from "@/lib/economy";
 import { requireProfile } from "@/lib/data/profile";
 import { POSITION_LABELS, RARITIES, RARITY_LABELS } from "@/lib/rarity";
 
@@ -46,7 +47,7 @@ export default async function CollectionPage({ searchParams }: PageProps<"/colle
             : `0 carte sur ${total}`
         }
       >
-        {groups.length > 0 && <BulkSellButton copies={allCopies} prices={prices} />}
+        {groups.length > 0 && <BulkSellButton summary={summarizeDuplicates(allCopies)} prices={prices} />}
       </PageHeader>
 
       {groups.length === 0 ? (
@@ -89,7 +90,7 @@ export default async function CollectionPage({ searchParams }: PageProps<"/colle
             <ul className="grid grid-cols-[repeat(auto-fill,minmax(132px,1fr))] justify-items-center gap-3 sm:grid-cols-[repeat(auto-fill,minmax(168px,1fr))]">
               {visible.map((it) => (
                 <li key={it.template.id}>
-                  <Link href={`/collection/${it.template.id}`} className="block rounded-[var(--radius-card)]" aria-label={`Détail : ${it.template.playerName}`}>
+                  <Link href={`/collection/${it.template.id}`} className="block rounded-[var(--radius-card)]">
                     <Card
                       template={it.template}
                       collectionTotal={total}

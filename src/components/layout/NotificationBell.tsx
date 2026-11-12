@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { getBrowserClient } from "@/lib/supabase/client";
+import { subscribeToChanges } from "@/lib/realtime";
 import { safeRedirectPath } from "@/lib/validation";
 
 type Toast = { id: number; title: string; body: string | null; link: string | null };
@@ -24,36 +24,32 @@ export function NotificationBell({ userId, initialUnread }: { userId: string; in
   }
   const unread = base + live;
 
-  useEffect(() => {
-    const supabase = getBrowserClient();
-    const channel = supabase
-      .channel(`notifications-${userId}`)
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "notifications", filter: `user_id=eq.${userId}` }, (payload) => {
+  useEffect(
+    () =>
+      subscribeToChanges({ table: "notifications", event: "INSERT", filter: `user_id=eq.${userId}` }, (payload) => {
         const n = payload.new as Toast & { is_read: boolean };
         if (n.is_read) return;
         setLive((c) => c + 1);
         setToasts((t) => [...t.slice(-2), { id: n.id, title: n.title, body: n.body, link: n.link }]);
         setTimeout(() => setToasts((t) => t.filter((x) => x.id !== n.id)), 6000);
-      })
-      .subscribe();
-    return () => {
-      void supabase.removeChannel(channel);
-    };
-  }, [userId]);
+      }),
+    [userId],
+  );
 
   return (
     <>
       <Link
         href="/notifications"
         className="relative flex h-8 w-8 items-center justify-center rounded-lg text-chalk-muted hover:bg-night-800 hover:text-chalk"
-        aria-label={unread > 0 ? `Notifications (${unread} non lue${unread > 1 ? "s" : ""})` : "Notifications"}
       >
+        <span className="sr-only">Notifications</span>
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
           <path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15zM10 20a2 2 0 0 0 4 0" />
         </svg>
         {unread > 0 && (
-          <span className="absolute -top-0.5 -right-0.5 min-w-4 rounded-full bg-r-iconique px-1 text-center text-[10px] leading-4 font-bold text-white tabular-nums">
+          <span className="absolute -top-0.5 -right-0.5 min-w-4 rounded-full bg-r-iconique px-1 text-center text-[10px] leading-4 font-bold text-night-950 tabular-nums">
             {unread > 99 ? "99+" : unread}
+            <span className="sr-only"> non lue{unread > 1 ? "s" : ""}</span>
           </span>
         )}
       </Link>

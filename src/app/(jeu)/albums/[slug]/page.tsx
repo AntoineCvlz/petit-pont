@@ -65,7 +65,7 @@ export default async function AlbumPage({ params }: PageProps<"/albums/[slug]">)
         {album.slots.map((s) => (
           <li key={s.slotNumber}>
             {s.owned ? (
-              <Link href={`/collection/${s.template.id}`} className="block rounded-[var(--radius-card)]" aria-label={`Emplacement ${s.slotNumber} : ${s.template.playerName}`}>
+              <Link href={`/collection/${s.template.id}`} className="block rounded-[var(--radius-card)]">
                 <Card template={s.template} collectionTotal={total} copies={s.copies} className="max-sm:w-[132px]" />
               </Link>
             ) : (

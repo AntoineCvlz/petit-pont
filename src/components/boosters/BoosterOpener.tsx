@@ -140,7 +140,6 @@ export function BoosterOpener({
           onClick={handleOpen}
           disabled={disabled}
           className="rounded-lg transition-transform duration-150 enabled:hover:-translate-y-1 disabled:cursor-not-allowed"
-          aria-label={`Ouvrir le booster ${booster.name}`}
         >
           <BoosterPack
             name={booster.name}

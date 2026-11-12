@@ -73,7 +73,7 @@ function SelectablePane({
       {pane.copies.length === 0 ? (
         <p className="py-6 text-center text-sm text-chalk-muted">Aucune carte disponible à l&apos;échange.</p>
       ) : (
-        <ul className="grid max-h-[560px] grid-cols-[repeat(auto-fill,minmax(132px,1fr))] justify-items-center gap-2 overflow-y-auto pr-1">
+        <ul className="grid max-h-[560px] grid-cols-[repeat(auto-fill,minmax(132px,1fr))] justify-items-center gap-x-2 gap-y-4 overflow-y-auto pt-2 pr-1">
           {visible.map((c) => {
             const isSel = selected.has(c.instanceId);
             const disabled = !isSel && selected.size >= TRADE_MAX_ITEMS;
@@ -84,7 +84,6 @@ function SelectablePane({
                   onClick={() => onToggle(c.instanceId)}
                   disabled={disabled}
                   aria-pressed={isSel}
-                  aria-label={`${isSel ? "Retirer" : "Ajouter"} ${c.template.playerName}`}
                   className={clsx(
                     "block rounded-[var(--radius-card)] transition-[outline,opacity] duration-150",
                     isSel ? "outline-3 outline-offset-2 outline-turf" : "opacity-90 hover:opacity-100",

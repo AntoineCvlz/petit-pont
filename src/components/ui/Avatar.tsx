@@ -1,7 +1,8 @@
 import { clsx } from "clsx";
 import { initials } from "@/lib/format";
 
-const PALETTE = ["#2f6b4a", "#3a5a8c", "#7a4a8c", "#8c6a2f", "#8c3a4a", "#2f7a7a"];
+// Couleurs assez sombres pour un texte clair (contraste ≥ 4,5:1)
+const PALETTE = ["#2a5f42", "#34507d", "#6b4180", "#6b5120", "#7d3442", "#286868"];
 
 function colorFor(name: string): string {
   let h = 0;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { COIN_TX_LABELS, isCoinTxType, previewBulkSale, type DuplicateCopy } from "@/lib/economy";
+import { COIN_TX_LABELS, isCoinTxType, previewBulkSale, previewFromSummary, summarizeDuplicates, type DuplicateCopy } from "@/lib/economy";
 
 const prices = { commune: 10, rare: 30, epique: 80, legendaire: 250 };
 
@@ -24,5 +24,11 @@ describe("économie", () => {
     // La rare verrouillée n'est pas comptée : il reste une seule libre, conservée
     expect(previewBulkSale(copies, "epique", prices)).toEqual({ count: 2, coins: 20 });
     expect(previewBulkSale(copies, "legendaire", prices)).toEqual({ count: 3, coins: 270 });
+    // Le résumé envoyé au navigateur donne exactement le même aperçu
+    const summary = summarizeDuplicates(copies);
+    expect(summary).toEqual({ commune: 2, legendaire: 1 });
+    for (const max of ["commune", "epique", "legendaire", "speciale"] as const) {
+      expect(previewFromSummary(summary, max, prices)).toEqual(previewBulkSale(copies, max, prices));
+    }
   });
 });

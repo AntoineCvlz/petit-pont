@@ -52,3 +52,33 @@ export function previewBulkSale(
   }
   return { count, coins };
 }
+
+export type DuplicateSummary = Partial<Record<Rarity, number>>;
+
+/** Nombre de doublons revendables par rareté (même règle que previewBulkSale). Calculé côté serveur. */
+export function summarizeDuplicates(copies: DuplicateCopy[]): DuplicateSummary {
+  const perTemplate = new Map<number, { rarity: Rarity; free: number }>();
+  for (const c of copies) {
+    if (c.isLocked) continue;
+    const cur = perTemplate.get(c.templateId) ?? { rarity: c.rarity, free: 0 };
+    cur.free += 1;
+    perTemplate.set(c.templateId, cur);
+  }
+  const summary: DuplicateSummary = {};
+  for (const { rarity, free } of perTemplate.values()) {
+    if (free > 1) summary[rarity] = (summary[rarity] ?? 0) + free - 1;
+  }
+  return summary;
+}
+
+/** Aperçu à partir du résumé : quelques octets envoyés au navigateur au lieu de tous les exemplaires. */
+export function previewFromSummary(summary: DuplicateSummary, maxRarity: Rarity, prices: Partial<Record<Rarity, number>>) {
+  let count = 0;
+  let coins = 0;
+  for (const [rarity, n] of Object.entries(summary) as [Rarity, number][]) {
+    if (rarityRank(rarity) > rarityRank(maxRarity)) continue;
+    count += n;
+    coins += n * (prices[rarity] ?? 0);
+  }
+  return { count, coins };
+}

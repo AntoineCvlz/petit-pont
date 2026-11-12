@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { ListingView } from "@/lib/data/market";
 import { formatCoins, formatRelative } from "@/lib/format";
-import { getBrowserClient } from "@/lib/supabase/client";
+import { subscribeToChanges } from "@/lib/realtime";
 import { Card } from "@/components/ui/Card";
 import { CoinAmount } from "@/components/ui/CoinAmount";
 import { BuyButton, CancelListingButton } from "./ListingActions";
@@ -32,26 +32,25 @@ export function LiveListingGrid({
   const reduce = useReducedMotion();
   const [gone, setGone] = useState<Map<string, "sold" | "cancelled">>(new Map());
   const [newCount, setNewCount] = useState(0);
+  // Annonces que j'ai achetées : l'événement Realtime « vendue » peut arriver avant la réponse de l'action
+  const [boughtByMe, setBoughtByMe] = useState<Set<string>>(new Set());
   const ids = listings.map((l) => l.id).join(",");
 
   useEffect(() => {
     const visible = new Set(ids.split(","));
-    const supabase = getBrowserClient();
-    const channel = supabase
-      .channel(`market-${Math.random().toString(36).slice(2)}`)
-      .on("postgres_changes", { event: "UPDATE", schema: "public", table: "market_listings" }, (payload) => {
-        const row = payload.new as { id: string; status: string };
-        if (row.status !== "active" && visible.has(row.id)) {
-          setGone((prev) => new Map(prev).set(row.id, row.status === "sold" ? "sold" : "cancelled"));
-        }
-      })
-      .on("postgres_changes", { event: "INSERT", schema: "public", table: "market_listings" }, (payload) => {
-        const row = payload.new as { seller_id: string };
-        if (row.seller_id !== viewerId) setNewCount((n) => n + 1);
-      })
-      .subscribe();
+    const offUpdate = subscribeToChanges({ table: "market_listings", event: "UPDATE" }, (payload) => {
+      const row = payload.new as { id: string; status: string };
+      if (row.status !== "active" && visible.has(row.id)) {
+        setGone((prev) => new Map(prev).set(row.id, row.status === "sold" ? "sold" : "cancelled"));
+      }
+    });
+    const offInsert = subscribeToChanges({ table: "market_listings", event: "INSERT" }, (payload) => {
+      const row = payload.new as { seller_id: string };
+      if (row.seller_id !== viewerId) setNewCount((n) => n + 1);
+    });
     return () => {
-      void supabase.removeChannel(channel);
+      offUpdate();
+      offInsert();
     };
   }, [ids, viewerId]);
 
@@ -74,7 +73,8 @@ export function LiveListingGrid({
           {listings
             .filter((l) => !gone.has(l.id) || gone.get(l.id) === "sold")
             .map((l) => {
-              const soldLive = gone.get(l.id) === "sold";
+              const mineNow = boughtByMe.has(l.id);
+              const soldLive = gone.get(l.id) === "sold" && !mineNow;
               const mine = l.sellerId === viewerId;
               return (
                 <motion.li
@@ -84,7 +84,7 @@ export function LiveListingGrid({
                   transition={{ duration: 0.2 }}
                   className="relative flex w-[168px] flex-col gap-2 max-sm:w-[132px]"
                 >
-                  <Link href={`/marche/carte/${l.template.id}`} className="block rounded-[var(--radius-card)]" aria-label={`Historique de prix : ${l.template.playerName}`}>
+                  <Link href={`/marche/carte/${l.template.id}`} className="block rounded-[var(--radius-card)]">
                     <Card template={l.template} collectionTotal={collectionTotal} serialNumber={l.serialNumber} className="max-sm:w-[132px]" />
                   </Link>
                   <div className="flex items-center justify-between gap-1 text-xs">
@@ -93,7 +93,11 @@ export function LiveListingGrid({
                       {mine ? "Toi" : l.sellerUsername}
                     </span>
                   </div>
-                  {soldLive ? (
+                  {mineNow ? (
+                    <Link href="/collection" className="rounded-md bg-success/15 py-1.5 text-center text-xs font-semibold text-success" role="status">
+                      Achetée ! Voir ma collection
+                    </Link>
+                  ) : soldLive ? (
                     <p className="rounded-md bg-night-700 py-1.5 text-center text-xs font-semibold text-chalk-muted" role="status">
                       Vendue
                     </p>
@@ -106,6 +110,7 @@ export function LiveListingGrid({
                       playerName={l.template.playerName}
                       sellerUsername={l.sellerUsername}
                       balance={balance}
+                      onDone={(ok) => ok && setBoughtByMe((p) => new Set(p).add(l.id))}
                     />
                   )}
                   {soldLive && (
