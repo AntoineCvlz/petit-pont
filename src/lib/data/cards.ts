@@ -223,3 +223,10 @@ export async function getRecentCards(ownerId: string, limit = 6): Promise<Recent
     }),
   );
 }
+
+export async function getTemplateById(id: number): Promise<CardTemplateView | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("card_templates").select(TEMPLATE_SELECT).eq("id", id).maybeSingle();
+  if (error) throw error;
+  return data ? toTemplateView(data as never) : null;
+}

@@ -4,19 +4,21 @@ import { AlbumProgress, albumPercent } from "@/components/albums/AlbumProgress";
 import { BoosterPack } from "@/components/boosters/BoosterPack";
 import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
 import { DailyBonusButton } from "@/components/economy/DailyBonusButton";
+import { SalesTable } from "@/components/market/SalesTable";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { EmptyState, PageHeader, Panel } from "@/components/ui/Panel";
 import { getActivityFeed } from "@/lib/data/activity";
 import { listAlbums } from "@/lib/data/albums";
 import { getDailyBonusStatus } from "@/lib/data/economy";
+import { listRecentSales } from "@/lib/data/market";
 import { getFreeBoosterNextAt } from "@/lib/data/boosters";
 import { getCollectionTotal, getRecentCards } from "@/lib/data/cards";
 import { getCollectionStats, requireProfile } from "@/lib/data/profile";
 
 export default async function AccueilPage() {
   const profile = await requireProfile();
-  const [recent, total, stats, feed, freeBooster, albums, dailyBonus] = await Promise.all([
+  const [recent, total, stats, feed, freeBooster, albums, dailyBonus, sales] = await Promise.all([
     getRecentCards(profile.id, 6),
     getCollectionTotal(),
     getCollectionStats(profile.id),
@@ -24,6 +26,7 @@ export default async function AccueilPage() {
     getFreeBoosterNextAt(),
     listAlbums(profile.id),
     getDailyBonusStatus(),
+    listRecentSales(5),
   ]);
   const inProgress = albums
     .filter((a) => !a.completedAt)
@@ -138,9 +141,25 @@ export default async function AccueilPage() {
           </Panel>
         </div>
 
-        <Panel title="Fil d'activité">
-          <ActivityFeed items={feed} />
-        </Panel>
+        <div className="space-y-5">
+          <Panel title="Fil d'activité">
+            <ActivityFeed items={feed} />
+          </Panel>
+          <Panel
+            title="Activité du marché"
+            action={
+              <Link href="/marche?onglet=ventes" className="text-xs font-semibold text-turf hover:underline">
+                Toutes les ventes
+              </Link>
+            }
+          >
+            {sales.length === 0 ? (
+              <p className="text-sm text-chalk-muted">Aucune vente pour l&apos;instant.</p>
+            ) : (
+              <SalesTable sales={sales} />
+            )}
+          </Panel>
+        </div>
       </div>
     </>
   );

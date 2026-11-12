@@ -97,6 +97,9 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
                       <span className="text-chalk-faint">aucune vente</span>
                     )}
                   </p>
+                  <Link href={`/marche/carte/${v.id}`} className="font-semibold text-turf hover:underline">
+                    Voir au marché
+                  </Link>
                 </div>
               </li>
             ))}

@@ -2,8 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CopySeller } from "@/components/collection/CopySeller";
+import { CancelListingButton } from "@/components/market/ListingActions";
+import { SellForm } from "@/components/market/SellForm";
+import { CoinAmount } from "@/components/ui/CoinAmount";
 import { Card } from "@/components/ui/Card";
 import { getDuplicatePrices } from "@/lib/data/boosters";
+import { getMarketFeePercent, getPriceStats, listMyListings } from "@/lib/data/market";
+import { suggestedPrice } from "@/lib/market";
 import { Panel } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 import { getCollectionTotal, getOwnedCard, type CopyHistoryEvent } from "@/lib/data/cards";
@@ -39,10 +44,21 @@ export default async function CardDetailPage({ params }: PageProps<"/collection/
   if (!Number.isInteger(id) || id <= 0) notFound();
 
   const profile = await requireProfile();
-  const [card, total, prices] = await Promise.all([getOwnedCard(profile.id, id), getCollectionTotal(), getDuplicatePrices()]);
+  const [card, total, prices, myListings, feePercent, stats] = await Promise.all([
+    getOwnedCard(profile.id, id),
+    getCollectionTotal(),
+    getDuplicatePrices(),
+    listMyListings(profile.id),
+    getMarketFeePercent(),
+    getPriceStats(id),
+  ]);
   if (!card) notFound();
   const t = card.template;
   const unitPrice = prices[t.rarity] ?? 0;
+  const listingByInstance = new Map(
+    myListings.filter((l) => l.template.id === t.id).map((l) => [l.serialNumber, l] as const),
+  );
+  const freeCopies = card.copies.filter((c) => !c.isLocked);
 
   return (
     <>
@@ -69,7 +85,11 @@ export default async function CardDetailPage({ params }: PageProps<"/collection/
             </div>
             <p className="mt-2 text-sm">
               <Link href={`/wiki/${t.playerSlug}`} className="font-semibold text-turf hover:underline">
-                Voir la fiche du joueur et toutes ses versions
+                Fiche du joueur
+              </Link>
+              {" · "}
+              <Link href={`/marche/carte/${t.id}`} className="font-semibold text-turf hover:underline">
+                Prix sur le marché
               </Link>
             </p>
           </div>
@@ -84,8 +104,18 @@ export default async function CardDetailPage({ params }: PageProps<"/collection/
                       <span>{VIA_LABELS[c.obtainedVia] ?? c.obtainedVia}</span>
                       <span>·</span>
                       <span>Obtenu le {formatDate(c.obtainedAt)}</span>
-                      {c.isLocked && (
-                        <span className="rounded-md border border-coin/40 px-1.5 py-px text-coin">Engagé (vente ou échange)</span>
+                      {c.isLocked && !listingByInstance.has(c.serialNumber) && (
+                        <span className="rounded-md border border-coin/40 px-1.5 py-px text-coin">Engagé dans un échange</span>
+                      )}
+                      {listingByInstance.has(c.serialNumber) && (
+                        <span className="inline-flex items-center gap-1 rounded-md border border-coin/40 px-1.5 py-px text-coin">
+                          En vente · <CoinAmount amount={listingByInstance.get(c.serialNumber)!.price} className="text-xs" />
+                        </span>
+                      )}
+                      {listingByInstance.has(c.serialNumber) && (
+                        <span className="w-20">
+                          <CancelListingButton listingId={listingByInstance.get(c.serialNumber)!.id} />
+                        </span>
                       )}
                     </div>
                   </div>
@@ -101,6 +131,15 @@ export default async function CardDetailPage({ params }: PageProps<"/collection/
                 </li>
               ))}
             </ul>
+          </Panel>
+
+          <Panel title="Mettre en vente sur le marché">
+            <SellForm
+              copies={freeCopies.map((c) => ({ id: c.id, label: formatSerial(c.serialNumber, t.maxSupply) }))}
+              suggested={suggestedPrice(stats?.avgPrice ?? null, unitPrice)}
+              feePercent={feePercent}
+              systemPrice={unitPrice}
+            />
           </Panel>
 
           {card.copies.length > 1 && (

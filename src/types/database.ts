@@ -48,6 +48,12 @@ isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
     },{
+      foreignKeyName: "activity_feed_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
+    },{
       foreignKeyName: "activity_feed_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
@@ -117,6 +123,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "album_slots_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
     }
                   ]
                 },"albums": {
@@ -223,6 +235,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "booster_cards_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
     }
                   ]
                 },"booster_odds": {
@@ -365,6 +383,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "card_instances_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
     }
                   ]
                 },"card_templates": {
@@ -487,6 +511,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "market_listings_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
     }
                   ]
                 },"market_sales": {
@@ -537,6 +567,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "market_sales_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
     }
                   ]
                 },"market_searches": {
@@ -557,6 +593,12 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
+    },{
+      foreignKeyName: "market_searches_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
     },{
       foreignKeyName: "market_searches_user_id_fkey"
       columns: ["user_id"]
@@ -639,14 +681,14 @@ isOneToOne: false
                   ]
                 },"players": {
                   Row: {
-                    "bio": string | null,"birth_year": number | null,"display_name": string,"first_name": string | null,"id": number,"image_url": string | null,"is_legend": boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"slug": string
+                    "bio": string | null,"birth_year": number | null,"display_name": string,"first_name": string | null,"id": number,"image_url": string | null,"is_legend": boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"search_text": string,"slug": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "bio"?: string | null,"birth_year"?: number | null,"display_name": string,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"slug": string
+                    "bio"?: string | null,"birth_year"?: number | null,"display_name": string,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"search_text"?: string,"slug": string
                   }
                   Update: {
-                    "bio"?: string | null,"birth_year"?: number | null,"display_name"?: string,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name"?: string,"nation_id"?: number,"position"?: Database["public"]['Enums']["player_position"],"slug"?: string
+                    "bio"?: string | null,"birth_year"?: number | null,"display_name"?: string,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name"?: string,"nation_id"?: number,"position"?: Database["public"]['Enums']["player_position"],"search_text"?: string,"slug"?: string
                   }
                   Relationships: [
                     {
@@ -842,6 +884,12 @@ isOneToOne: false
       referencedRelation: "card_templates"
       referencedColumns: ["id"]
     },{
+      foreignKeyName: "wishlists_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
+    },{
       foreignKeyName: "wishlists_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
@@ -861,6 +909,34 @@ isOneToOne: false
             "coin_balance_audit": {
                   Row: {
                     "coins": number,"is_consistent": boolean | null,"journal_total": number | null,"user_id": string,"username": string
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    
+                  ]
+                },"market_price_stats": {
+                  Row: {
+                    "avg_price": number | null,"last_price": number | null,"max_price": number | null,"min_price": number | null,"sales": number | null,"template_id": number
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    {
+      foreignKeyName: "market_sales_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "card_templates"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "market_sales_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
+    }
+                  ]
+                },"most_wanted_cards": {
+                  Row: {
+                    "score": number | null,"searches": number | null,"template_id": number,"wishes": number | null
                   }
                   ComputedFields: never
                   Relationships: [
@@ -892,11 +968,20 @@ isOneToOne: false
 "booster_availability":
 { Args: { "p_booster": number }; Returns: Json
                            },
+"buy_listing":
+{ Args: { "p_listing_id": string }; Returns: Json
+                           },
+"cancel_listing":
+{ Args: { "p_listing_id": string }; Returns: undefined
+                           },
 "claim_album_reward":
 { Args: { "p_album_id": number }; Returns: Json
                            },
 "claim_daily_bonus":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"create_listing":
+{ Args: { "p_instance_id": string,"p_price": number }; Returns: string
                            },
 "daily_bonus_status":
 { Args: Record<PropertyKey, never>; Returns: Json
@@ -917,6 +1002,9 @@ isOneToOne: false
                            },
 "rarity_rank":
 { Args: { "r": Database["public"]['Enums']["rarity"] }; Returns: number
+                           },
+"record_market_search":
+{ Args: { "p_query"?: string,"p_template_id"?: number }; Returns: undefined
                            },
 "sell_all_duplicates":
 { Args: { "p_max_rarity"?: Database["public"]['Enums']["rarity"] }; Returns: Json

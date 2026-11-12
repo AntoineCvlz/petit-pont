@@ -712,3 +712,41 @@ listed as (
   returning instance_id
 )
 update public.card_instances set is_locked = true where id in (select instance_id from listed);
+
+-- -----------------------------------------------------------------------------
+-- Listes de souhaits : chaque joueur de démo vise 4 cartes Épiques ou mieux qu'il n'a pas
+-- -----------------------------------------------------------------------------
+insert into public.wishlists (user_id, template_id)
+select p.id, t.id
+from public.profiles p
+cross join lateral (
+  select ct.id from public.card_templates ct
+  where public.rarity_rank(ct.rarity) >= 3
+    and not exists (select 1 from public.card_instances ci where ci.owner_id = p.id and ci.template_id = ct.id)
+  order by random() limit 4
+) t
+where p.is_demo;
+
+-- -----------------------------------------------------------------------------
+-- Historique de ventes réel : des joueurs de démo achètent une douzaine d'annonces
+-- via la RPC buy_listing (débit, commission, transfert, journal : tout est cohérent)
+-- -----------------------------------------------------------------------------
+do $$
+declare
+  l record;
+  v_buyer uuid;
+begin
+  for l in
+    select ml.id, ml.seller_id, ml.price from public.market_listings ml
+    where ml.status = 'active' order by ml.created_at limit 12
+  loop
+    select id into v_buyer from public.profiles
+    where is_demo and id <> l.seller_id and coins >= l.price
+    order by random() limit 1;
+    continue when v_buyer is null;
+    perform set_config('request.jwt.claims', json_build_object('sub', v_buyer, 'role', 'authenticated')::text, true);
+    perform public.buy_listing(l.id);
+  end loop;
+  perform set_config('request.jwt.claims', '{}', true);
+end;
+$$;

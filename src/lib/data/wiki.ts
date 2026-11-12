@@ -1,6 +1,7 @@
 import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView, type FlagLayout, type NationView } from "@/lib/data/cards";
+import { normalizeSearch } from "@/lib/market";
 import { compareRarityDesc, type PlayerPosition, type Rarity } from "@/lib/rarity";
 
 export type PlayerListItem = {
@@ -19,12 +20,9 @@ export async function listPlayers(search?: string): Promise<PlayerListItem[]> {
     .from("players")
     .select("slug, display_name, position, is_legend, nations!inner ( code, name, flag_colors, flag_layout ), card_templates ( rarity )")
     .order("display_name");
-  const term = search?.trim();
-  if (term) {
-    // Les caractères spéciaux de PostgREST sont neutralisés
-    const safe = term.replace(/[%_,()*]/g, " ").slice(0, 60);
-    query = query.ilike("display_name", `%${safe}%`);
-  }
+  // Insensible aux accents ; caractères spéciaux neutralisés par normalizeSearch
+  const term = normalizeSearch(search ?? "").slice(0, 60);
+  if (term) query = query.ilike("search_text", `%${term}%`);
   const { data, error } = await query;
   if (error) throw error;
 

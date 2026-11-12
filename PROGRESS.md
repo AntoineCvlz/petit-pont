@@ -132,8 +132,32 @@ npm run dev
 - Pas de série de connexions (bonus croissant) : la spec ne demande qu'un bonus quotidien fixe.
 - Les lectures de collection passent par PostgREST (1 000 lignes max par requête) : suffisant pour les collections actuelles, à paginer ou agréger en SQL en phase 9 si un joueur dépasse 1 000 exemplaires.
 
+## Phase 5 — Marché ✅ (2026-11-12)
+
+### Fait
+- **Migrations** `20261112040000_market.sql` et `20261112040100_player_search.sql` :
+  - `create_listing(instance, prix)` : propriétaire, exemplaire libre, prix 1 à 1 000 000, 50 annonces actives max (configurables) ; verrouille l'exemplaire (plus revendable au système ni échangeable) et le retire des vitrines.
+  - `cancel_listing(annonce)` : vendeur uniquement, annonce active uniquement ; déverrouille.
+  - `buy_listing(annonce)` : verrou de l'annonce (départage les acheteurs simultanés), verrou des **deux profils dans un ordre fixe** (pas d'interblocage sur achats croisés), débit acheteur, crédit vendeur moins la commission (`market_fee_percent`, 5 %, arrondie à l'inférieur, détruite = puits de monnaie), transfert + historique de l'exemplaire, `market_sales`, **notification au vendeur**, « vente importante » dans le fil au-delà de `big_sale_threshold` (2 000, sauf activité masquée).
+  - `record_market_search` (recherche texte rattachée aux cartes correspondantes, ou consultation d'une carte ; dédoublonnée par joueur et par heure), vue `most_wanted_cards` (recherches 30 j + 3 × listes de souhaits), vue `market_price_stats`.
+  - `players.search_text` (minuscules sans accents, trigger + index trigramme) : recherche « mbappe », « Luka Modrić », « vinicius junior »… (marché et wiki).
+- **Seed** : 12 ventes réelles passées par `buy_listing` (journal cohérent, commissions prélevées), 48 souhaits.
+- **Marché** `/marche` : onglets Annonces (recherche joueur, rareté, club, nation, tranche de prix, tri prix ↑ / ↓ / récentes, pagination 30), Dernières ventes, Les plus recherchées, Mes annonces. Achat avec modale de confirmation (prix, solde après achat). **En direct** : une annonce vendue passe en « Vendue » et une annonce retirée disparaît chez tous les visiteurs ; bandeau « N nouvelles annonces ».
+- **Historique de prix** `/marche/carte/[id]` : dernière vente, moyenne, plus bas, plus haut, annonces en cours, historique des ventes, bouton liste de souhaits.
+- **Fiche carte (collection)** : mise en vente (exemplaire, prix conseillé, net après commission), annonces en cours avec « Retirer ». **Wiki** : lien « Voir au marché ». **Accueil** : activité du marché.
+
+### Comment tester
+- `npm run test:db` : 105 tests pgTAP (dont 30 marché).
+- `npm run test:integration` : 14 tests, dont 5 acheteurs simultanés (1 gagnant, les autres non débités), vendeur qui retire pendant un achat (une seule action passe, état cohérent, 3 essais), achats croisés A↔B en parallèle sans interblocage, Realtime (C voit l'annonce vendue).
+- **Deux comptes** : Joueur A (fenêtre normale) met une carte en vente depuis sa fiche ; Joueur B (fenêtre privée) la trouve au marché et l'achète → l'annonce passe « Vendue » en direct chez A, le solde de A augmente du prix moins 5 %, la carte apparaît dans la collection de B avec son historique.
+
+### Limites connues
+- La notification « carte vendue » est enregistrée en base mais la cloche / page de notifications arrive en phase 7.
+- Pas de graphique d'historique de prix : tableau + statistiques (un graphique pourra être ajouté en phase 9).
+- Pas d'expiration automatique des annonces (non demandée).
+
 ## Phases suivantes
-5. Marché · 6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
+6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).
