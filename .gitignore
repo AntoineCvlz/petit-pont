@@ -43,3 +43,8 @@ next-env.d.ts
 
 # Notes personnelles
 ideas.txt
+
+# Déploiement : secrets et copie des migrations sur le VPS
+deploy/.env
+deploy/.env.*
+deploy/supabase/

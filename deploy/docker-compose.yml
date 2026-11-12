@@ -1,0 +1,191 @@
+# Petit Pont — pile de production (VPS 2 Go de RAM)
+# Supabase réduit au nécessaire : PostgreSQL, Auth, PostgREST, Realtime. Caddy sert le site ET l'API
+# sur le même domaine (HTTPS automatique). Aucun port de base de données n'est exposé.
+#
+#   docker compose up -d                      démarrer / mettre à jour
+#   docker compose run --rm migrate           appliquer les migrations (+ seed au premier lancement)
+#
+# Les secrets viennent de deploy/.env (jamais commité) : voir scripts/generate-secrets.mjs.
+
+name: petit-pont
+
+x-restart: &restart
+  restart: unless-stopped
+
+services:
+  db:
+    <<: *restart
+    image: public.ecr.aws/supabase/postgres:17.11.0.018
+    command:
+      - postgres
+      - -c
+      - config_file=/etc/postgresql/postgresql.conf
+      - -c
+      - log_min_messages=fatal
+      # Réglages mémoire pour 2 Go de RAM
+      - -c
+      - shared_buffers=128MB
+      - -c
+      - effective_cache_size=512MB
+      - -c
+      - work_mem=4MB
+      - -c
+      - maintenance_work_mem=64MB
+      - -c
+      - max_connections=60
+    environment:
+      POSTGRES_HOST: /var/run/postgresql
+      PGPORT: 5432
+      POSTGRES_PORT: 5432
+      PGPASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATABASE: postgres
+      POSTGRES_DB: postgres
+      JWT_EXP: ${JWT_EXPIRY}
+    volumes:
+      # Scripts d'initialisation officiels de Supabase (premier démarrage uniquement)
+      - ./db/realtime.sql:/docker-entrypoint-initdb.d/migrations/99-realtime.sql:ro
+      - ./db/roles.sql:/docker-entrypoint-initdb.d/init-scripts/99-roles.sql:ro
+      - ./db/jwt.sql:/docker-entrypoint-initdb.d/init-scripts/99-jwt.sql:ro
+      - db-data:/var/lib/postgresql/data
+      - db-config:/etc/postgresql-custom
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    mem_limit: 600m
+
+  auth:
+    <<: *restart
+    image: public.ecr.aws/supabase/gotrue:v2.197.0
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      GOTRUE_API_HOST: 0.0.0.0
+      GOTRUE_API_PORT: 9999
+      API_EXTERNAL_URL: ${SITE_URL}/auth/v1
+      GOTRUE_DB_DRIVER: postgres
+      GOTRUE_DB_DATABASE_URL: postgres://supabase_auth_admin:${POSTGRES_PASSWORD}@db:5432/postgres
+      GOTRUE_SITE_URL: ${SITE_URL}
+      GOTRUE_URI_ALLOW_LIST: ${SITE_URL}
+      GOTRUE_DISABLE_SIGNUP: "false"
+      GOTRUE_JWT_ADMIN_ROLES: service_role
+      GOTRUE_JWT_AUD: authenticated
+      GOTRUE_JWT_DEFAULT_GROUP_NAME: authenticated
+      GOTRUE_JWT_EXP: ${JWT_EXPIRY}
+      GOTRUE_JWT_SECRET: ${JWT_SECRET}
+      GOTRUE_JWT_ISSUER: ${SITE_URL}/auth/v1
+      GOTRUE_EXTERNAL_EMAIL_ENABLED: "true"
+      GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED: "false"
+      # Pas de SMTP pour l'instant : inscription sans e-mail de confirmation
+      GOTRUE_MAILER_AUTOCONFIRM: "true"
+      GOTRUE_EXTERNAL_PHONE_ENABLED: "false"
+      GOTRUE_PASSWORD_MIN_LENGTH: "6"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:9999/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    mem_limit: 128m
+
+  rest:
+    <<: *restart
+    image: public.ecr.aws/supabase/postgrest:v16.5
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PGRST_DB_URI: postgres://authenticator:${POSTGRES_PASSWORD}@db:5432/postgres
+      PGRST_DB_SCHEMAS: public
+      PGRST_DB_MAX_ROWS: 1000
+      PGRST_DB_EXTRA_SEARCH_PATH: public,extensions
+      PGRST_DB_ANON_ROLE: anon
+      PGRST_JWT_SECRET: ${JWT_SECRET}
+      PGRST_DB_USE_LEGACY_GUCS: "false"
+      PGRST_APP_SETTINGS_JWT_SECRET: ${JWT_SECRET}
+      PGRST_APP_SETTINGS_JWT_EXP: ${JWT_EXPIRY}
+      PGRST_DB_POOL: 10
+    mem_limit: 128m
+
+  realtime:
+    <<: *restart
+    image: public.ecr.aws/supabase/realtime:v2.154.0
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PORT: 4000
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: supabase_admin
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      DB_NAME: postgres
+      DB_AFTER_CONNECT_QUERY: "SET search_path TO _realtime"
+      DB_ENC_KEY: ${REALTIME_DB_ENC_KEY}
+      API_JWT_SECRET: ${JWT_SECRET}
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE}
+      METRICS_JWT_SECRET: ${JWT_SECRET}
+      ERL_AFLAGS: -proto_dist inet_tcp
+      DNS_NODES: "''"
+      RLIMIT_NOFILE: "10000"
+      APP_NAME: realtime
+      # Crée le tenant « realtime-dev » (déduit du Host transmis par Caddy)
+      SEED_SELF_HOST: "true"
+      RUN_JANITOR: "true"
+      DISABLE_HEALTHCHECK_LOGGING: "true"
+    mem_limit: 384m
+
+  app:
+    <<: *restart
+    image: ${APP_IMAGE}
+    depends_on:
+      - auth
+      - rest
+    # Le serveur Next appelle l'API via l'URL publique : on la fait pointer sur l'hôte (Caddy)
+    # pour ne pas dépendre du routage externe.
+    extra_hosts:
+      - "${SITE_HOST}:host-gateway"
+    mem_limit: 384m
+
+  caddy:
+    <<: *restart
+    image: caddy:2.10-alpine
+    depends_on:
+      - app
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-443}:443/udp"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    mem_limit: 96m
+
+  # Outil ponctuel : migrations SQL (+ seed si la base est vide et SEED=1)
+  migrate:
+    image: public.ecr.aws/supabase/postgres:17.11.0.018
+    profiles: ["tools"]
+    depends_on:
+      db:
+        condition: service_healthy
+      auth:
+        condition: service_healthy
+    entrypoint: ["sh", "/scripts/migrate.sh"]
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SEED: ${SEED:-0}
+    volumes:
+      - ./scripts/migrate.sh:/scripts/migrate.sh:ro
+      - ${SUPABASE_DIR:-./supabase}/migrations:/migrations:ro
+      - ${SUPABASE_DIR:-./supabase}/seed.sql:/seed.sql:ro
+
+volumes:
+  db-data:
+  db-config:
+  caddy-data:
+  caddy-config:

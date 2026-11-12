@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Image Docker autonome (serveur minimal + dépendances tracées) pour le déploiement
+  output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

@@ -1,0 +1,158 @@
+# Petit Pont — intégration et déploiement continus
+#
+# 1. test   : à chaque push et pull request. Supabase local réel (Docker), lint, typecheck,
+#             tests unitaires, tests SQL (pgTAP), tests d'intégration (concurrence, Realtime), build.
+# 2. image  : sur main uniquement, si les tests passent. Image Docker du site → GHCR.
+# 3. deploy : copie la configuration et les migrations sur le VPS, met à jour les conteneurs,
+#             applique les migrations (seed uniquement si la base est vide).
+#
+# Secrets requis (Settings → Secrets and variables → Actions) :
+#   ANON_KEY         clé anon de production (affichée par deploy/scripts/generate-secrets.mjs)
+#   VPS_HOST         IP ou nom du VPS
+#   VPS_USER         utilisateur de déploiement (ex. deploy)
+#   VPS_SSH_KEY      clé privée SSH dédiée à GitHub Actions
+#   VPS_KNOWN_HOSTS  sortie de `ssh-keyscan <VPS_HOST>` (empreinte du serveur)
+# Variable : SITE_HOST = petit-pont.antoine-cuvilliez.fr
+
+name: CI/CD
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-cd-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+permissions:
+  contents: read
+
+env:
+  IMAGE: ghcr.io/${{ github.repository_owner }}/petit-pont
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Démarrer Supabase local
+        run: npx supabase start -x studio,imgproxy,edge-runtime,logflare,vector,mailpit,postgres-meta,storage-api,supavisor
+
+      - name: Variables d'environnement de test
+        run: |
+          status=$(npx supabase status -o json)
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$(echo "$status" | jq -r .API_URL)"
+            echo "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=$(echo "$status" | jq -r .PUBLISHABLE_KEY)"
+            echo "SUPABASE_SECRET_KEY=$(echo "$status" | jq -r .SECRET_KEY)"
+          } > .env.local
+
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - name: Tests SQL (pgTAP)
+        run: npm run test:db
+      - name: Tests d'intégration (concurrence, Realtime)
+        run: npm run test:integration
+      - run: npm run build
+
+  image:
+    name: Image Docker
+    needs: test
+    # Déploiement actif seulement une fois la production configurée (variable SITE_HOST)
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.SITE_HOST != ''
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+          build-args: |
+            NEXT_PUBLIC_SUPABASE_URL=https://${{ vars.SITE_HOST }}
+            NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=${{ secrets.ANON_KEY }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Déploiement
+    needs: image
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://${{ vars.SITE_HOST }}
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clé SSH
+        run: |
+          install -m 700 -d ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.VPS_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+
+      - name: Copier la configuration et les migrations
+        run: |
+          rm -rf bundle && mkdir -p bundle/deploy/supabase
+          cp -r deploy/docker-compose.yml deploy/Caddyfile deploy/db deploy/scripts bundle/deploy/
+          cp -r supabase/migrations supabase/seed.sql bundle/deploy/supabase/
+          tar -C bundle -czf bundle.tgz deploy
+          scp bundle.tgz "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:/opt/petit-pont/bundle.tgz"
+
+      - name: Mettre à jour le VPS
+        env:
+          GHCR_USER: ${{ github.actor }}
+          GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ssh "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
+            GHCR_USER="$GHCR_USER" GHCR_TOKEN="$GHCR_TOKEN" SHA="${{ github.sha }}" 'bash -s' <<'REMOTE'
+          set -euo pipefail
+          cd /opt/petit-pont
+          # Nouvelle configuration (le fichier .env de production n'est jamais écrasé)
+          tar -xzf bundle.tgz && rm bundle.tgz
+          cd deploy
+          test -f .env || { echo "deploy/.env manquant : voir deploy/DEPLOIEMENT.md"; exit 1; }
+          echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_USER" --password-stdin
+          docker compose pull app
+          docker compose up -d --remove-orphans
+          SEED=1 docker compose run --rm migrate
+          docker logout ghcr.io
+          docker image prune -f
+          echo "Déployé : $SHA"
+          REMOTE
+
+      - name: Vérifier le site
+        run: |
+          for i in $(seq 1 20); do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://${{ vars.SITE_HOST }}/connexion" || true)
+            [ "$code" = "200" ] && echo "Site en ligne ($code)" && exit 0
+            sleep 6
+          done
+          echo "Le site ne répond pas correctement" && exit 1

@@ -1,0 +1,47 @@
+# Petit Pont : site + API Supabase sur un seul domaine.
+# SITE_ADDRESS = petit-pont.antoine-cuvilliez.fr en production (certificat Let's Encrypt automatique)
+{
+	# Pas d'interface d'administration Caddy exposée
+	admin off
+}
+
+{$SITE_ADDRESS} {
+	encode zstd gzip
+
+	# Auth (GoTrue)
+	handle_path /auth/v1/* {
+		reverse_proxy auth:9999
+	}
+
+	# API REST (PostgREST)
+	handle_path /rest/v1/* {
+		reverse_proxy rest:3000
+	}
+
+	# Realtime : le tenant est déduit du sous-domaine du Host
+	handle_path /realtime/v1/* {
+		rewrite * /socket{path}
+		reverse_proxy realtime:4000 {
+			header_up Host realtime-dev.supabase-realtime
+		}
+	}
+
+	# Site Next.js
+	handle {
+		reverse_proxy app:3000
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		X-Frame-Options "DENY"
+		-Server
+	}
+
+	log {
+		output stdout
+		format console
+		level WARN
+	}
+}

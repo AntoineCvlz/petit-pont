@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.github
+.env*
+!.env.example
+supabase/.temp
+supabase/.branches
+deploy
+tests
+*.md
+!README.md
+ideas.txt
+Dockerfile
+.dockerignore
