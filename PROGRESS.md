@@ -289,6 +289,9 @@ Les 9 phases de la spec sont livrées.
   (`public/media/players`). Carte redessinée : joueur détouré sur un halo aux couleurs du club, colonne
   note / poste / drapeau / écusson.
 - **Écussons** : logos des 48 clubs (fichiers Wikipédia, `public/media/clubs`), avec repli sur l'écusson généré.
+- **Drapeaux** : vrais drapeaux SVG (paquet flag-icons, MIT) dans `public/media/flags`, repli stylisé.
+  Nationalités sportives recoupées avec Wikidata (P1532) : Aubameyang corrigé (Gabon, pas France),
+  migration `20261112100000_nations_fix.sql` (retire aussi sa carte de l'album Équipe de France).
 - **Crédits** : page `/credits` (auteur, licence, source de chaque photo ; mention des marques des clubs),
   liée depuis le wiki. Photo et écussons du parcours sur la fiche joueur du wiki.
 - Migration `20261112090000_transfers_media.sql` : met à jour une base déjà peuplée (production) ; sur une base vide,

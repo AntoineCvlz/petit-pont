@@ -1,8 +1,23 @@
 import type { ReactNode } from "react";
 import type { NationView } from "@/lib/data/cards";
+import { flagUrl } from "@/lib/flags";
 
-/** Drapeau stylisé généré à partir des couleurs de la nation (pas d'image). */
+/** Drapeau de la nation : fichier SVG s'il existe, sinon drapeau stylisé généré à partir de ses couleurs. */
 export function Flag({ nation, className = "h-3.5 w-5" }: { nation: NationView; className?: string }) {
+  const url = flagUrl(nation.code);
+  if (url) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- petit SVG statique
+      <img
+        src={url}
+        alt={nation.name}
+        title={nation.name}
+        loading="lazy"
+        decoding="async"
+        className={`${className} rounded-[1px] object-cover shadow-[0_0_0_0.5px_rgba(0,0,0,0.45)]`}
+      />
+    );
+  }
   const c = nation.flagColors;
   const n = c.length;
   let body: ReactNode;

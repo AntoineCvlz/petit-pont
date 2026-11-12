@@ -12,7 +12,7 @@ insert into public.banned_words (word) values
   ('merde'), ('batard'), ('fuck'), ('bitch'), ('admin'), ('moderateur');
 
 -- -----------------------------------------------------------------------------
--- Nations (drapeaux stylisés)
+-- Nations (drapeaux : public/media/flags, repli stylisé à partir des couleurs)
 -- -----------------------------------------------------------------------------
 insert into public.nations (code, name, flag_colors, flag_layout) values
   ('FRA', 'France',          '{#0055A4,#FFFFFF,#EF4135}', 'v'),
@@ -45,7 +45,8 @@ insert into public.nations (code, name, flag_colors, flag_layout) values
   ('CMR', 'Cameroun',        '{#007A5E,#CE1126,#FCD116}', 'v'),
   ('SRB', 'Serbie',          '{#C6363C,#0C4076,#FFFFFF}', 'h'),
   ('TUR', 'Turquie',         '{#E30A17,#FFFFFF}', 'disc'),
-  ('HUN', 'Hongrie',         '{#CE2939,#FFFFFF,#477050}', 'h');
+  ('HUN', 'Hongrie',         '{#CE2939,#FFFFFF,#477050}', 'h'),
+  ('GAB', 'Gabon',           '{#009E60,#FCD116,#3A75C4}', 'h');
 
 -- -----------------------------------------------------------------------------
 -- Clubs (écussons : public/media/clubs, renseignés en fin de seed)
@@ -203,7 +204,7 @@ from (values
   ('lukaku', 'Romelu', 'Lukaku', 'Romelu Lukaku', 'BEL', 'ATT', 1993, false, null),
   ('chevalier', 'Lucas', 'Chevalier', 'Lucas Chevalier', 'FRA', 'GB', 2001, false, null),
   ('zaire-emery', 'Warren', 'Zaïre-Emery', 'Warren Zaïre-Emery', 'FRA', 'MIL', 2006, false, null),
-  ('aubameyang', 'Pierre-Emerick', 'Aubameyang', 'Pierre-Emerick Aubameyang', 'FRA', 'ATT', 1989, false, null),
+  ('aubameyang', 'Pierre-Emerick', 'Aubameyang', 'Pierre-Emerick Aubameyang', 'GAB', 'ATT', 1989, false, null),
   ('rulli', 'Gerónimo', 'Rulli', 'Gerónimo Rulli', 'ARG', 'GB', 1992, false, null),
   ('balerdi', 'Leonardo', 'Balerdi', 'Leonardo Balerdi', 'ARG', 'DEF', 1999, false, null),
   ('tolisso', 'Corentin', 'Tolisso', 'Corentin Tolisso', 'FRA', 'MIL', 1994, false, null),
