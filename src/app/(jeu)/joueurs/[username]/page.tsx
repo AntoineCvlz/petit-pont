@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ModerationButtons } from "@/components/community/ModerationButtons";
 import { Avatar } from "@/components/ui/Avatar";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { EmptyState, Panel } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
+import { hasBlocked } from "@/lib/data/admin";
 import { getCollectionTotal } from "@/lib/data/cards";
 import {
   getCompletedAlbums,
@@ -31,13 +33,14 @@ export default async function PublicProfilePage({ params }: PageProps<"/joueurs/
   if (!player) notFound();
   const isMe = player.id === viewer.id;
 
-  const [stats, showcase, wishlist, duplicates, albums, total] = await Promise.all([
+  const [stats, showcase, wishlist, duplicates, albums, total, blocked] = await Promise.all([
     getPlayerStats(player.id),
     getShowcase(player.id),
     getWishlist(player.id),
     getTradeableDuplicates(player.id),
     getCompletedAlbums(player.id),
     getCollectionTotal(),
+    isMe ? Promise.resolve(false) : hasBlocked(player.id),
   ]);
 
   return (
@@ -59,13 +62,19 @@ export default async function PublicProfilePage({ params }: PageProps<"/joueurs/
             <Link href="/profil" className={buttonClasses("ghost", "md")}>
               Modifier mon profil
             </Link>
-          ) : (
+          ) : blocked ? null : (
             <Link href={`/echanges/nouveau?avec=${encodeURIComponent(player.username)}`} className={buttonClasses("primary", "md")}>
               Proposer un échange
             </Link>
           )}
         </div>
       </div>
+      {!isMe && (
+        <div className="-mt-3 mb-5 flex flex-wrap items-center gap-2">
+          {blocked && <span className="rounded-md bg-danger/15 px-2 py-0.5 text-xs text-danger">Tu as bloqué ce joueur</span>}
+          <ModerationButtons playerId={player.id} username={player.username} blocked={blocked} />
+        </div>
+      )}
 
       {stats && (
         <dl className="mb-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">

@@ -441,14 +441,14 @@ isOneToOne: false
                   ]
                 },"card_templates": {
                   Row: {
-                    "club_id": number | null,"collection_number": number,"created_at": string,"edition": string,"id": number,"image_url": string | null,"is_active": boolean,"max_supply": number | null,"minted_count": number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string
+                    "club_id": number | null,"collection_number": number | null,"created_at": string,"edition": string,"id": number,"image_url": string | null,"is_active": boolean,"max_supply": number | null,"minted_count": number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "club_id"?: number | null,"collection_number": number,"created_at"?: string,"edition": string,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string
+                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition": string,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string
                   }
                   Update: {
-                    "club_id"?: number | null,"collection_number"?: number,"created_at"?: string,"edition"?: string,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id"?: number,"rarity"?: Database["public"]['Enums']["rarity"],"rating"?: number,"season"?: string
+                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition"?: string,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id"?: number,"rarity"?: Database["public"]['Enums']["rarity"],"rating"?: number,"season"?: string
                   }
                   Relationships: [
                     {
@@ -1138,10 +1138,28 @@ isOneToOne: false
 "accept_trade":
 { Args: { "p_trade_id": string }; Returns: undefined
                            },
+"admin_economy_stats":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"admin_purge_demo_accounts":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
+"admin_resolve_report":
+{ Args: { "p_report_id": number,"p_status": Database["public"]['Enums']["report_status"] }; Returns: undefined
+                           },
+"admin_set_album_slots":
+{ Args: { "p_album_id": number,"p_collection_numbers": (number)[] }; Returns: number
+                           },
+"admin_set_booster_odds":
+{ Args: { "p_booster_id": number,"p_odds": Json }; Returns: undefined
+                           },
 "album_progress":
 { Args: { "p_album": number,"p_user": string }; Returns: {
               "owned": number,"total": number
             }[]
+                           },
+"block_player":
+{ Args: { "p_blocked": string }; Returns: undefined
                            },
 "booster_availability":
 { Args: { "p_booster": number }; Returns: Json
@@ -1207,6 +1225,9 @@ isOneToOne: false
 "refresh_leaderboards":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
+"report_player":
+{ Args: { "p_reason": string,"p_reported": string }; Returns: undefined
+                           },
 "sell_all_duplicates":
 { Args: { "p_max_rarity"?: Database["public"]['Enums']["rarity"] }; Returns: Json
                            },
@@ -1215,6 +1236,9 @@ isOneToOne: false
                            },
 "set_showcase":
 { Args: { "p_instance_ids": (string)[] }; Returns: undefined
+                           },
+"unblock_player":
+{ Args: { "p_blocked": string }; Returns: undefined
                            },
 "update_username":
 { Args: { "p_username": string }; Returns: undefined

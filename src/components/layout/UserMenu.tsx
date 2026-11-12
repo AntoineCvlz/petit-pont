@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { signOut } from "@/lib/actions/auth";
 import { Avatar } from "@/components/ui/Avatar";
 
-export function UserMenu({ username }: { username: string }) {
+export function UserMenu({ username, isAdmin = false }: { username: string; isAdmin?: boolean }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -43,6 +43,17 @@ export function UserMenu({ username }: { username: string }) {
           <Link role="menuitem" href="/profil" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-night-700">
             Mon profil
           </Link>
+          <Link role="menuitem" href="/notifications" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-night-700">
+            Notifications
+          </Link>
+          <Link role="menuitem" href="/joueurs" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-sm hover:bg-night-700">
+            Rechercher un joueur
+          </Link>
+          {isAdmin && (
+            <Link role="menuitem" href="/admin" onClick={() => setOpen(false)} className="block rounded-lg px-3 py-2 text-sm text-r-iconique hover:bg-night-700">
+              Administration
+            </Link>
+          )}
           <form action={signOut}>
             <button role="menuitem" type="submit" className="block w-full rounded-lg px-3 py-2 text-left text-sm text-danger hover:bg-night-700">
               Se déconnecter

@@ -205,11 +205,36 @@ npm run dev
 - « Semaine » et « mois » sont glissants (7 et 30 jours) ; une carte reçue par échange ou achat compte à sa date de réception.
 - Signalement et blocage depuis le profil public : phase 8.
 
+## Phase 8 — Administration et modération ✅ (2026-11-12)
+
+### Compte administrateur (local)
+`admin@petitpont.test` / `petitpont` (pseudo « Arbitre »). Le rôle vient de `raw_app_meta_data.is_admin` (impossible à s'attribuer à l'inscription). Pour promouvoir un autre compte : `update public.profiles set is_admin = true where username = '…';` dans la base.
+
+### Fait
+- **Migration** `20261112070000_admin_moderation.sql` :
+  - Écritures admin sur le référentiel (nations, clubs, footballeurs, cartes, albums, boosters, paramètres) par **RLS `is_admin()`** et droits par colonne : `minted_count` (numéros de série) n'est jamais modifiable ; `max_supply` ne peut pas descendre sous le nombre déjà édité ; nouvelle carte = numéro de collection attribué automatiquement.
+  - `admin_set_booster_odds` (remplacement complet, **total = 100 %** vérifié, raretés et décimales contrôlées), `admin_set_album_slots` (liste ordonnée de numéros de collection), `admin_economy_stats`, `admin_resolve_report`, **`admin_purge_demo_accounts`** (supprime les comptes `is_demo` et tout ce qui en dépend ; seule exception autorisée à l'immuabilité du journal, puis recalcul des classements).
+  - Modération : `report_player` (motif 3 à 500 caractères, un signalement ouvert par couple), `block_player` (annule aussi les échanges en attente entre les deux) / `unblock_player`. Un joueur bloqué ne peut plus proposer d'échange et disparaît des suggestions (déjà appliqué par `propose_trade` / `wishlist_matches`).
+  - Le rôle admin est exclu du trigger « premier vrai compte ».
+- **`/admin`** (lien dans le menu joueur pour les admins) : tableau de bord de l'économie (joueurs, actifs 7 j, pièces en circulation, créées / dépensées par type, commissions détruites, volume du marché, ouvertures par booster, exemplaires par rareté, échanges, signalements, **soldes incohérents**), purge des démos avec confirmation ; pages Joueurs, Cartes, Albums (emplacements par numéros de collection), Boosters (prix, garanties, dates en heure de Paris, stocks, **éditeur de probabilités avec total en direct**), Signalements (ouverts / clos, traité / sans suite).
+- **Profil public** : boutons Signaler (modale) et Bloquer / Débloquer ; « Proposer un échange » masqué si bloqué.
+
+### Comment tester
+- `npm test` : 43 tests unitaires (dont lecture des formulaires admin, total des probabilités à 100 % au centième près, conversion heure de Paris été / hiver).
+- `npm run test:db` : 189 tests pgTAP (dont 30 admin : `is_admin` non falsifiable, RLS des écritures, probabilités, `minted_count` protégé, numérotation auto, emplacements, signalement, blocage, purge).
+- Navigateur : `admin@petitpont.test` → menu → Administration → Boosters → modifier les probabilités (le total doit rester à 100 %). Avec Joueur A : profil de Rabona → Bloquer → Joueur B ne peut plus proposer d'échange à A.
+
+### Limites connues
+- Pas de suppression des footballeurs / cartes déjà possédés (clé étrangère) : on les désactive (`is_active`).
+- Pas de journal d'audit des actions admin.
+- Les formulaires admin ont été vérifiés par les tests unitaires de lecture et par des écritures RLS réelles avec le compte admin ; l'envoi des formulaires via le navigateur reste à faire à la main.
+
 ## Phases suivantes
-8. Administration · 9. Finitions
+9. Finitions
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).
 - Toute nouvelle fonction interne : `revoke execute … from public, anon, authenticated`.
 - Après chaque migration : `npm run db:types`.
 - Cache Components : les lectures Supabase passent par `createClient()` (qui appelle `connection()`) ; chaque route du jeu a son `loading.tsx`.
+- **Un layout n'est pas une frontière d'autorisation** (pages rendues en parallèle) : chaque page protégée appelle elle-même `requireProfile()` / `requireAdmin()`, et la base revérifie (RLS / RPC).
