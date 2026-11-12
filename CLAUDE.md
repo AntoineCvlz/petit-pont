@@ -26,7 +26,10 @@ L'avancement est suivi dans `PROGRESS.md` (à créer et tenir à jour).
 3. **RLS activée sur toutes les tables.** Un utilisateur ne modifie jamais directement les tables sensibles (card_instances, coin_transactions, trades…) : uniquement via les RPC.
 4. **Monnaie virtuelle uniquement** (pièces). Aucun paiement en argent réel, aucune conversion.
 5. **Toute modification de schéma = nouvelle migration** dans `supabase/migrations/`. Ne jamais modifier une migration déjà appliquée.
-6. **Pas de photos réelles de joueurs ni de logos de clubs** : placeholders illustrés, champ `image_url` remplaçable.
+6. **Images** (décision du porteur du projet, nov. 2026) :
+   - Photos de joueurs : **uniquement sous licence libre** (Wikimedia Commons), détourées via `scripts/media/`, créditées sur `/credits`. Jamais d'images FUT, Flashscore ou autre site.
+   - Écussons : logos des clubs (fichiers Wikipédia), marques de leurs clubs, mentionnées sur `/credits`.
+   - Sans image, repli sur la silhouette / l'écusson génériques ; `image_url` et `crest_url` restent remplaçables.
 7. Ne copie aucun élément graphique, texte ou code de kyara.games ni d'un autre site.
 8. **Toujours penser multijoueur.** Chaque fonctionnalité qui implique deux joueurs (achat, vente, échange, notification) se teste avec deux comptes distincts, y compris le cas où les deux agissent en même temps.
 9. Les événements publics (fil d'activité, notifications) sont créés par les RPC côté serveur, jamais par le client.

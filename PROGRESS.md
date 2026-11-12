@@ -277,3 +277,27 @@ Les 9 phases de la spec sont livrées.
 - Pile de production auto-hébergée (`deploy/`) : Caddy (HTTPS automatique, site + API sur un seul domaine), Next.js standalone, PostgreSQL / GoTrue / PostgREST / Realtime de Supabase. **Testée localement de bout en bout** : 11 migrations + seed, parcours navigateur à deux joueurs en temps réel ; ~600 Mo de RAM.
 - `.github/workflows/ci-cd.yml` : tests complets (Supabase réel dans la CI) à chaque push / PR ; sur `main`, image GHCR puis déploiement SSH sur le VPS (activé par la variable `SITE_HOST`).
 - Mise en service et exploitation : `deploy/DEPLOIEMENT.md`.
+
+## Photos, écussons et mercato 2026 (2026-11-12)
+
+### Fait
+- **Mercato** : club actuel de chaque joueur recoupé entre Wikidata (P54) et l'infobox Wikipédia. 26 transferts
+  appliqués aux cartes « Saison 2026 » (Salah → Trabzonspor, Rodri → Barcelone, Konaté et Bernardo Silva → Real,
+  Barcola → Liverpool…), 9 nouveaux clubs, parcours mis à jour, albums PSG / Real recalculés.
+  Benzema, libre depuis le 31/08/2026, reste rattaché à son dernier club (Al-Hilal).
+- **Photos** : 147 photos libres de Wikimedia Commons, détourées et recadrées en buste façon carte de foot
+  (`public/media/players`). Carte redessinée : joueur détouré sur un halo aux couleurs du club, colonne
+  note / poste / drapeau / écusson.
+- **Écussons** : logos des 48 clubs (fichiers Wikipédia, `public/media/clubs`), avec repli sur l'écusson généré.
+- **Crédits** : page `/credits` (auteur, licence, source de chaque photo ; mention des marques des clubs),
+  liée depuis le wiki. Photo et écussons du parcours sur la fiche joueur du wiki.
+- Migration `20261112090000_transfers_media.sql` : met à jour une base déjà peuplée (production) ; sur une base vide,
+  le seed contient directement ces données. Chaîne d'outils reproductible dans `scripts/media/` (voir son README).
+
+### Comment tester
+- `supabase db reset`, puis `/collection`, `/wiki/mbappe`, `/albums/real-madrid` et `/credits`.
+
+### Limites connues
+- Quelques photos sources sont modestes (Mitoma flou, Yıldız en pleine action) : à remplacer via `overrides.json`.
+- Les logos de clubs sont des marques déposées (choix assumé, cf. CLAUDE.md règle 6).
+- Le mercato évolue : relancer `scripts/media/wikidata.mjs` et `infobox.mjs` pour comparer à nouveau.

@@ -48,3 +48,6 @@ ideas.txt
 deploy/.env
 deploy/.env.*
 deploy/supabase/
+
+# Médias : fichiers sources téléchargés (régénérables)
+scripts/media/raw/

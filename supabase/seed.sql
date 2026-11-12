@@ -1,6 +1,6 @@
 -- =============================================================================
 -- Petit Pont — seed de démonstration
--- Données illustratives (effectifs « Saison 2026 » fictifs, pas de photos ni logos).
+-- Effectifs « Saison 2026 » à jour du mercato (novembre 2026) ; notes et éditions illustratives.
 -- Déterministe : setseed() fixe le tirage des collections de démo.
 -- =============================================================================
 
@@ -48,7 +48,7 @@ insert into public.nations (code, name, flag_colors, flag_layout) values
   ('HUN', 'Hongrie',         '{#CE2939,#FFFFFF,#477050}', 'h');
 
 -- -----------------------------------------------------------------------------
--- Clubs (écussons génériques générés à partir des couleurs)
+-- Clubs (écussons : public/media/clubs, renseignés en fin de seed)
 -- -----------------------------------------------------------------------------
 insert into public.clubs (code, name, short_name, city, nation_id, color_primary, color_secondary)
 select c.code, c.name, c.short_name, c.city, n.id, c.p, c.s
@@ -91,7 +91,16 @@ from (values
   ('BOR',  'Girondins de Bordeaux',  'BOR', 'Bordeaux',      'FRA', '#001C50', '#FFFFFF'),
   ('ASSE', 'AS Saint-Étienne',       'ASSE','Saint-Étienne', 'FRA', '#009A44', '#FFFFFF'),
   ('PSV',  'PSV Eindhoven',          'PSV', 'Eindhoven',     'NED', '#ED1C24', '#FFFFFF'),
-  ('SAL',  'RB Salzbourg',           'SAL', 'Salzbourg',     null,  '#FFFFFF', '#D40F3A')
+  ('SAL',  'RB Salzbourg',           'SAL', 'Salzbourg',     null,  '#FFFFFF', '#D40F3A'),
+  ('TRA',  'Trabzonspor',            'TRA', 'Trabzon',       'TUR', '#7A1F3D', '#4FA9DB'),
+  ('CHI',  'Chicago Fire',           'CHI', 'Chicago',       null,  '#C8102E', '#9BC9EC'),
+  ('ORL',  'Orlando City',           'ORL', 'Orlando',       null,  '#633492', '#FDE192'),
+  ('SHA',  'Al-Shamal',              'SHA', 'Al Shamal',     null,  '#D71920', '#FFFFFF'),
+  ('FEN',  'Fenerbahçe',             'FEN', 'Istanbul',      'TUR', '#163962', '#FFED00'),
+  ('DEP',  'Deportivo La Corogne',   'DEP', 'La Corogne',    'ESP', '#1B5CA8', '#FFFFFF'),
+  ('ROM',  'AS Rome',                'ROM', 'Rome',          'ITA', '#8E1F2F', '#F0BC42'),
+  ('RBL',  'RB Leipzig',             'RBL', 'Leipzig',       'GER', '#FFFFFF', '#DD0741'),
+  ('BJK',  'Beşiktaş',               'BJK', 'Istanbul',      'TUR', '#000000', '#FFFFFF')
 ) as c(code, name, short_name, city, nation, p, s)
 left join public.nations n on n.code = c.nation;
 
@@ -320,9 +329,9 @@ insert into tmp_templates values
   ('bellingham', 'RMA', 'Saison 2026', 'Base', 'epique', 89),
   ('bellingham', 'RMA', 'Saison 2026', 'Coupe des Étoiles', 'legendaire', 90),
   ('kane', 'FCBY', 'Saison 2026', 'Base', 'epique', 89),
-  ('salah', 'LIV', 'Saison 2026', 'Base', 'epique', 88),
+  ('salah', 'TRA', 'Saison 2026', 'Base', 'epique', 88),
   ('de-bruyne', 'NAP', 'Saison 2026', 'Base', 'epique', 86),
-  ('rodri', 'MCI', 'Saison 2026', 'Base', 'epique', 88),
+  ('rodri', 'FCB', 'Saison 2026', 'Base', 'epique', 88),
   ('pedri', 'FCB', 'Saison 2026', 'Base', 'epique', 88),
   ('saka', 'ARS', 'Saison 2026', 'Base', 'epique', 87),
   ('musiala', 'FCBY', 'Saison 2026', 'Base', 'epique', 87),
@@ -347,19 +356,19 @@ insert into tmp_templates values
   ('doue', 'PSG', 'Saison 2026', 'Étoile montante', 'legendaire', 88),
   ('benzema', 'RMA', 'Rétro', 'Les années Madrid', 'legendaire', 91),
   -- Saison 2026 — Rares
-  ('lewandowski', 'FCB', 'Saison 2026', 'Base', 'rare', 85),
+  ('lewandowski', 'CHI', 'Saison 2026', 'Base', 'rare', 85),
   ('modric', 'ACM', 'Saison 2026', 'Base', 'rare', 84),
   ('alisson', 'LIV', 'Saison 2026', 'Base', 'rare', 86),
   ('maignan', 'ACM', 'Saison 2026', 'Base', 'rare', 85),
   ('doue', 'PSG', 'Saison 2026', 'Base', 'rare', 85),
   ('marquinhos', 'PSG', 'Saison 2026', 'Base', 'rare', 85),
-  ('griezmann', 'ATM', 'Saison 2026', 'Base', 'rare', 85),
+  ('griezmann', 'ORL', 'Saison 2026', 'Base', 'rare', 85),
   ('tchouameni', 'RMA', 'Saison 2026', 'Base', 'rare', 84),
   ('camavinga', 'RMA', 'Saison 2026', 'Base', 'rare', 83),
   ('rudiger', 'RMA', 'Saison 2026', 'Base', 'rare', 84),
   ('barella', 'INT', 'Saison 2026', 'Base', 'rare', 86),
   ('marcus-thuram', 'INT', 'Saison 2026', 'Base', 'rare', 84),
-  ('rafael-leao', 'ACM', 'Saison 2026', 'Base', 'rare', 85),
+  ('rafael-leao', 'GAL', 'Saison 2026', 'Base', 'rare', 85),
   ('osimhen', 'GAL', 'Saison 2026', 'Base', 'rare', 85),
   ('son-heung-min', 'LAFC', 'Saison 2026', 'Base', 'rare', 84),
   ('foden', 'MCI', 'Saison 2026', 'Base', 'rare', 85),
@@ -373,14 +382,14 @@ insert into tmp_templates values
   ('gavi', 'FCB', 'Saison 2026', 'Base', 'rare', 82),
   ('nico-williams', 'ATH', 'Saison 2026', 'Base', 'rare', 84),
   ('mac-allister', 'LIV', 'Saison 2026', 'Base', 'rare', 86),
-  ('enzo-fernandez', 'CHE', 'Saison 2026', 'Base', 'rare', 84),
-  ('ter-stegen', 'FCB', 'Saison 2026', 'Base', 'rare', 84),
+  ('enzo-fernandez', 'MCI', 'Saison 2026', 'Base', 'rare', 84),
+  ('ter-stegen', 'AJX', 'Saison 2026', 'Base', 'rare', 84),
   ('ruben-dias', 'MCI', 'Saison 2026', 'Base', 'rare', 86),
   ('gvardiol', 'MCI', 'Saison 2026', 'Base', 'rare', 85),
   ('alphonso-davies', 'FCBY', 'Saison 2026', 'Base', 'rare', 83),
   ('luis-diaz', 'FCBY', 'Saison 2026', 'Base', 'rare', 85),
-  ('benzema', 'ITT', 'Saison 2026', 'Base', 'rare', 84),
-  ('barcola', 'PSG', 'Saison 2026', 'Base', 'rare', 84),
+  ('benzema', 'HIL', 'Saison 2026', 'Base', 'rare', 84),
+  ('barcola', 'LIV', 'Saison 2026', 'Base', 'rare', 84),
   ('nuno-mendes', 'PSG', 'Saison 2026', 'Base', 'rare', 86),
   ('joao-neves', 'PSG', 'Saison 2026', 'Base', 'rare', 86),
   ('bastoni', 'INT', 'Saison 2026', 'Base', 'rare', 85),
@@ -388,33 +397,33 @@ insert into tmp_templates values
   -- Saison 2026 — Communes
   ('kubo', 'RSO', 'Saison 2026', 'Base', 'commune', 79),
   ('mitoma', 'BHA', 'Saison 2026', 'Base', 'commune', 79),
-  ('mahrez', 'AHL', 'Saison 2026', 'Base', 'commune', 80),
+  ('mahrez', 'SHA', 'Saison 2026', 'Base', 'commune', 80),
   ('mane', 'NAS', 'Saison 2026', 'Base', 'commune', 80),
   ('ismaila-sarr', 'CRY', 'Saison 2026', 'Base', 'commune', 78),
   ('hojlund', 'NAP', 'Saison 2026', 'Base', 'commune', 78),
-  ('lukaku', 'NAP', 'Saison 2026', 'Base', 'commune', 80),
+  ('lukaku', 'FEN', 'Saison 2026', 'Base', 'commune', 80),
   ('chevalier', 'PSG', 'Saison 2026', 'Base', 'commune', 80),
   ('zaire-emery', 'PSG', 'Saison 2026', 'Base', 'commune', 79),
-  ('aubameyang', 'OM', 'Saison 2026', 'Base', 'commune', 78),
-  ('rulli', 'OM', 'Saison 2026', 'Base', 'commune', 79),
-  ('balerdi', 'OM', 'Saison 2026', 'Base', 'commune', 78),
+  ('aubameyang', 'DEP', 'Saison 2026', 'Base', 'commune', 78),
+  ('rulli', 'MCI', 'Saison 2026', 'Base', 'commune', 79),
+  ('balerdi', 'ROM', 'Saison 2026', 'Base', 'commune', 78),
   ('tolisso', 'OL', 'Saison 2026', 'Base', 'commune', 77),
   ('cherki', 'MCI', 'Saison 2026', 'Base', 'commune', 81),
   ('lucas-hernandez', 'PSG', 'Saison 2026', 'Base', 'commune', 80),
-  ('konate', 'LIV', 'Saison 2026', 'Base', 'commune', 81),
+  ('konate', 'RMA', 'Saison 2026', 'Base', 'commune', 81),
   ('upamecano', 'FCBY', 'Saison 2026', 'Base', 'commune', 82),
-  ('nkunku', 'ACM', 'Saison 2026', 'Base', 'commune', 80),
+  ('nkunku', 'RBL', 'Saison 2026', 'Base', 'commune', 80),
   ('coman', 'NAS', 'Saison 2026', 'Base', 'commune', 80),
   ('rabiot', 'ACM', 'Saison 2026', 'Base', 'commune', 80),
   ('balogun', 'ASM', 'Saison 2026', 'Base', 'commune', 77),
   ('minamino', 'ASM', 'Saison 2026', 'Base', 'commune', 77),
-  ('jonathan-david', 'JUV', 'Saison 2026', 'Base', 'commune', 81),
-  ('vlahovic', 'JUV', 'Saison 2026', 'Base', 'commune', 80),
+  ('jonathan-david', 'ATM', 'Saison 2026', 'Base', 'commune', 81),
+  ('vlahovic', 'BJK', 'Saison 2026', 'Base', 'commune', 80),
   ('yildiz', 'JUV', 'Saison 2026', 'Base', 'commune', 81),
   ('arda-guler', 'RMA', 'Saison 2026', 'Base', 'commune', 80),
   ('huijsen', 'RMA', 'Saison 2026', 'Base', 'commune', 80),
   ('zubimendi', 'ARS', 'Saison 2026', 'Base', 'commune', 82),
-  ('martinelli', 'ARS', 'Saison 2026', 'Base', 'commune', 81),
+  ('martinelli', 'HIL', 'Saison 2026', 'Base', 'commune', 81),
   ('szoboszlai', 'LIV', 'Saison 2026', 'Base', 'commune', 82),
   ('gakpo', 'LIV', 'Saison 2026', 'Base', 'commune', 82),
   ('gravenberch', 'LIV', 'Saison 2026', 'Base', 'commune', 82),
@@ -424,22 +433,22 @@ insert into tmp_templates values
   ('balde', 'FCB', 'Saison 2026', 'Base', 'commune', 80),
   ('gnabry', 'FCBY', 'Saison 2026', 'Base', 'commune', 79),
   ('havertz', 'ARS', 'Saison 2026', 'Base', 'commune', 81),
-  ('tonali', 'NEW', 'Saison 2026', 'Base', 'commune', 82),
+  ('tonali', 'TOT', 'Saison 2026', 'Base', 'commune', 82),
   ('dimarco', 'INT', 'Saison 2026', 'Base', 'commune', 82),
-  ('bruno-guimaraes', 'NEW', 'Saison 2026', 'Base', 'commune', 82),
-  ('bernardo-silva', 'MCI', 'Saison 2026', 'Base', 'commune', 82),
+  ('bruno-guimaraes', 'ARS', 'Saison 2026', 'Base', 'commune', 82),
+  ('bernardo-silva', 'RMA', 'Saison 2026', 'Base', 'commune', 82),
   ('brahim-diaz', 'RMA', 'Saison 2026', 'Base', 'commune', 80),
   ('bounou', 'HIL', 'Saison 2026', 'Base', 'commune', 81),
-  ('lookman', 'ATA', 'Saison 2026', 'Base', 'commune', 81),
-  ('marmoush', 'MCI', 'Saison 2026', 'Base', 'commune', 81),
+  ('lookman', 'ATM', 'Saison 2026', 'Base', 'commune', 81),
+  ('marmoush', 'TOT', 'Saison 2026', 'Base', 'commune', 81),
   ('kim-min-jae', 'FCBY', 'Saison 2026', 'Base', 'commune', 81),
-  ('lee-kang-in', 'PSG', 'Saison 2026', 'Base', 'commune', 79),
+  ('lee-kang-in', 'ATM', 'Saison 2026', 'Base', 'commune', 79),
   ('gouiri', 'OM', 'Saison 2026', 'Base', 'commune', 79),
-  ('kessie', 'AHL', 'Saison 2026', 'Base', 'commune', 78),
+  ('kessie', 'ATA', 'Saison 2026', 'Base', 'commune', 78),
   ('hojbjerg', 'OM', 'Saison 2026', 'Base', 'commune', 78),
   ('kulusevski', 'TOT', 'Saison 2026', 'Base', 'commune', 80),
   ('sorloth', 'ATM', 'Saison 2026', 'Base', 'commune', 78),
-  ('griezmann', 'ATM', 'Saison 2026', 'Coupe des Étoiles', 'commune', 76),
+  ('griezmann', 'ORL', 'Saison 2026', 'Coupe des Étoiles', 'commune', 76),
   ('osimhen', 'GAL', 'Saison 2026', 'Coupe des Étoiles', 'commune', 76),
   ('son-heung-min', 'LAFC', 'Saison 2026', 'Coupe des Étoiles', 'commune', 75),
   -- Légendes
@@ -506,12 +515,30 @@ from (values
   ('drogba', 'OM', 2003, 2004), ('drogba', 'CHE', 2004, 2012),
   ('papin', 'OM', 1986, 1992), ('papin', 'ACM', 1992, 1994),
   ('ribery', 'OM', 2005, 2007), ('ribery', 'FCBY', 2007, 2019),
-  ('benzema', 'OL', 2005, 2009), ('benzema', 'RMA', 2009, 2023), ('benzema', 'ITT', 2023, null),
-  ('etoo', 'FCB', 2004, 2009), ('etoo', 'INT', 2009, 2011)
+  ('benzema', 'OL', 2005, 2009), ('benzema', 'RMA', 2009, 2023), ('benzema', 'ITT', 2023, 2026), ('benzema', 'HIL', 2026, 2026),
+  ('etoo', 'FCB', 2004, 2009), ('etoo', 'INT', 2009, 2011),
+  -- Mercato 2026 (clubs actuels recoupés Wikidata / Wikipédia, novembre 2026)
+  ('salah', 'LIV', null, 2026), ('salah', 'TRA', 2026, null), ('rodri', 'MCI', null, 2026), ('rodri', 'FCB', 2026, null),
+  ('lewandowski', 'FCB', null, 2026), ('lewandowski', 'CHI', 2026, null), ('griezmann', 'ATM', null, 2026), ('griezmann', 'ORL', 2026, null),
+  ('rafael-leao', 'ACM', null, 2026), ('rafael-leao', 'GAL', 2026, null), ('enzo-fernandez', 'CHE', null, 2026), ('enzo-fernandez', 'MCI', 2026, null),
+  ('ter-stegen', 'FCB', null, 2026), ('ter-stegen', 'AJX', 2026, null), ('barcola', 'PSG', null, 2026), ('barcola', 'LIV', 2026, null),
+  ('mahrez', 'AHL', null, 2026), ('mahrez', 'SHA', 2026, null), ('lukaku', 'NAP', null, 2026), ('lukaku', 'FEN', 2026, null),
+  ('aubameyang', 'OM', null, 2026), ('aubameyang', 'DEP', 2026, null), ('rulli', 'OM', null, 2026), ('rulli', 'MCI', 2026, null),
+  ('balerdi', 'OM', null, 2026), ('balerdi', 'ROM', 2026, null), ('konate', 'LIV', null, 2026), ('konate', 'RMA', 2026, null),
+  ('nkunku', 'ACM', null, 2026), ('nkunku', 'RBL', 2026, null), ('jonathan-david', 'JUV', null, 2026), ('jonathan-david', 'ATM', 2026, null),
+  ('vlahovic', 'JUV', null, 2026), ('vlahovic', 'BJK', 2026, null), ('martinelli', 'ARS', null, 2026), ('martinelli', 'HIL', 2026, null),
+  ('tonali', 'NEW', null, 2026), ('tonali', 'TOT', 2026, null), ('bruno-guimaraes', 'NEW', null, 2026), ('bruno-guimaraes', 'ARS', 2026, null),
+  ('bernardo-silva', 'MCI', null, 2026), ('bernardo-silva', 'RMA', 2026, null), ('lookman', 'ATA', null, 2026), ('lookman', 'ATM', 2026, null),
+  ('marmoush', 'MCI', null, 2026), ('marmoush', 'TOT', 2026, null), ('lee-kang-in', 'PSG', null, 2026), ('lee-kang-in', 'ATM', 2026, null),
+  ('kessie', 'AHL', null, 2026), ('kessie', 'ATA', 2026, null)
 ) as h(slug, club, s, e)
 join public.players p on p.slug = h.slug
 join public.clubs c on c.code = h.club
 on conflict (player_id, club_id) do update set start_year = excluded.start_year, end_year = excluded.end_year;
+
+-- Médias : photos détourées (public/media/players) et écussons (public/media/clubs), crédits sur /credits
+update public.players set image_url = '/media/players/' || slug || '.webp' where image_url is null;
+update public.clubs set crest_url = '/media/clubs/' || code || '.webp' where crest_url is null;
 
 -- -----------------------------------------------------------------------------
 -- Boosters

@@ -1,7 +1,23 @@
 import type { ClubView } from "@/lib/data/cards";
 
-/** Écusson générique (bouclier aux couleurs du club + sigle). Aucun logo réel. */
+/**
+ * Écusson du club : logo (crest_url) s'il est renseigné, sinon bouclier générique aux couleurs du club.
+ * Le léger halo garde lisibles les logos sombres (Juventus…) sur le fond des cartes.
+ */
 export function Crest({ club, className = "h-6 w-6" }: { club: ClubView; className?: string }) {
+  if (club.crestUrl) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- petit fichier statique, crest_url remplaçable
+      <img
+        src={club.crestUrl}
+        alt={club.name}
+        title={club.name}
+        loading="lazy"
+        decoding="async"
+        className={`${className} object-contain drop-shadow-[0_0_1.5px_rgba(255,255,255,0.75)]`}
+      />
+    );
+  }
   const label = club.shortName.slice(0, 4);
   return (
     <svg viewBox="0 0 24 28" className={className} role="img" aria-label={club.name}>

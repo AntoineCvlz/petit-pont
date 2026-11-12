@@ -191,8 +191,10 @@ body {
 }
 
 /* Motif de terrain derrière le portrait */
+/* Fond de portrait : halo aux couleurs du club (--pp-glow, optionnel) + lignes de terrain */
 .pp-pitch {
   background-image:
+    var(--pp-glow, linear-gradient(transparent, transparent)),
     repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 14px, transparent 14px 28px),
     radial-gradient(circle at 50% 120%, transparent 38%, rgba(255, 255, 255, 0.08) 38.5%, transparent 39.5%);
 }

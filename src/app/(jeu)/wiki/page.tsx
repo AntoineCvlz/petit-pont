@@ -59,6 +59,14 @@ export default async function WikiPage({ searchParams }: PageProps<"/wiki">) {
           ))}
         </ul>
       )}
+
+      <p className="mt-6 text-xs text-chalk-faint">
+        Photos sous licence libre (Wikimedia Commons) :{" "}
+        <Link href="/credits" className="text-chalk-muted underline hover:text-chalk">
+          crédits des images
+        </Link>
+        .
+      </p>
     </>
   );
 }

@@ -36,7 +36,7 @@ Raretés : Commune · Rare · Épique · Légendaire · Iconique · Spéciale.
 - Brillance discrète à partir de Rare.
 - Spéciale : effet holographique animé en CSS (survol / inclinaison).
 
-Visuels : portraits illustrés ou silhouettes stylisées en placeholder, écussons génériques, `image_url` remplaçable.
+Visuels : photos de joueurs sous licence libre (Wikimedia Commons) détourées en buste façon carte de foot, écussons officiels des clubs (crédits sur `/credits`) ; repli sur silhouette et écusson génériques ; `image_url` / `crest_url` remplaçables.
 
 Seed de démonstration : ≥ 120 cartes réparties sur toutes les raretés, incluant Mbappé, Messi, Cristiano Ronaldo, Neymar, Haaland, Lamine Yamal, Dembélé, Vinícius Jr, Zidane, Ronaldinho. Joueurs = données, jamais codés en dur.
 

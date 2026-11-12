@@ -10,7 +10,7 @@ function item(over: Partial<CardTemplateView> & { copies?: number; at?: string }
     playerName: over.playerName ?? "Joueur",
     position: over.position ?? "ATT",
     nation: over.nation ?? { code: "FRA", name: "France", flagColors: [], flagLayout: "v" },
-    club: over.club === undefined ? { code: "PSG", name: "Paris Saint-Germain", shortName: "PSG", colorPrimary: "", colorSecondary: "" } : over.club,
+    club: over.club === undefined ? { code: "PSG", name: "Paris Saint-Germain", shortName: "PSG", colorPrimary: "", colorSecondary: "", crestUrl: null } : over.club,
     season: "Saison 2026",
     edition: over.edition ?? "Base",
     rarity: (over.rarity ?? "commune") as Rarity,
@@ -24,7 +24,7 @@ function item(over: Partial<CardTemplateView> & { copies?: number; at?: string }
 }
 
 const items = [
-  item({ id: 1, playerName: "Kylian Mbappé", rarity: "legendaire", rating: 91, collectionNumber: 150, club: { code: "RMA", name: "Real Madrid", shortName: "RMA", colorPrimary: "", colorSecondary: "" }, at: "2026-11-10T00:00:00Z" }),
+  item({ id: 1, playerName: "Kylian Mbappé", rarity: "legendaire", rating: 91, collectionNumber: 150, club: { code: "RMA", name: "Real Madrid", shortName: "RMA", colorPrimary: "", colorSecondary: "", crestUrl: null }, at: "2026-11-10T00:00:00Z" }),
   item({ id: 2, playerName: "Ousmane Dembélé", rarity: "legendaire", rating: 90, collectionNumber: 149, copies: 3, at: "2026-11-05T00:00:00Z" }),
   item({ id: 3, playerName: "Vitinha", rarity: "epique", rating: 88, collectionNumber: 120, position: "MIL", nation: { code: "POR", name: "Portugal", flagColors: [], flagLayout: "v" } }),
   item({ id: 4, playerName: "Lucas Chevalier", rarity: "commune", rating: 80, collectionNumber: 10, position: "GB", copies: 2, at: "2026-11-11T00:00:00Z" }),

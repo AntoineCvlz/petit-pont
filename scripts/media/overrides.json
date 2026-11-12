@@ -1,0 +1,27 @@
+{
+  "players": {
+    "maradona": {
+      "file": "Maradona 1986 vs italy.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Maradona_1986_vs_italy.jpg",
+      "author": "Auteur inconnu",
+      "license": "Public domain",
+      "licenseUrl": null
+    }
+  },
+  "crops": {
+    "iniesta": {
+      "left": 180,
+      "top": 300,
+      "width": 1080,
+      "height": 1134,
+      "frame": true
+    },
+    "yildiz": {
+      "left": 90,
+      "top": 0,
+      "width": 250,
+      "height": 262,
+      "frame": true
+    }
+  }
+}

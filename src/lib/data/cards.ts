@@ -8,7 +8,14 @@ import { compareRarityDesc } from "@/lib/rarity";
 export type FlagLayout = "v" | "h" | "nordic" | "cross" | "disc";
 
 export type NationView = { code: string; name: string; flagColors: string[]; flagLayout: FlagLayout };
-export type ClubView = { code: string; name: string; shortName: string; colorPrimary: string; colorSecondary: string };
+export type ClubView = {
+  code: string;
+  name: string;
+  shortName: string;
+  colorPrimary: string;
+  colorSecondary: string;
+  crestUrl: string | null;
+};
 
 /** Tout ce qu'il faut pour dessiner une carte. */
 export type CardTemplateView = {
@@ -32,7 +39,7 @@ export const TEMPLATE_SELECT = `
   id, season, edition, rarity, rating, collection_number, max_supply, minted_count, image_url,
   players!inner ( slug, display_name, position, image_url,
     nations!inner ( code, name, flag_colors, flag_layout ) ),
-  clubs ( code, name, short_name, color_primary, color_secondary )
+  clubs ( code, name, short_name, color_primary, color_secondary, crest_url )
 ` as const;
 
 type TemplateRow = {
@@ -52,7 +59,14 @@ type TemplateRow = {
     image_url: string | null;
     nations: { code: string; name: string; flag_colors: string[]; flag_layout: string };
   };
-  clubs: { code: string; name: string; short_name: string; color_primary: string; color_secondary: string } | null;
+  clubs: {
+    code: string;
+    name: string;
+    short_name: string;
+    color_primary: string;
+    color_secondary: string;
+    crest_url: string | null;
+  } | null;
 };
 
 export function toTemplateView(row: TemplateRow): CardTemplateView {
@@ -74,6 +88,7 @@ export function toTemplateView(row: TemplateRow): CardTemplateView {
           shortName: row.clubs.short_name,
           colorPrimary: row.clubs.color_primary,
           colorSecondary: row.clubs.color_secondary,
+          crestUrl: row.clubs.crest_url,
         }
       : null,
     season: row.season,

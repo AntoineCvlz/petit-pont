@@ -55,7 +55,8 @@ export type PlayerDetail = {
   isLegend: boolean;
   bio: string | null;
   nation: NationView;
-  clubs: { name: string; startYear: number | null; endYear: number | null }[];
+  imageUrl: string | null;
+  clubs: { name: string; crestUrl: string | null; startYear: number | null; endYear: number | null }[];
   versions: (CardTemplateView & { circulation: number; averagePrice: number | null; salesCount: number })[];
 };
 
@@ -64,9 +65,9 @@ export async function getPlayer(slug: string): Promise<PlayerDetail | null> {
   const { data: player, error } = await supabase
     .from("players")
     .select(
-      `id, slug, display_name, first_name, last_name, position, birth_year, is_legend, bio,
+      `id, slug, display_name, first_name, last_name, position, birth_year, is_legend, bio, image_url,
        nations!inner ( code, name, flag_colors, flag_layout ),
-       player_clubs ( start_year, end_year, clubs!inner ( name ) )`,
+       player_clubs ( start_year, end_year, clubs!inner ( name, crest_url ) )`,
     )
     .eq("slug", slug)
     .maybeSingle();
@@ -95,8 +96,8 @@ export async function getPlayer(slug: string): Promise<PlayerDetail | null> {
   }
 
   const clubs = [...player.player_clubs]
-    .sort((a, b) => (a.start_year ?? 9999) - (b.start_year ?? 9999))
-    .map((pc) => ({ name: pc.clubs.name, startYear: pc.start_year, endYear: pc.end_year }));
+    .sort((a, b) => (a.start_year ?? a.end_year ?? 9999) - (b.start_year ?? b.end_year ?? 9999))
+    .map((pc) => ({ name: pc.clubs.name, crestUrl: pc.clubs.crest_url, startYear: pc.start_year, endYear: pc.end_year }));
 
   return {
     slug: player.slug,
@@ -107,6 +108,7 @@ export async function getPlayer(slug: string): Promise<PlayerDetail | null> {
     birthYear: player.birth_year,
     isLegend: player.is_legend,
     bio: player.bio,
+    imageUrl: player.image_url,
     nation: {
       code: player.nations.code,
       name: player.nations.name,

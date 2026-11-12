@@ -33,6 +33,14 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
       </Link>
 
       <div className="mt-3 mb-5 flex flex-wrap items-center gap-3">
+        {player.imageUrl && (
+          // eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable
+          <img
+            src={player.imageUrl}
+            alt=""
+            className="h-16 w-16 rounded-full border border-line-strong bg-night-800 object-cover object-top"
+          />
+        )}
         <Flag nation={player.nation} className="h-6 w-9" />
         <h1 className="font-display text-3xl font-extrabold tracking-wide uppercase italic">{player.displayName}</h1>
         {player.isLegend && (
@@ -61,6 +69,10 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
               <ul>
                 {player.clubs.map((c) => (
                   <li key={c.name}>
+                    {c.crestUrl && (
+                      // eslint-disable-next-line @next/next/no-img-element -- crest_url remplaçable
+                      <img src={c.crestUrl} alt="" className="mr-1.5 inline h-4 w-4 align-[-3px] object-contain" loading="lazy" />
+                    )}
                     {c.name}
                     {c.startYear && (
                       <span className="text-chalk-faint">

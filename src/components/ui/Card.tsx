@@ -47,6 +47,7 @@ export type CardProps = {
 export function Card({ template, collectionTotal, serialNumber, copies, size = "md", interactive = true, className }: CardProps) {
   const t = template;
   const shirt = t.club?.colorPrimary ?? "#2f4d3e";
+  const accent = t.club?.colorSecondary ?? "#8fd16a";
   const isLimited = t.maxSupply !== null;
   const label = `${t.playerName}, ${RARITY_LABELS[t.rarity]}, note ${t.rating}`;
 
@@ -54,34 +55,51 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
     <div className="pp-card-inner flex flex-col">
       {t.rarity === "speciale" && <div className="pp-holo" />}
 
-      {/* Portrait */}
+      {/* Portrait : joueur détouré sur fond aux couleurs du club, colonne note / poste / nation / club */}
       <div
         className="pp-pitch relative aspect-[5/4.4] overflow-hidden"
-        style={{ backgroundColor: `color-mix(in srgb, ${shirt} 22%, #0d1813)` }}
+        style={{
+          backgroundColor: `color-mix(in srgb, ${shirt} 22%, #0d1813)`,
+          ["--pp-glow" as string]: `radial-gradient(circle at 68% 38%, color-mix(in srgb, ${accent} 38%, transparent), transparent 62%)`,
+        }}
       >
         {t.imageUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable, domaine libre
-          <img src={t.imageUrl} alt="" className="h-full w-full object-cover" />
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable (fichier statique ou domaine libre) */}
+            <img
+              src={t.imageUrl}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              className="absolute right-[-5%] bottom-0 h-[96%] w-[84%] object-contain object-bottom"
+            />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[16%] bg-gradient-to-t from-night-850 to-transparent" />
+          </>
         ) : (
           <div className="absolute inset-x-[12%] bottom-0 top-[14%]">
             <Silhouette color={shirt} />
           </div>
         )}
 
-        {/* Note + poste */}
-        <div className="absolute top-1.5 left-2 z-[4] flex flex-col items-center leading-none">
-          <span className={clsx("font-display font-extrabold text-chalk drop-shadow", size === "lg" ? "text-4xl" : size === "md" ? "text-3xl" : "text-2xl")}>
+        {/* Note, poste, nation, club */}
+        <div className="absolute top-1.5 left-1.5 z-[4] flex w-[26%] flex-col items-center leading-none">
+          <span
+            className={clsx(
+              "font-display font-extrabold text-chalk [text-shadow:0_1px_3px_rgba(0,0,0,0.7)]",
+              size === "lg" ? "text-4xl" : size === "md" ? "text-3xl" : "text-2xl",
+            )}
+          >
             {t.rating}
           </span>
-          <span className="mt-0.5 font-display text-[10px] font-bold tracking-wider text-chalk/80" title={POSITION_LABELS[t.position]}>
+          <span
+            className="mt-0.5 font-display text-[10px] font-bold tracking-wider text-chalk/85 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]"
+            title={POSITION_LABELS[t.position]}
+          >
             {t.position}
           </span>
-        </div>
-
-        {/* Drapeau + écusson */}
-        <div className="absolute top-2 right-2 z-[4] flex flex-col items-center gap-1">
+          <span className="my-1 h-px w-3/5 bg-chalk/25" aria-hidden="true" />
           <Flag nation={t.nation} className={size === "sm" ? "h-3 w-4" : "h-3.5 w-5"} />
-          {t.club && <Crest club={t.club} className={size === "sm" ? "h-5 w-5" : "h-6 w-6"} />}
+          {t.club && <Crest club={t.club} className={clsx("mt-1", size === "sm" ? "h-5 w-5" : size === "md" ? "h-6 w-6" : "h-8 w-8")} />}
         </div>
 
         {copies !== undefined && copies > 1 && (
