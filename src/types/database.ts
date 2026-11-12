@@ -73,6 +73,56 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"admin_actions": {
+                  Row: {
+                    "action": string,"admin_id": string | null,"created_at": string,"details": NonNullable<Json>,"id": number,"target_id": string | null,"target_username": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "action": string,"admin_id"?: string | null,"created_at"?: string,"details"?: NonNullable<Json>,"id"?: never,"target_id"?: string | null,"target_username"?: string | null
+                  }
+                  Update: {
+                    "action"?: string,"admin_id"?: string | null,"created_at"?: string,"details"?: NonNullable<Json>,"id"?: never,"target_id"?: string | null,"target_username"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "admin_actions_admin_id_fkey"
+      columns: ["admin_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "admin_actions_admin_id_fkey"
+      columns: ["admin_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "admin_actions_admin_id_fkey"
+      columns: ["admin_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "admin_actions_target_id_fkey"
+      columns: ["target_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "admin_actions_target_id_fkey"
+      columns: ["target_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "admin_actions_target_id_fkey"
+      columns: ["target_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"album_completions": {
                   Row: {
                     "album_id": number,"completed_at": string,"reward_coins": number,"user_id": string
@@ -267,6 +317,68 @@ isOneToOne: false
       referencedColumns: ["template_id"]
     }
                   ]
+                },"booster_grants": {
+                  Row: {
+                    "booster_id": number,"created_at": string,"granted_by": string | null,"id": string,"opened_at": string | null,"opening_id": string | null,"reason": string | null,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "booster_id": number,"created_at"?: string,"granted_by"?: string | null,"id"?: string,"opened_at"?: string | null,"opening_id"?: string | null,"reason"?: string | null,"user_id": string
+                  }
+                  Update: {
+                    "booster_id"?: number,"created_at"?: string,"granted_by"?: string | null,"id"?: string,"opened_at"?: string | null,"opening_id"?: string | null,"reason"?: string | null,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "booster_grants_booster_id_fkey"
+      columns: ["booster_id"]
+isOneToOne: false
+      referencedRelation: "boosters"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "booster_grants_granted_by_fkey"
+      columns: ["granted_by"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "booster_grants_granted_by_fkey"
+      columns: ["granted_by"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "booster_grants_granted_by_fkey"
+      columns: ["granted_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "booster_grants_opening_id_fkey"
+      columns: ["opening_id"]
+isOneToOne: false
+      referencedRelation: "booster_openings"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "booster_grants_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "booster_grants_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "booster_grants_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"booster_odds": {
                   Row: {
                     "booster_id": number,"probability": number,"rarity": Database["public"]['Enums']["rarity"]
@@ -289,14 +401,14 @@ isOneToOne: false
                   ]
                 },"booster_openings": {
                   Row: {
-                    "booster_id": number,"created_at": string,"id": string,"instance_ids": (string)[],"price_paid": number,"user_id": string
+                    "booster_id": number,"created_at": string,"grant_id": string | null,"id": string,"instance_ids": (string)[],"price_paid": number,"template_ids": (number)[],"user_id": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "booster_id": number,"created_at"?: string,"id"?: string,"instance_ids"?: (string)[],"price_paid"?: number,"user_id": string
+                    "booster_id": number,"created_at"?: string,"grant_id"?: string | null,"id"?: string,"instance_ids"?: (string)[],"price_paid"?: number,"template_ids"?: (number)[],"user_id": string
                   }
                   Update: {
-                    "booster_id"?: number,"created_at"?: string,"id"?: string,"instance_ids"?: (string)[],"price_paid"?: number,"user_id"?: string
+                    "booster_id"?: number,"created_at"?: string,"grant_id"?: string | null,"id"?: string,"instance_ids"?: (string)[],"price_paid"?: number,"template_ids"?: (number)[],"user_id"?: string
                   }
                   Relationships: [
                     {
@@ -304,6 +416,12 @@ isOneToOne: false
       columns: ["booster_id"]
 isOneToOne: false
       referencedRelation: "boosters"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "booster_openings_grant_fk"
+      columns: ["grant_id"]
+isOneToOne: false
+      referencedRelation: "booster_grants"
       referencedColumns: ["id"]
     },{
       foreignKeyName: "booster_openings_user_id_fkey"
@@ -551,14 +669,14 @@ isOneToOne: false
                   ]
                 },"market_listings": {
                   Row: {
-                    "buyer_id": string | null,"closed_at": string | null,"created_at": string,"id": string,"instance_id": string,"price": number,"seller_id": string,"status": Database["public"]['Enums']["listing_status"],"template_id": number
+                    "buyer_id": string | null,"closed_at": string | null,"created_at": string,"id": string,"instance_id": string | null,"price": number,"seller_id": string,"status": Database["public"]['Enums']["listing_status"],"template_id": number
                   }
                   ComputedFields: never
                   Insert: {
-                    "buyer_id"?: string | null,"closed_at"?: string | null,"created_at"?: string,"id"?: string,"instance_id": string,"price": number,"seller_id": string,"status"?: Database["public"]['Enums']["listing_status"],"template_id": number
+                    "buyer_id"?: string | null,"closed_at"?: string | null,"created_at"?: string,"id"?: string,"instance_id"?: string | null,"price": number,"seller_id": string,"status"?: Database["public"]['Enums']["listing_status"],"template_id": number
                   }
                   Update: {
-                    "buyer_id"?: string | null,"closed_at"?: string | null,"created_at"?: string,"id"?: string,"instance_id"?: string,"price"?: number,"seller_id"?: string,"status"?: Database["public"]['Enums']["listing_status"],"template_id"?: number
+                    "buyer_id"?: string | null,"closed_at"?: string | null,"created_at"?: string,"id"?: string,"instance_id"?: string | null,"price"?: number,"seller_id"?: string,"status"?: Database["public"]['Enums']["listing_status"],"template_id"?: number
                   }
                   Relationships: [
                     {
@@ -861,14 +979,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_url": string | null,"coins": number,"created_at": string,"hide_activity": boolean,"id": string,"is_admin": boolean,"is_demo": boolean,"last_daily_bonus_at": string | null,"last_free_booster_at": string | null,"reduced_motion": boolean,"sound_enabled": boolean,"username": string
+                    "avatar_url": string | null,"ban_reason": string | null,"banned_at": string | null,"coins": number,"created_at": string,"hide_activity": boolean,"id": string,"is_admin": boolean,"is_demo": boolean,"last_daily_bonus_at": string | null,"last_free_booster_at": string | null,"reduced_motion": boolean,"sound_enabled": boolean,"username": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_url"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id": string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"username": string
+                    "avatar_url"?: string | null,"ban_reason"?: string | null,"banned_at"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id": string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"username": string
                   }
                   Update: {
-                    "avatar_url"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id"?: string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"username"?: string
+                    "avatar_url"?: string | null,"ban_reason"?: string | null,"banned_at"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id"?: string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"username"?: string
                   }
                   Relationships: [
                     
@@ -1117,11 +1235,23 @@ isOneToOne: false
                 }
           }
           Functions: {
-            "_apply_coins":
+            "_admin_log":
+{ Args: { "p_action": string,"p_details": Json,"p_target": string,"p_username": string }; Returns: undefined
+                           },
+"_admin_target":
+{ Args: { "p_allow_admin_target"?: boolean,"p_user": string }; Returns: string
+                           },
+"_apply_coins":
 { Args: { "p_amount": number,"p_description"?: string,"p_ref_id"?: string,"p_ref_type"?: string,"p_type": Database["public"]['Enums']["coin_tx_type"],"p_user": string }; Returns: number
+                           },
+"_clean_reason":
+{ Args: { "p_reason": string }; Returns: string
                            },
 "_discord_avatar":
 { Args: { "p_url": string }; Returns: string
+                           },
+"_draw_booster":
+{ Args: { "p_booster_id": number,"p_grant_id"?: string,"p_price": number,"p_uid": string }; Returns: Json
                            },
 "_game_timezone":
 { Args: Record<PropertyKey, never>; Returns: string
@@ -1135,6 +1265,9 @@ isOneToOne: false
 "_pick_template":
 { Args: { "p_booster": number,"p_floor_rank"?: number,"p_rarity": Database["public"]['Enums']["rarity"] }; Returns: number
                            },
+"_release_instances":
+{ Args: { "p_instance_ids": (string)[] }; Returns: undefined
+                           },
 "_roll_rarity":
 { Args: { "p_booster": number,"p_min_rank"?: number }; Returns: Database["public"]['Enums']["rarity"]
                            },
@@ -1144,17 +1277,35 @@ isOneToOne: false
 "accept_trade":
 { Args: { "p_trade_id": string }; Returns: undefined
                            },
+"admin_adjust_coins":
+{ Args: { "p_amount": number,"p_reason"?: string,"p_user": string }; Returns: number
+                           },
 "admin_economy_stats":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"admin_give_boosters":
+{ Args: { "p_booster_id": number,"p_count": number,"p_reason"?: string,"p_user": string }; Returns: number
+                           },
+"admin_give_cards":
+{ Args: { "p_count": number,"p_reason"?: string,"p_template_id": number,"p_user": string }; Returns: number
+                           },
 "admin_purge_demo_accounts":
 { Args: Record<PropertyKey, never>; Returns: number
+                           },
+"admin_remove_cards":
+{ Args: { "p_instance_ids": (string)[],"p_reason"?: string }; Returns: number
+                           },
+"admin_reset_account":
+{ Args: { "p_reason"?: string,"p_user": string }; Returns: Json
                            },
 "admin_resolve_report":
 { Args: { "p_report_id": number,"p_status": Database["public"]['Enums']["report_status"] }; Returns: undefined
                            },
 "admin_set_album_slots":
 { Args: { "p_album_id": number,"p_collection_numbers": (number)[] }; Returns: number
+                           },
+"admin_set_ban":
+{ Args: { "p_banned": boolean,"p_reason"?: string,"p_user": string }; Returns: undefined
                            },
 "admin_set_booster_odds":
 { Args: { "p_booster_id": number,"p_odds": Json }; Returns: undefined
@@ -1218,6 +1369,9 @@ isOneToOne: false
                            },
 "open_booster":
 { Args: { "p_booster_id": number }; Returns: Json
+                           },
+"open_granted_booster":
+{ Args: { "p_grant_id": string }; Returns: Json
                            },
 "propose_trade":
 { Args: { "p_message"?: string,"p_offered"?: (string)[],"p_parent"?: string,"p_proposer_coins"?: number,"p_recipient": string,"p_recipient_coins"?: number,"p_requested"?: (string)[] }; Returns: string

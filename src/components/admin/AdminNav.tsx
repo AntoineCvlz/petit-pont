@@ -6,7 +6,11 @@ import { clsx } from "clsx";
 
 const ITEMS = [
   { href: "/admin", label: "Tableau de bord" },
-  { href: "/admin/joueurs", label: "Joueurs" },
+  { href: "/admin/comptes", label: "Comptes" },
+  { href: "/admin/ouvertures", label: "Ouvertures" },
+  { href: "/admin/echanges", label: "Échanges" },
+  { href: "/admin/journal", label: "Journal" },
+  { href: "/admin/joueurs", label: "Footballeurs" },
   { href: "/admin/cartes", label: "Cartes" },
   { href: "/admin/albums", label: "Albums" },
   { href: "/admin/boosters", label: "Boosters" },

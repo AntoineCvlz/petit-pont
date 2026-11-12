@@ -326,3 +326,28 @@ Les 9 phases de la spec sont livrées.
 
 ### Limites connues
 - Les comptes de démo restent en base (classements, marché) mais ne peuvent plus se connecter en production.
+
+## Administration des comptes joueurs (2026-11-12)
+
+### Fait
+- **`/admin/comptes`** : recherche (pseudo), filtres Tous / Bannis / Démo ; fiche d'un compte (`/admin/comptes/[id]`) :
+  - **offrir des packs** (inventaire : le joueur les ouvre lui-même sur `/boosters`, animation habituelle, sans payer) ;
+  - **offrir des cartes** (tirage limité respecté, origine « Cadeau de l'équipe ») ;
+  - **pièces** : ajout ou retrait via le journal (`admin_adjustment`), jamais sous zéro ;
+  - **retirer des cartes** (sélection multiple) : annonce annulée, échanges en attente annulés, les deux joueurs prévenus ;
+  - **réinitialiser** : cartes, albums, souhaits, packs non ouverts effacés, solde ramené au solde de départ (journalisé) ;
+  - **bannir / débannir** : connexion bloquée côté GoTrue (`banned_until`), sessions supprimées, annonces et échanges
+    annulés, toute écriture de jeu refusée par la base même avec un jeton encore valide, page « Carton rouge » (`/suspendu`) ;
+  - lecture : collection, ouvertures de boosters, échanges, journal des pièces, actions d'administration.
+- **`/admin/ouvertures`** (cartes packées par tous les joueurs), **`/admin/echanges`** (tous les échanges, filtre par statut),
+  **`/admin/journal`** (toutes les actions d'administration). Lien « Gérer le compte » depuis un signalement.
+- Notification au joueur pour chaque action. Admins protégés (ni reset ni ban, ni sur soi-même).
+- Migration `20261112130000_admin_accounts.sql` (RPC `admin_*` SECURITY DEFINER, RLS « Admin : … » en lecture),
+  supprimer une carte ne fait plus disparaître l'historique des ventes du marché. Tests pgTAP `10_admin_accounts` (36).
+
+### Comment tester
+- Admin (`admin@petitpont.test` en local) dans une fenêtre, Joueur A dans une autre : offrir 2 packs à Panenka →
+  « Packs offerts par l'équipe » sur `/boosters` côté joueur ; bannir Rabona connecté ailleurs → redirigé vers `/suspendu`.
+
+### Limites connues
+- Un bannissement ne supprime pas les cartes déjà vendues ou échangées à d'autres joueurs (utiliser « retirer des cartes »).

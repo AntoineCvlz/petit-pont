@@ -8,17 +8,42 @@ import { CoinAmount } from "@/components/ui/CoinAmount";
 import { EmptyState, PageHeader } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 import { availabilityLabel } from "@/lib/boosters";
-import { listBoosters } from "@/lib/data/boosters";
+import { listBoosters, listMyGifts } from "@/lib/data/boosters";
 import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Boosters" };
 
 export default async function BoostersPage() {
-  const boosters = await listBoosters();
+  const [boosters, gifts] = await Promise.all([listBoosters(), listMyGifts()]);
 
   return (
     <>
       <PageHeader title="Boosters" subtitle="Tirage côté serveur, probabilités affichées pour chaque paquet." />
+      {gifts.length > 0 && (
+        <section aria-labelledby="gifts-title" className="mb-5 rounded-xl border border-turf/40 bg-turf/5 p-4">
+          <h2 id="gifts-title" className="mb-3 font-display text-sm font-bold tracking-widest text-turf uppercase">
+            Packs offerts par l&apos;équipe
+          </h2>
+          <ul className="flex flex-wrap gap-3">
+            {gifts.map((g) => (
+              <li key={g.slug}>
+                <Link
+                  href={`/boosters/${g.slug}?cadeau`}
+                  className="flex items-center gap-3 rounded-xl border border-line bg-night-850 p-3 pr-4 transition-colors duration-150 hover:border-line-strong hover:bg-night-800"
+                >
+                  <BoosterPack name={g.name} kind={g.kind} cardsCount={g.cardsCount} imageUrl={g.imageUrl} size="sm" />
+                  <div>
+                    <p className="font-display font-extrabold tracking-wide uppercase">{g.name}</p>
+                    <p className="text-sm text-chalk-muted">
+                      ×{g.count} · <span className="font-semibold text-turf">Ouvrir</span>
+                    </p>
+                  </div>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       {boosters.length === 0 ? (
         <EmptyState title="Vestiaire vide">Aucun booster en vente pour le moment.</EmptyState>
       ) : (

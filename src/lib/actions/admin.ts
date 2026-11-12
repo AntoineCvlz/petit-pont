@@ -174,3 +174,90 @@ export async function purgeDemoAccounts(): Promise<AdminResult> {
     return `${n} compte${n > 1 ? "s" : ""} de démo supprimé${n > 1 ? "s" : ""}.`;
   });
 }
+
+// -----------------------------------------------------------------------------
+// Comptes joueurs (packs, cartes, pièces, retrait, réinitialisation, bannissement)
+// -----------------------------------------------------------------------------
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+function targetId(fd: FormData): string {
+  const id = String(fd.get("user_id") ?? "");
+  if (!UUID.test(id)) throw new FormError("Compte invalide.");
+  return id;
+}
+
+export async function giveBoosters(_prev: AdminResult, fd: FormData): Promise<AdminResult> {
+  return adminAction(async (supabase) => {
+    const f = new FormReader(fd);
+    const count = f.int("count", { required: true, min: 1, max: 50 })!;
+    check(
+      await supabase.rpc("admin_give_boosters", {
+        p_user: targetId(fd),
+        p_booster_id: f.int("booster_id", { required: true, min: 1 })!,
+        p_count: count,
+        p_reason: f.text("reason", { max: 300 }) ?? undefined,
+      }),
+    );
+    return count === 1 ? "Pack offert." : `${count} packs offerts.`;
+  });
+}
+
+export async function giveCards(_prev: AdminResult, fd: FormData): Promise<AdminResult> {
+  return adminAction(async (supabase) => {
+    const f = new FormReader(fd);
+    const count = f.int("count", { required: true, min: 1, max: 20 })!;
+    check(
+      await supabase.rpc("admin_give_cards", {
+        p_user: targetId(fd),
+        p_template_id: f.int("template_id", { required: true, min: 1 })!,
+        p_count: count,
+        p_reason: f.text("reason", { max: 300 }) ?? undefined,
+      }),
+    );
+    return count === 1 ? "Carte offerte." : `${count} exemplaires offerts.`;
+  });
+}
+
+export async function adjustCoins(_prev: AdminResult, fd: FormData): Promise<AdminResult> {
+  return adminAction(async (supabase) => {
+    const f = new FormReader(fd);
+    const amount = f.int("amount", { required: true, min: -1_000_000, max: 1_000_000 })!;
+    if (amount === 0) throw new FormError("Le montant ne peut pas être nul.");
+    const balance = check(
+      await supabase.rpc("admin_adjust_coins", {
+        p_user: targetId(fd),
+        p_amount: amount,
+        p_reason: f.text("reason", { max: 300 }) ?? undefined,
+      }),
+    );
+    return `${amount > 0 ? "Pièces ajoutées" : "Pièces retirées"}. Nouveau solde : ${balance}.`;
+  });
+}
+
+export async function removeCards(instanceIds: string[], reason: string): Promise<AdminResult> {
+  return adminAction(async (supabase) => {
+    if (instanceIds.length === 0 || instanceIds.length > 200 || !instanceIds.every((id) => UUID.test(id))) {
+      throw new FormError("Sélectionne entre 1 et 200 exemplaires.");
+    }
+    const n = check(await supabase.rpc("admin_remove_cards", { p_instance_ids: instanceIds, p_reason: reason.trim() || undefined }));
+    return n === 1 ? "Carte retirée." : `${n} cartes retirées.`;
+  });
+}
+
+export async function resetAccount(userId: string, reason: string): Promise<AdminResult> {
+  return adminAction(async (supabase) => {
+    if (!UUID.test(userId)) throw new FormError("Compte invalide.");
+    const r = check(await supabase.rpc("admin_reset_account", { p_user: userId, p_reason: reason.trim() || undefined })) as {
+      cards_removed: number;
+    };
+    return `Compte réinitialisé (${r.cards_removed} carte${r.cards_removed > 1 ? "s" : ""} retirée${r.cards_removed > 1 ? "s" : ""}).`;
+  });
+}
+
+export async function setBan(userId: string, banned: boolean, reason: string): Promise<AdminResult> {
+  return adminAction(async (supabase) => {
+    if (!UUID.test(userId)) throw new FormError("Compte invalide.");
+    check(await supabase.rpc("admin_set_ban", { p_user: userId, p_banned: banned, p_reason: reason.trim() || undefined }));
+    return banned ? "Joueur banni : connexion bloquée, sessions coupées." : "Bannissement levé.";
+  });
+}

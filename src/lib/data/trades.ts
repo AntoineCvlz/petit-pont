@@ -24,13 +24,13 @@ export type TradeView = {
   recipientItems: TradeItemView[];
 };
 
-const TRADE_SELECT = `id, status, created_at, expires_at, resolved_at, message, proposer_coins, recipient_coins, parent_trade_id,
+export const TRADE_SELECT = `id, status, created_at, expires_at, resolved_at, message, proposer_coins, recipient_coins, parent_trade_id,
   proposer:profiles!trades_proposer_id_fkey ( id, username, avatar_url ),
   recipient:profiles!trades_recipient_id_fkey ( id, username, avatar_url ),
   trade_items ( instance_id, from_user_id,
     card_instances ( serial_number, card_templates!inner ( ${TEMPLATE_SELECT} ) ) )`;
 
-type TradeRow = {
+export type TradeRow = {
   id: string;
   status: TradeStatus;
   created_at: string;
@@ -50,7 +50,7 @@ type TradeRow = {
   }[];
 };
 
-function toTrade(r: TradeRow): TradeView {
+export function toTrade(r: TradeRow): TradeView {
   const items = r.trade_items
     .filter((i) => i.card_instances)
     .map((i) => ({

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { clsx } from "clsx";
-import { openBooster, sellDuplicates, type PulledCard } from "@/lib/actions/boosters";
+import { openBooster, openGrantedBooster, sellDuplicates, type PulledCard } from "@/lib/actions/boosters";
 import { duplicatesValue, type BoosterKind } from "@/lib/boosters";
 import { formatCoins } from "@/lib/format";
 import { isPublicPull, rarityRank, type Rarity } from "@/lib/rarity";
@@ -35,6 +35,7 @@ export function BoosterOpener({
   duplicatePrices,
   soundEnabled,
   reducedMotion: profileReducedMotion,
+  grantId = null,
 }: {
   booster: OpenerBooster;
   unavailableReason: string | null;
@@ -43,6 +44,8 @@ export function BoosterOpener({
   duplicatePrices: Partial<Record<Rarity, number>>;
   soundEnabled: boolean;
   reducedMotion: boolean;
+  /** Pack offert par l'équipe : ouverture gratuite, sans condition de disponibilité. */
+  grantId?: string | null;
 }) {
   const router = useRouter();
   const systemReduced = useReducedMotion();
@@ -58,7 +61,7 @@ export function BoosterOpener({
 
   useEffect(() => () => revealTimers.current.forEach(clearTimeout), []);
 
-  const cantAfford = booster.price > balance;
+  const cantAfford = !grantId && booster.price > balance;
   const allRevealed = cards.length > 0 && revealed.size === cards.length;
   const duplicates = cards.filter((c) => !c.isNew);
   const dupValue = duplicatesValue(
@@ -74,7 +77,7 @@ export function BoosterOpener({
     setError(null);
     setSold(null);
     setPhase("opening");
-    const result = await openBooster(booster.id);
+    const result = grantId ? await openGrantedBooster(grantId) : await openBooster(booster.id);
     if (!result.ok) {
       setError(result.message);
       setPhase("idle");
@@ -132,7 +135,8 @@ export function BoosterOpener({
 
   // --- Avant ouverture -------------------------------------------------------
   if (phase === "idle" || phase === "opening") {
-    const disabled = phase === "opening" || unavailableReason !== null || cantAfford;
+    const blocked = grantId ? null : unavailableReason;
+    const disabled = phase === "opening" || blocked !== null || cantAfford;
     return (
       <div className="flex flex-col items-center gap-5 py-4">
         <button
@@ -153,8 +157,10 @@ export function BoosterOpener({
         <Button onClick={handleOpen} disabled={disabled} className="min-w-52">
           {phase === "opening" ? (
             "Ouverture…"
-          ) : unavailableReason ? (
-            unavailableReason
+          ) : grantId ? (
+            "Ouvrir le pack offert"
+          ) : blocked ? (
+            blocked
           ) : cantAfford ? (
             "Pas assez de pièces"
           ) : booster.price === 0 ? (

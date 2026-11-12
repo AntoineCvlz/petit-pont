@@ -119,3 +119,32 @@ export function isoToParisLocal(iso: string | null): string {
   }).format(new Date(iso));
   return parts.replace(" ", "T");
 }
+
+/** Libellé lisible d'une action du journal d'administration. */
+export function describeAdminAction(action: string, details: Record<string, unknown>): string {
+  const n = typeof details.count === "number" ? details.count : 1;
+  const reason = typeof details.reason === "string" && details.reason ? ` (« ${details.reason} »)` : "";
+  switch (action) {
+    case "give_boosters":
+      return `${n} pack${n > 1 ? "s" : ""} « ${String(details.booster ?? "?")} » offert${n > 1 ? "s" : ""}${reason}`;
+    case "give_cards":
+      return `${n} exemplaire${n > 1 ? "s" : ""} de ${String(details.card ?? "?")} offert${n > 1 ? "s" : ""}${reason}`;
+    case "adjust_coins": {
+      const amount = typeof details.amount === "number" ? details.amount : 0;
+      return `${amount > 0 ? "+" : ""}${amount} pièces${reason}`;
+    }
+    case "remove_cards": {
+      const cards = Array.isArray(details.cards) ? (details.cards as { card?: string; serial?: number }[]) : [];
+      const list = cards.map((c) => `${c.card ?? "?"} #${c.serial ?? "?"}`).join(", ");
+      return `Carte${cards.length > 1 ? "s" : ""} retirée${cards.length > 1 ? "s" : ""} : ${list || "?"}${reason}`;
+    }
+    case "reset_account":
+      return `Compte réinitialisé (${String(details.cards_removed ?? 0)} cartes, ${String(details.coins_before ?? "?")} pièces avant)${reason}`;
+    case "ban":
+      return `Banni${reason}`;
+    case "unban":
+      return `Bannissement levé${reason}`;
+    default:
+      return action;
+  }
+}

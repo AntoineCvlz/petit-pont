@@ -10,7 +10,7 @@ import { Panel } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 import { availabilityLabel, BOOSTER_KIND_LABELS } from "@/lib/boosters";
 import { getCollectionTotal } from "@/lib/data/cards";
-import { getBooster, getBoosterPool, getDuplicatePrices } from "@/lib/data/boosters";
+import { getBooster, getBoosterPool, getDuplicatePrices, listMyGifts } from "@/lib/data/boosters";
 import { requireProfile } from "@/lib/data/profile";
 import { formatDate } from "@/lib/format";
 import { RARITIES, RARITY_LABELS } from "@/lib/rarity";
@@ -21,15 +21,19 @@ export async function generateMetadata({ params }: PageProps<"/boosters/[slug]">
   return { title: booster?.name ?? "Booster introuvable" };
 }
 
-export default async function BoosterPage({ params }: PageProps<"/boosters/[slug]">) {
-  const { slug } = await params;
-  const [profile, booster, total, prices] = await Promise.all([
+export default async function BoosterPage({ params, searchParams }: PageProps<"/boosters/[slug]">) {
+  const [{ slug }, { cadeau }] = await Promise.all([params, searchParams]);
+  const [profile, booster, total, prices, gifts] = await Promise.all([
     requireProfile(),
     getBooster(slug),
     getCollectionTotal(),
     getDuplicatePrices(),
+    listMyGifts(),
   ]);
   if (!booster) notFound();
+  // Mode « pack offert » : le prochain pack non ouvert de ce booster (enchaîne les ouvertures)
+  const gift = gifts.find((g) => g.slug === slug) ?? null;
+  const grantId = cadeau !== undefined && gift ? gift.nextGrantId : null;
   const pool = await getBoosterPool(booster.id);
   const a = booster.availability;
 
@@ -47,6 +51,18 @@ export default async function BoosterPage({ params }: PageProps<"/boosters/[slug
 
       <div className="grid gap-5 lg:grid-cols-[1fr_300px]">
         <Panel>
+          {grantId && gift && (
+            <p className="mb-2 rounded-lg border border-turf/40 bg-turf/10 px-3 py-2 text-center text-sm">
+              Pack offert par l&apos;équipe{gift.count > 1 ? ` · ${gift.count} à ouvrir` : ""}
+            </p>
+          )}
+          {!grantId && gift && (
+            <p className="mb-2 text-center text-sm">
+              <Link href={`/boosters/${slug}?cadeau`} className="font-semibold text-turf hover:underline">
+                Tu as {gift.count} pack{gift.count > 1 ? "s" : ""} offert{gift.count > 1 ? "s" : ""} à ouvrir
+              </Link>
+            </p>
+          )}
           <BoosterOpener
             booster={{
               id: booster.id,
@@ -62,6 +78,7 @@ export default async function BoosterPage({ params }: PageProps<"/boosters/[slug
             duplicatePrices={prices}
             soundEnabled={profile.soundEnabled}
             reducedMotion={profile.reducedMotion}
+            grantId={grantId}
           />
           {!a.available && a.reason === "cooldown" && (
             <div className="mt-2 flex items-center justify-center gap-2 text-sm text-chalk-muted">

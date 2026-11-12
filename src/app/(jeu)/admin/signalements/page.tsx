@@ -48,6 +48,11 @@ export default async function AdminReportsPage({ searchParams }: PageProps<"/adm
                       {r.reported}
                     </Link>
                     <span className="ml-2 text-xs text-chalk-faint">{formatRelative(r.createdAt)}</span>
+                    {r.reportedId && (
+                      <Link href={`/admin/comptes/${r.reportedId}`} className="ml-2 text-xs text-turf hover:underline">
+                        Gérer le compte
+                      </Link>
+                    )}
                   </p>
                   <p className="mt-1 text-sm text-chalk-muted">« {r.reason} »</p>
                 </div>

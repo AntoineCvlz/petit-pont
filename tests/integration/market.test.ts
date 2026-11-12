@@ -35,7 +35,7 @@ describe("marché : concurrence entre joueurs", () => {
     expect(balances.filter((c) => c === 1000)).toHaveLength(4);
     expect(await coins(seller.id)).toBe(1000 + 300 - 15);
 
-    const { data: inst } = await admin.from("card_instances").select("owner_id, is_locked").eq("id", (await admin.from("market_listings").select("instance_id").eq("id", listing).single()).data!.instance_id).single();
+    const { data: inst } = await admin.from("card_instances").select("owner_id, is_locked").eq("id", (await admin.from("market_listings").select("instance_id").eq("id", listing).single()).data!.instance_id!).single();
     expect(inst!.owner_id).toBe(winners[0]!.id);
     expect(inst!.is_locked).toBe(false);
   });

@@ -142,3 +142,48 @@ export async function getDuplicatePrices(): Promise<Partial<Record<Rarity, numbe
   if (error) throw error;
   return data.value as Partial<Record<Rarity, number>>;
 }
+
+export type BoosterGift = {
+  slug: string;
+  name: string;
+  kind: BoosterKind;
+  cardsCount: number;
+  imageUrl: string | null;
+  count: number;
+  nextGrantId: string;
+};
+
+/** Packs offerts par l'équipe et pas encore ouverts, regroupés par booster. */
+export async function listMyGifts(): Promise<BoosterGift[]> {
+  const supabase = await createClient();
+  const { data: claims } = await supabase.auth.getClaims();
+  const userId = claims?.claims?.sub;
+  if (!userId) return [];
+  const { data, error } = await supabase
+    .from("booster_grants")
+    .select("id, created_at, boosters!inner ( slug, name, kind, cards_count, image_url, is_active )")
+    .eq("user_id", userId)
+    .is("opened_at", null)
+    .order("created_at")
+    .order("id");
+  if (error) throw error;
+
+  const bySlug = new Map<string, BoosterGift>();
+  for (const g of data) {
+    const b = g.boosters;
+    if (!b.is_active) continue;
+    const cur = bySlug.get(b.slug);
+    if (cur) cur.count += 1;
+    else
+      bySlug.set(b.slug, {
+        slug: b.slug,
+        name: b.name,
+        kind: b.kind,
+        cardsCount: b.cards_count,
+        imageUrl: b.image_url,
+        count: 1,
+        nextGrantId: g.id,
+      });
+  }
+  return [...bySlug.values()];
+}

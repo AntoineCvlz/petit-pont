@@ -21,7 +21,20 @@ type RpcCard = { instance_id: string; template_id: number; serial_number: number
 export async function openBooster(boosterId: number): Promise<OpenBoosterResult> {
   if (!Number.isInteger(boosterId)) return { ok: false, message: "Booster invalide." };
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("open_booster", { p_booster_id: boosterId });
+  return toOpenResult(supabase, await supabase.rpc("open_booster", { p_booster_id: boosterId }));
+}
+
+/** Ouvre un pack offert par l'équipe (aucun paiement, une seule ouverture : vérifié par la RPC). */
+export async function openGrantedBooster(grantId: string): Promise<OpenBoosterResult> {
+  if (!/^[0-9a-f-]{36}$/.test(grantId)) return { ok: false, message: "Pack invalide." };
+  const supabase = await createClient();
+  return toOpenResult(supabase, await supabase.rpc("open_granted_booster", { p_grant_id: grantId }));
+}
+
+async function toOpenResult(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  { data, error }: { data: unknown; error: { code?: string; message: string } | null },
+): Promise<OpenBoosterResult> {
   if (error) {
     return { ok: false, message: error.code === "P0001" ? error.message : "Ouverture impossible, réessaie." };
   }

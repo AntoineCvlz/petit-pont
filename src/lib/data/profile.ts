@@ -15,6 +15,8 @@ export type CurrentProfile = {
   soundEnabled: boolean;
   reducedMotion: boolean;
   createdAt: string;
+  bannedAt: string | null;
+  banReason: string | null;
 };
 
 /** Profil du joueur connecté (mémoïsé pour la requête en cours). */
@@ -26,7 +28,7 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile | null> 
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, username, avatar_url, coins, is_demo, is_admin, hide_activity, sound_enabled, reduced_motion, created_at")
+    .select("id, username, avatar_url, coins, is_demo, is_admin, hide_activity, sound_enabled, reduced_motion, created_at, banned_at, ban_reason")
     .eq("id", userId)
     .maybeSingle();
   if (error) throw error;
@@ -43,6 +45,8 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile | null> 
     soundEnabled: data.sound_enabled,
     reducedMotion: data.reduced_motion,
     createdAt: data.created_at,
+    bannedAt: data.banned_at,
+    banReason: data.ban_reason,
   };
 });
 
@@ -50,6 +54,7 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile | null> 
 export async function requireProfile(): Promise<CurrentProfile> {
   const profile = await getCurrentProfile();
   if (!profile) redirect("/connexion");
+  if (profile.bannedAt) redirect("/suspendu");
   return profile;
 }
 

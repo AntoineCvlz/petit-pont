@@ -47,6 +47,7 @@ export type ReportView = {
   createdAt: string;
   reporter: string;
   reported: string;
+  reportedId: string | null;
 };
 
 export async function listReports(status: "open" | "closed"): Promise<ReportView[]> {
@@ -55,7 +56,7 @@ export async function listReports(status: "open" | "closed"): Promise<ReportView
     .from("reports")
     .select(`id, reason, status, created_at,
       reporter:profiles!reports_reporter_id_fkey ( username ),
-      reported:profiles!reports_reported_id_fkey ( username )`)
+      reported:profiles!reports_reported_id_fkey ( id, username )`)
     .order("created_at", { ascending: false })
     .limit(100);
   q = status === "open" ? q.eq("status", "open") : q.neq("status", "open");
@@ -68,6 +69,7 @@ export async function listReports(status: "open" | "closed"): Promise<ReportView
     createdAt: r.created_at,
     reporter: r.reporter?.username ?? "?",
     reported: r.reported?.username ?? "?",
+    reportedId: r.reported?.id ?? null,
   }));
 }
 

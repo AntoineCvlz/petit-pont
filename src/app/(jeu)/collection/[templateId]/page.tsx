@@ -23,6 +23,7 @@ const VIA_LABELS: Record<string, string> = {
   seed: "Dotation initiale",
   market: "Marché",
   trade: "Échange",
+  admin: "Cadeau de l'équipe",
 };
 
 function describe(h: CopyHistoryEvent): string {
