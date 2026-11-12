@@ -7,6 +7,7 @@ export type ActivityItem = {
   type: "rare_pull" | "album_completed" | "big_sale" | "leaderboard_top10";
   createdAt: string;
   username: string;
+  avatarUrl: string | null;
   card: { playerName: string; playerSlug: string; rarity: Rarity; edition: string } | null;
   albumName: string | null;
   payload: Record<string, unknown>;
@@ -19,7 +20,7 @@ export async function getActivityFeed(limit = 15): Promise<ActivityItem[]> {
     .from("activity_feed")
     .select(
       `id, type, created_at, payload,
-       profiles!inner ( username ),
+       profiles!inner ( username, avatar_url ),
        card_templates ( rarity, edition, players!inner ( display_name, slug ) ),
        albums ( name )`,
     )
@@ -32,6 +33,7 @@ export async function getActivityFeed(limit = 15): Promise<ActivityItem[]> {
     type: row.type,
     createdAt: row.created_at,
     username: row.profiles.username,
+    avatarUrl: row.profiles.avatar_url,
     card: row.card_templates
       ? {
           playerName: row.card_templates.players.display_name,

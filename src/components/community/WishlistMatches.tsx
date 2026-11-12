@@ -10,7 +10,7 @@ export function WishlistMatches({ matches }: { matches: WishlistMatch[] }) {
     <ul className="divide-y divide-line">
       {matches.map((m) => (
         <li key={m.userId} className="flex flex-wrap items-center gap-3 py-2.5 first:pt-0 last:pb-0">
-          <Avatar name={m.username} />
+          <Avatar name={m.username} url={m.avatarUrl} />
           <div className="min-w-0 flex-1">
             <Link href={`/joueurs/${encodeURIComponent(m.username)}`} className="font-semibold hover:text-turf hover:underline">
               {m.username}

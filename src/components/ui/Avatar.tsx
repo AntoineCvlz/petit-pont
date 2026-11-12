@@ -13,8 +13,18 @@ function colorFor(name: string): string {
 export function Avatar({ name, url, size = "sm" }: { name: string; url?: string | null; size?: "sm" | "lg" }) {
   const dims = size === "lg" ? "h-16 w-16 text-xl" : "h-8 w-8 text-xs";
   if (url) {
-    // eslint-disable-next-line @next/next/no-img-element -- avatar externe remplaçable
-    return <img src={url} alt="" className={clsx("rounded-full object-cover", dims)} />;
+    // Photo de profil Discord (CDN Discord uniquement, garanti par la base)
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- image du CDN Discord, déjà dimensionnée
+      <img
+        src={url}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        referrerPolicy="no-referrer"
+        className={clsx("shrink-0 rounded-full bg-night-800 object-cover ring-1 ring-white/10", dims)}
+      />
+    );
   }
   return (
     <span

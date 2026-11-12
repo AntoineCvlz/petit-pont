@@ -5,13 +5,37 @@ import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/da
 import type { Metric, Period } from "@/lib/leaderboard";
 import { compareRarityDesc } from "@/lib/rarity";
 
-export type LeaderboardRow = { rank: number; userId: string; username: string; value: number; isMe: boolean };
+export type LeaderboardRow = {
+  rank: number;
+  userId: string;
+  username: string;
+  avatarUrl: string | null;
+  value: number;
+  isMe: boolean;
+};
+
+/** Avatars (Discord) d'une liste de joueurs, lus en une requête. */
+async function getAvatars(ids: string[]): Promise<Map<string, string>> {
+  if (ids.length === 0) return new Map();
+  const supabase = await createClient();
+  const { data, error } = await supabase.from("profiles").select("id, avatar_url").in("id", ids).not("avatar_url", "is", null);
+  if (error) throw error;
+  return new Map(data.map((p) => [p.id, p.avatar_url!]));
+}
 
 export async function getLeaderboard(metric: Metric, period: Period, limit = 50): Promise<LeaderboardRow[]> {
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("get_leaderboard", { p_metric: metric, p_period: period, p_limit: limit });
   if (error) throw error;
-  return data.map((r) => ({ rank: Number(r.rank), userId: r.user_id, username: r.username, value: Number(r.value), isMe: r.is_me }));
+  const avatars = await getAvatars(data.map((r) => r.user_id));
+  return data.map((r) => ({
+    rank: Number(r.rank),
+    userId: r.user_id,
+    username: r.username,
+    avatarUrl: avatars.get(r.user_id) ?? null,
+    value: Number(r.value),
+    isMe: r.is_me,
+  }));
 }
 
 export async function getLeaderboardRefreshedAt(): Promise<string | null> {
@@ -139,7 +163,7 @@ export async function getTradeableDuplicates(userId: string): Promise<DuplicateO
     .sort((a, b) => compareRarityDesc(a.template.rarity, b.template.rarity) || b.template.rating - a.template.rating);
 }
 
-export type WishlistMatch = { userId: string; username: string; matches: number; cards: CardTemplateView[] };
+export type WishlistMatch = { userId: string; username: string; avatarUrl: string | null; matches: number; cards: CardTemplateView[] };
 
 /** « Ces joueurs ont des cartes de ta liste de souhaits » (doublons croisés). */
 export async function getWishlistMatches(limit = 6): Promise<WishlistMatch[]> {
@@ -151,9 +175,11 @@ export async function getWishlistMatches(limit = 6): Promise<WishlistMatch[]> {
   const { data: tpls, error: tError } = await supabase.from("card_templates").select(TEMPLATE_SELECT).in("id", ids);
   if (tError) throw tError;
   const byId = new Map(tpls.map((t) => [t.id, toTemplateView(t as never)]));
+  const avatars = await getAvatars(data.map((m) => m.user_id));
   return data.map((m) => ({
     userId: m.user_id,
     username: m.username,
+    avatarUrl: avatars.get(m.user_id) ?? null,
     matches: m.matches,
     cards: m.template_ids.map((id) => byId.get(id)).filter((t): t is CardTemplateView => Boolean(t)),
   }));

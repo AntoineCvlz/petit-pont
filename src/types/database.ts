@@ -1120,6 +1120,9 @@ isOneToOne: false
             "_apply_coins":
 { Args: { "p_amount": number,"p_description"?: string,"p_ref_id"?: string,"p_ref_type"?: string,"p_type": Database["public"]['Enums']["coin_tx_type"],"p_user": string }; Returns: number
                            },
+"_discord_avatar":
+{ Args: { "p_url": string }; Returns: string
+                           },
 "_game_timezone":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
@@ -1134,6 +1137,9 @@ isOneToOne: false
                            },
 "_roll_rarity":
 { Args: { "p_booster": number,"p_min_rank"?: number }; Returns: Database["public"]['Enums']["rarity"]
+                           },
+"_username_from":
+{ Args: { "p_candidates": (string)[] }; Returns: string
                            },
 "accept_trade":
 { Args: { "p_trade_id": string }; Returns: undefined

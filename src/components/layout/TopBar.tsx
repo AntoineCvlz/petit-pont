@@ -57,7 +57,7 @@ export function TopBar({
             <CoinAmount amount={profile.coins} />
           </div>
           <NotificationBell userId={profile.id} initialUnread={unread} />
-          <UserMenu username={profile.username} isAdmin={profile.isAdmin} />
+          <UserMenu username={profile.username} avatarUrl={profile.avatarUrl} isAdmin={profile.isAdmin} />
         </div>
       </div>
     </header>

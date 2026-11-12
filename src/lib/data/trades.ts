@@ -6,6 +6,8 @@ import type { TradeStatus, TradeTab } from "@/lib/trades";
 
 export type TradeItemView = { instanceId: string; fromUserId: string; serialNumber: number; template: CardTemplateView };
 
+export type TradeParty = { id: string; username: string; avatarUrl: string | null };
+
 export type TradeView = {
   id: string;
   status: TradeStatus;
@@ -13,8 +15,8 @@ export type TradeView = {
   expiresAt: string;
   resolvedAt: string | null;
   message: string | null;
-  proposer: { id: string; username: string };
-  recipient: { id: string; username: string };
+  proposer: TradeParty;
+  recipient: TradeParty;
   proposerCoins: number;
   recipientCoins: number;
   parentTradeId: string | null;
@@ -23,8 +25,8 @@ export type TradeView = {
 };
 
 const TRADE_SELECT = `id, status, created_at, expires_at, resolved_at, message, proposer_coins, recipient_coins, parent_trade_id,
-  proposer:profiles!trades_proposer_id_fkey ( id, username ),
-  recipient:profiles!trades_recipient_id_fkey ( id, username ),
+  proposer:profiles!trades_proposer_id_fkey ( id, username, avatar_url ),
+  recipient:profiles!trades_recipient_id_fkey ( id, username, avatar_url ),
   trade_items ( instance_id, from_user_id,
     card_instances ( serial_number, card_templates!inner ( ${TEMPLATE_SELECT} ) ) )`;
 
@@ -38,8 +40,8 @@ type TradeRow = {
   proposer_coins: number;
   recipient_coins: number;
   parent_trade_id: string | null;
-  proposer: { id: string; username: string };
-  recipient: { id: string; username: string };
+  proposer: { id: string; username: string; avatar_url: string | null };
+  recipient: { id: string; username: string; avatar_url: string | null };
   trade_items: {
     instance_id: string;
     from_user_id: string;
@@ -64,8 +66,8 @@ function toTrade(r: TradeRow): TradeView {
     expiresAt: r.expires_at,
     resolvedAt: r.resolved_at,
     message: r.message,
-    proposer: r.proposer,
-    recipient: r.recipient,
+    proposer: { id: r.proposer.id, username: r.proposer.username, avatarUrl: r.proposer.avatar_url },
+    recipient: { id: r.recipient.id, username: r.recipient.username, avatarUrl: r.recipient.avatar_url },
     proposerCoins: r.proposer_coins,
     recipientCoins: r.recipient_coins,
     parentTradeId: r.parent_trade_id,

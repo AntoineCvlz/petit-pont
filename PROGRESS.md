@@ -319,5 +319,10 @@ Les 9 phases de la spec sont livrées.
 - Local : `/connexion` montre Discord + comptes de test. Discord en local : voir le bloc `[auth.external.discord]` de `supabase/config.toml`.
 - Annulation côté Discord → message « Connexion annulée », code invalide → message d'échec.
 
+- **Photo de profil Discord** : copiée depuis l'identité Discord (`auth.identities`, non modifiable par le joueur) à la
+  première connexion et à chaque reconnexion ; seules les URL du CDN d'avatars Discord sont acceptées (contrainte SQL),
+  les joueurs ne peuvent plus écrire `avatar_url` eux-mêmes (migration `20261112120000_discord_avatar.sql`).
+  Affichée dans la barre du haut, le classement, le fil, les échanges, les profils et les suggestions d'échange.
+
 ### Limites connues
 - Les comptes de démo restent en base (classements, marché) mais ne peuvent plus se connecter en production.

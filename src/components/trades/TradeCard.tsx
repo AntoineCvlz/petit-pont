@@ -54,7 +54,7 @@ export function TradeCard({ trade, viewerId, total }: { trade: TradeView; viewer
   return (
     <article className="rounded-xl border border-line bg-night-850 p-4">
       <header className="mb-3 flex flex-wrap items-center gap-3">
-        <Avatar name={other.username} />
+        <Avatar name={other.username} url={other.avatarUrl} />
         <div className="min-w-0 flex-1">
           <p className="text-sm">
             {iAmProposer ? "Ta proposition à " : "Proposition de "}

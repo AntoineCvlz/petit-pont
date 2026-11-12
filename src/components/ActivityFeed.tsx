@@ -56,7 +56,7 @@ export function ActivityFeed({ items }: { items: ActivityItem[] }) {
     <ul className="divide-y divide-line">
       {items.map((item) => (
         <li key={item.id} className="flex items-start gap-3 py-2.5 first:pt-0 last:pb-0">
-          <Avatar name={item.username} />
+          <Avatar name={item.username} url={item.avatarUrl} />
           <div className="min-w-0 flex-1 text-sm leading-snug text-chalk-muted">
             <Line item={item} />
             <p className="mt-0.5 text-xs text-chalk-faint">{formatRelative(item.createdAt)}</p>

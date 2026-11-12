@@ -98,7 +98,7 @@ export default async function ClassementPage({ searchParams }: PageProps<"/class
                 <span className={clsx("w-10 text-right font-display text-lg font-extrabold tabular-nums", MEDALS[r.rank - 1] ?? "text-chalk-faint")}>
                   {r.rank}
                 </span>
-                <Avatar name={r.username} />
+                <Avatar name={r.username} url={r.avatarUrl} />
                 <Link href={`/joueurs/${encodeURIComponent(r.username)}`} className="min-w-0 flex-1 truncate font-semibold hover:text-turf hover:underline">
                   {r.username}
                   {r.isMe && <span className="ml-2 text-xs font-normal text-turf">toi</span>}

@@ -5,7 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { signOut } from "@/lib/actions/auth";
 import { Avatar } from "@/components/ui/Avatar";
 
-export function UserMenu({ username, isAdmin = false }: { username: string; isAdmin?: boolean }) {
+export function UserMenu({
+  username,
+  avatarUrl = null,
+  isAdmin = false,
+}: {
+  username: string;
+  avatarUrl?: string | null;
+  isAdmin?: boolean;
+}) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -34,7 +42,7 @@ export function UserMenu({ username, isAdmin = false }: { username: string; isAd
         aria-haspopup="menu"
         className="flex items-center gap-2 rounded-lg px-1 py-1 hover:bg-night-800"
       >
-        <Avatar name={username} />
+        <Avatar name={username} url={avatarUrl} />
         <span className="hidden max-w-32 truncate text-sm font-medium lg:inline">{username}</span>
       </button>
       {open && (

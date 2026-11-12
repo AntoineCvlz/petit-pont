@@ -1,7 +1,7 @@
 -- Connexion Discord : profil créé automatiquement, pseudo dérivé du compte Discord, jamais d'échec.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(8);
+select plan(13);
 
 -- Nom affiché Discord (global_name) prioritaire, caractères non autorisés retirés
 insert into auth.users (id, email, raw_user_meta_data)
@@ -50,6 +50,31 @@ select is((select username from public.profiles where id = 'd1000000-0000-4000-8
 select throws_ok(
   $$insert into auth.users (id, email, raw_user_meta_data) values (gen_random_uuid(), 'z@example.test', '{"username":"Zizou10"}')$$,
   'P0001', 'Ce pseudo est déjà pris.', 'Pseudo choisi (e-mail) toujours refusé s''il est pris'
+);
+
+-- Photo de profil : copiée depuis l'identité Discord (non modifiable par le joueur)
+insert into auth.identities (provider_id, user_id, identity_data, provider)
+values ('111111111111111111', 'd1000000-0000-4000-8000-000000000001',
+  '{"sub":"111111111111111111","avatar_url":"https://cdn.discordapp.com/avatars/111111111111111111/0123456789abcdef0123456789abcdef.png"}', 'discord');
+select is((select avatar_url from public.profiles where id = 'd1000000-0000-4000-8000-000000000001'),
+  'https://cdn.discordapp.com/avatars/111111111111111111/0123456789abcdef0123456789abcdef.png',
+  'Avatar Discord copié à la première connexion');
+
+update auth.identities set identity_data = identity_data || '{"avatar_url":"https://cdn.discordapp.com/embed/avatars/3.png"}'
+where provider_id = '111111111111111111';
+select is((select avatar_url from public.profiles where id = 'd1000000-0000-4000-8000-000000000001'),
+  'https://cdn.discordapp.com/embed/avatars/3.png', 'Avatar mis à jour à la reconnexion');
+
+update auth.identities set identity_data = identity_data || '{"avatar_url":"https://tracker.example/pixel.png"}'
+where provider_id = '111111111111111111';
+select is((select avatar_url from public.profiles where id = 'd1000000-0000-4000-8000-000000000001'), null,
+  'URL hors CDN Discord refusée');
+
+select is(has_column_privilege('authenticated', 'public.profiles', 'avatar_url', 'UPDATE'), false,
+  'Un joueur ne peut pas choisir son avatar lui-même');
+select throws_ok(
+  $$update public.profiles set avatar_url = 'https://evil.example/a.png' where id = 'd1000000-0000-4000-8000-000000000001'$$,
+  '23514', null, 'Contrainte : avatar hors CDN Discord impossible'
 );
 
 select * from finish();
