@@ -272,3 +272,8 @@ Les 9 phases de la spec sont livrées.
 - Temps réel : toujours passer par `subscribeToChanges` (`src/lib/realtime.ts`), jamais `supabase.channel()` directement dans un composant.
 - Lectures pouvant dépasser 1 000 lignes : `fetchAll` (`src/lib/supabase/paginate.ts`) avec un ordre stable.
 - **Un layout n'est pas une frontière d'autorisation** (pages rendues en parallèle) : chaque page protégée appelle elle-même `requireProfile()` / `requireAdmin()`, et la base revérifie (RLS / RPC).
+
+## Déploiement — CI/CD (2026-11-12)
+- Pile de production auto-hébergée (`deploy/`) : Caddy (HTTPS automatique, site + API sur un seul domaine), Next.js standalone, PostgreSQL / GoTrue / PostgREST / Realtime de Supabase. **Testée localement de bout en bout** : 11 migrations + seed, parcours navigateur à deux joueurs en temps réel ; ~600 Mo de RAM.
+- `.github/workflows/ci-cd.yml` : tests complets (Supabase réel dans la CI) à chaque push / PR ; sur `main`, image GHCR puis déploiement SSH sur le VPS (activé par la variable `SITE_HOST`).
+- Mise en service et exploitation : `deploy/DEPLOIEMENT.md`.
