@@ -784,3 +784,8 @@ begin
   perform set_config('request.jwt.claims', '{}', true);
 end;
 $$;
+
+-- -----------------------------------------------------------------------------
+-- Classements : calcul initial (publie aussi les entrées dans les tops 10 du fil)
+-- -----------------------------------------------------------------------------
+select public.refresh_leaderboards();

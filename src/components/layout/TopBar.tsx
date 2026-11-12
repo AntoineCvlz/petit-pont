@@ -5,6 +5,7 @@ import { DailyBonusButton } from "@/components/economy/DailyBonusButton";
 import { CoinAmount } from "@/components/ui/CoinAmount";
 import { Skeleton } from "@/components/ui/Skeleton";
 import type { CurrentProfile } from "@/lib/data/profile";
+import { NotificationBell } from "./NotificationBell";
 import { UserMenu } from "./UserMenu";
 
 export function TopBarSkeleton() {
@@ -21,16 +22,18 @@ export function TopBarSkeleton() {
 
 /**
  * Barre supérieure : bonus quotidien (écrans larges), booster gratuit, solde, avatar.
- * La cloche de notifications arrivera avec la phase 7.
+ * Cloche de notifications en temps réel.
  */
 export function TopBar({
   profile,
   freeBooster,
   dailyBonus,
+  unread,
 }: {
   profile: CurrentProfile;
   freeBooster: { slug: string; nextAt: string | null } | null;
   dailyBonus: { available: boolean; amount: number };
+  unread: number;
 }) {
   return (
     <header className="sticky top-0 z-30 h-14 border-b border-line bg-night-900/90 backdrop-blur">
@@ -49,6 +52,7 @@ export function TopBar({
           <div className="rounded-lg border border-line bg-night-850 px-2.5 py-1 text-sm" title="Ton solde de pièces">
             <CoinAmount amount={profile.coins} />
           </div>
+          <NotificationBell userId={profile.id} initialUnread={unread} />
           <UserMenu username={profile.username} />
         </div>
       </div>

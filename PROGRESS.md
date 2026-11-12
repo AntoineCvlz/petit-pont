@@ -178,8 +178,35 @@ npm run dev
 - Le blocage d'un joueur est appliqué par la RPC, mais l'interface pour bloquer arrive en phase 8 (modération) ; les profils publics avec bouton « Proposer un échange » en phase 7.
 - « Premier vrai compte » : si les tests d'intégration tournent avant ta première inscription, c'est un compte de test qui reçoit les propositions de bienvenue → `npx supabase db reset` avant de t'inscrire.
 
+## Phase 7 — Communauté ✅ (2026-11-12)
+
+### Fait
+- **Migration** `20261112060000_community.sql` :
+  - Vue matérialisée `leaderboard_stats` (joueur × période : 7 j glissants, 30 j glissants, tout temps) : progression (% du catalogue), cartes, cartes différentes, score de rareté pondéré (`app_settings.rarity_weights` : 1 / 3 / 8 / 20 / 50 / 120), albums complétés, boosters ouverts. Rafraîchie toutes les **10 minutes par pg_cron** (`petit-pont-refresh-leaderboards`).
+  - `get_leaderboard(métrique, période, limite)` : rangs ex aequo, métrique et période sur liste blanche, **ma ligne toujours renvoyée** même hors limite.
+  - `refresh_leaderboards()` : rafraîchit et publie dans le fil les **entrées dans un top 10** (tout temps, sauf activité masquée), sans doublon grâce à `leaderboard_top10`.
+  - `set_showcase(exemplaires[])` : vitrine de 5 cartes possédées et non en vente (une mise en vente ou un échange retire la carte de la vitrine).
+  - `wishlist_matches()` : joueurs ayant en double (exemplaires libres) des cartes de ma liste de souhaits, en excluant les blocages.
+  - `mark_all_notifications_read()`.
+- **Notifications** : cloche dans la barre supérieure avec compteur de non-lues **en direct** (Realtime filtré sur le joueur + RLS) et **toast** à chaque nouvelle notification (vente, proposition / contre-proposition / acceptation / refus / expiration d'échange) ; page `/notifications` (pagination, clic = lu + lien, « Tout marquer comme lu »).
+- **Classement** `/classement` : 5 métriques × 3 périodes, médailles, **ta position toujours visible** (bandeau collant + ligne en bas si hors top 50), date de mise à jour.
+- **Joueurs** `/joueurs` : recherche par pseudo, suggestions « Ils ont des cartes de ta liste de souhaits » avec « Proposer un échange ».
+- **Profil public** `/joueurs/[pseudo]` : statistiques, vitrine, doublons disponibles à l'échange, liste de souhaits, albums complétés, « Voir la collection », « Proposer un échange ». **Collection publique** `/joueurs/[pseudo]/collection` (mêmes filtres que la sienne).
+- **Profil** : éditeur de vitrine, liste de souhaits, lien vers le profil public. **Accueil** : suggestions. **Fil d'activité** : chaque entrée renvoie vers le profil du joueur, la carte ou le classement.
+- Navigation complète (9 entrées de la spec ; mobile : 4 + « Plus »).
+
+### Comment tester
+- `npm run test:db` : 159 tests pgTAP (dont 20 communauté : score pondéré, top 10 publié une seule fois, métrique hors liste blanche refusée, ma position toujours renvoyée, suggestions, vitrine, notifications privées, classements non lisibles anonymement).
+- `npm run test:integration` : 21 tests, dont notification de vente reçue **en direct** par le vendeur et **rien** chez un tiers (y compris abonné sans filtre).
+- **Deux comptes** : Joueur B (fenêtre privée) met une carte en vente ; Joueur A l'achète → chez B, la cloche passe à 1 et un toast « Carte vendue ! » apparaît sans rechargement. A → Classement → sa position est surlignée ; Joueurs → Rabona → vitrine, doublons, « Proposer un échange ».
+
+### Limites connues
+- Les classements ont jusqu'à 10 minutes de retard (vue matérialisée) ; la date de mise à jour est affichée.
+- « Semaine » et « mois » sont glissants (7 et 30 jours) ; une carte reçue par échange ou achat compte à sa date de réception.
+- Signalement et blocage depuis le profil public : phase 8.
+
 ## Phases suivantes
-7. Communauté · 8. Administration · 9. Finitions
+8. Administration · 9. Finitions
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ActivityFeed } from "@/components/ActivityFeed";
+import { WishlistMatches } from "@/components/community/WishlistMatches";
 import { AlbumProgress, albumPercent } from "@/components/albums/AlbumProgress";
 import { BoosterPack } from "@/components/boosters/BoosterPack";
 import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
@@ -10,6 +11,7 @@ import { Card } from "@/components/ui/Card";
 import { EmptyState, PageHeader, Panel } from "@/components/ui/Panel";
 import { getActivityFeed } from "@/lib/data/activity";
 import { listAlbums } from "@/lib/data/albums";
+import { getWishlistMatches } from "@/lib/data/community";
 import { getDailyBonusStatus } from "@/lib/data/economy";
 import { listRecentSales } from "@/lib/data/market";
 import { countPendingReceived } from "@/lib/data/trades";
@@ -19,7 +21,7 @@ import { getCollectionStats, requireProfile } from "@/lib/data/profile";
 
 export default async function AccueilPage() {
   const profile = await requireProfile();
-  const [recent, total, stats, feed, freeBooster, albums, dailyBonus, sales, pendingTrades] = await Promise.all([
+  const [recent, total, stats, feed, freeBooster, albums, dailyBonus, sales, pendingTrades, matches] = await Promise.all([
     getRecentCards(profile.id, 6),
     getCollectionTotal(),
     getCollectionStats(profile.id),
@@ -29,6 +31,7 @@ export default async function AccueilPage() {
     getDailyBonusStatus(),
     listRecentSales(5),
     countPendingReceived(profile.id),
+    getWishlistMatches(4),
   ]);
   const inProgress = albums
     .filter((a) => !a.completedAt)
@@ -124,6 +127,19 @@ export default async function AccueilPage() {
                   </li>
                 ))}
               </ul>
+            </Panel>
+          )}
+
+          {matches.length > 0 && (
+            <Panel
+              title="Ils ont des cartes de ta liste de souhaits"
+              action={
+                <Link href="/joueurs" className="text-xs font-semibold text-turf hover:underline">
+                  Tous les joueurs
+                </Link>
+              }
+            >
+              <WishlistMatches matches={matches} />
             </Panel>
           )}
 

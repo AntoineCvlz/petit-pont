@@ -63,6 +63,12 @@ isOneToOne: false
       foreignKeyName: "activity_feed_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "activity_feed_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
@@ -90,6 +96,12 @@ isOneToOne: false
       columns: ["user_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "album_completions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "album_completions_user_id_fkey"
@@ -195,6 +207,12 @@ isOneToOne: false
       foreignKeyName: "blocks_blocked_id_fkey"
       columns: ["blocked_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "blocks_blocked_id_fkey"
+      columns: ["blocked_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     },{
@@ -202,6 +220,12 @@ isOneToOne: false
       columns: ["blocker_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "blocks_blocker_id_fkey"
+      columns: ["blocker_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "blocks_blocker_id_fkey"
@@ -291,6 +315,12 @@ isOneToOne: false
       foreignKeyName: "booster_openings_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "booster_openings_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
@@ -331,6 +361,12 @@ isOneToOne: false
       foreignKeyName: "card_instance_history_from_user_id_fkey"
       columns: ["from_user_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "card_instance_history_from_user_id_fkey"
+      columns: ["from_user_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     },{
@@ -344,6 +380,12 @@ isOneToOne: false
       columns: ["to_user_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "card_instance_history_to_user_id_fkey"
+      columns: ["to_user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "card_instance_history_to_user_id_fkey"
@@ -370,6 +412,12 @@ isOneToOne: false
       columns: ["owner_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "card_instances_owner_id_fkey"
+      columns: ["owner_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "card_instances_owner_id_fkey"
@@ -459,6 +507,44 @@ isOneToOne: false
       foreignKeyName: "coin_transactions_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "coin_transactions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"leaderboard_top10": {
+                  Row: {
+                    "metric": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "metric": string,"user_id": string
+                  }
+                  Update: {
+                    "metric"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "leaderboard_top10_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "leaderboard_top10_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "leaderboard_top10_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
@@ -485,6 +571,12 @@ isOneToOne: false
       foreignKeyName: "market_listings_buyer_id_fkey"
       columns: ["buyer_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "market_listings_buyer_id_fkey"
+      columns: ["buyer_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     },{
@@ -498,6 +590,12 @@ isOneToOne: false
       columns: ["seller_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "market_listings_seller_id_fkey"
+      columns: ["seller_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "market_listings_seller_id_fkey"
@@ -541,6 +639,12 @@ isOneToOne: false
       foreignKeyName: "market_sales_buyer_id_fkey"
       columns: ["buyer_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "market_sales_buyer_id_fkey"
+      columns: ["buyer_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     },{
@@ -554,6 +658,12 @@ isOneToOne: false
       columns: ["seller_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "market_sales_seller_id_fkey"
+      columns: ["seller_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "market_sales_seller_id_fkey"
@@ -609,6 +719,12 @@ isOneToOne: false
       foreignKeyName: "market_searches_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "market_searches_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
@@ -644,6 +760,12 @@ isOneToOne: false
       columns: ["user_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "notifications_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "notifications_user_id_fkey"
@@ -727,6 +849,12 @@ isOneToOne: false
       foreignKeyName: "profile_showcase_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "profile_showcase_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
@@ -767,6 +895,12 @@ isOneToOne: false
       foreignKeyName: "reports_reported_id_fkey"
       columns: ["reported_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "reports_reported_id_fkey"
+      columns: ["reported_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     },{
@@ -774,6 +908,12 @@ isOneToOne: false
       columns: ["reporter_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "reports_reporter_id_fkey"
+      columns: ["reporter_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "reports_reporter_id_fkey"
@@ -800,6 +940,12 @@ isOneToOne: false
       columns: ["from_user_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "trade_items_from_user_id_fkey"
+      columns: ["from_user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "trade_items_from_user_id_fkey"
@@ -849,6 +995,12 @@ isOneToOne: false
       foreignKeyName: "trades_proposer_id_fkey"
       columns: ["proposer_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "trades_proposer_id_fkey"
+      columns: ["proposer_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     },{
@@ -856,6 +1008,12 @@ isOneToOne: false
       columns: ["recipient_id"]
 isOneToOne: false
       referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "trades_recipient_id_fkey"
+      columns: ["recipient_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
       referencedColumns: ["user_id"]
     },{
       foreignKeyName: "trades_recipient_id_fkey"
@@ -899,6 +1057,12 @@ isOneToOne: false
       foreignKeyName: "wishlists_user_id_fkey"
       columns: ["user_id"]
 isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "wishlists_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
     }
@@ -909,6 +1073,14 @@ isOneToOne: false
             "coin_balance_audit": {
                   Row: {
                     "coins": number,"is_consistent": boolean | null,"journal_total": number | null,"user_id": string,"username": string
+                  }
+                  ComputedFields: never
+                  Relationships: [
+                    
+                  ]
+                },"leaderboard_stats": {
+                  Row: {
+                    "albums": number | null,"boosters": number | null,"cards": number | null,"distinct_cards": number | null,"period": string | null,"progression": number | null,"rarity_score": number | null,"refreshed_at": string | null,"user_id": string
                   }
                   ComputedFields: never
                   Relationships: [
@@ -950,6 +1122,9 @@ isOneToOne: false
                            },
 "_game_timezone":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"_leaderboard_metrics":
+{ Args: Record<PropertyKey, never>; Returns: (string)[]
                            },
 "_mint_card":
 { Args: { "p_owner": string,"p_template": number,"p_via"?: string }; Returns: string
@@ -998,11 +1173,19 @@ isOneToOne: false
 "expire_trades":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
+"get_leaderboard":
+{ Args: { "p_limit"?: number,"p_metric": string,"p_period"?: string }; Returns: {
+              "is_me": boolean,"rank": number,"user_id": string,"username": string,"value": number
+            }[]
+                           },
 "get_setting":
 { Args: { "p_key": string }; Returns: Json
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"mark_all_notifications_read":
+{ Args: Record<PropertyKey, never>; Returns: number
                            },
 "my_coin_totals":
 { Args: Record<PropertyKey, never>; Returns: {
@@ -1021,17 +1204,28 @@ isOneToOne: false
 "record_market_search":
 { Args: { "p_query"?: string,"p_template_id"?: number }; Returns: undefined
                            },
+"refresh_leaderboards":
+{ Args: Record<PropertyKey, never>; Returns: number
+                           },
 "sell_all_duplicates":
 { Args: { "p_max_rarity"?: Database["public"]['Enums']["rarity"] }; Returns: Json
                            },
 "sell_duplicates":
 { Args: { "p_instance_ids": (string)[] }; Returns: Json
                            },
+"set_showcase":
+{ Args: { "p_instance_ids": (string)[] }; Returns: undefined
+                           },
 "update_username":
 { Args: { "p_username": string }; Returns: undefined
                            },
 "username_problem":
 { Args: { "p_username": string }; Returns: string
+                           },
+"wishlist_matches":
+{ Args: { "p_limit"?: number }; Returns: {
+              "matches": number,"template_ids": (number)[],"user_id": string,"username": string
+            }[]
                            }
           }
           Enums: {

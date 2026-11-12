@@ -1,11 +1,16 @@
 import Link from "next/link";
 import type { ActivityItem } from "@/lib/data/activity";
 import { formatCoins, formatRelative } from "@/lib/format";
+import { top10Label } from "@/lib/leaderboard";
 import { Avatar } from "@/components/ui/Avatar";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 
 function Line({ item }: { item: ActivityItem }) {
-  const user = <span className="font-semibold text-chalk">{item.username}</span>;
+  const user = (
+    <Link href={`/joueurs/${encodeURIComponent(item.username)}`} className="font-semibold text-chalk hover:text-turf hover:underline">
+      {item.username}
+    </Link>
+  );
   const card = item.card ? (
     <Link href={`/wiki/${item.card.playerSlug}`} className="font-semibold text-chalk hover:text-turf hover:underline">
       {item.card.playerName}
@@ -32,7 +37,14 @@ function Line({ item }: { item: ActivityItem }) {
         </>
       );
     case "leaderboard_top10":
-      return <>{user} entre dans le top 10 du classement</>;
+      return (
+        <>
+          {user} entre dans le{" "}
+          <Link href="/classement" className="font-semibold text-chalk hover:text-turf hover:underline">
+            top 10 « {top10Label(item.payload.metric)} »
+          </Link>
+        </>
+      );
   }
 }
 
