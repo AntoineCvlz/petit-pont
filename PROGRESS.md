@@ -110,8 +110,30 @@ npm run dev
 - Le détail `/collection/[id]` ne montre que ses propres exemplaires ; la collection publique d'un autre joueur arrive avec les profils publics (phase 7).
 - Une fois réclamé, un album reste complété même si l'on revend ou échange ensuite une de ses cartes (choix assumé : la récompense est unique).
 
+## Phase 4 — Économie ✅ (2026-11-12)
+
+### Fait
+- **Migrations** `20261112030000_economy.sql` et `20261112030100_coin_totals.sql` :
+  - `claim_daily_bonus()` : une fois par jour calendaire dans le fuseau du jeu (`app_settings.timezone`, Europe/Paris), montant `app_settings.daily_bonus` ; verrou du profil contre les doubles demandes. `daily_bonus_status()` pour l'affichage (disponible / prochain bonus).
+  - `sell_all_duplicates(max_rarity)` : revend en une transaction tous les doublons libres jusqu'à une rareté plafond ; garde par carte l'exemplaire libre au plus petit numéro de série ; ne touche jamais aux exemplaires verrouillés ; sans plafond de quantité (lots de 200 internes).
+  - `my_coin_totals()` : totaux gagnés / dépensés calculés en base.
+- **Bonus quotidien** : encart sur l'accueil + bouton compact dans la barre supérieure (écrans ≥ sm) tant qu'il est disponible.
+- **Revente depuis la collection** : bouton « Revendre les doublons » (modale de confirmation, plafond de rareté, aperçu du nombre et du gain calculé avec la même règle que le serveur) ; sur la fiche d'une carte, sélection exemplaire par exemplaire (au moins un conservé, exemplaires engagés non sélectionnables).
+- **Historique des pièces** `/profil/pieces` : solde, total gagné / dépensé, filtre par type, pagination (25 / page), solde après chaque mouvement. Lien depuis le profil.
+- Composants réutilisables : `Modal` (`<dialog>` natif : focus piégé, Échap, clic sur le fond), `FilterBar` avec recherche optionnelle et retour en page 1 à chaque changement de filtre.
+
+### Comment tester
+- `npm test` : 28 tests unitaires (dont aperçu de revente groupée).
+- `npm run test:db` : 75 tests pgTAP (dont 14 économie : bonus unique par jour puis le lendemain, plafond de rareté, plus petit numéro conservé, exemplaire verrouillé préservé).
+- `npm run test:integration` : 6 bonus simultanés → 1 versement ; 4 reventes groupées simultanées → chaque doublon vendu une seule fois (9 vendus, +90).
+- Navigateur : Joueur A → Accueil → « Récupérer 100 pièces » (le solde de la barre se met à jour) → Collection → « Revendre les doublons » → plafond « Rare et en dessous » → confirmer → Profil → Historique des pièces.
+
+### Limites connues
+- Pas de série de connexions (bonus croissant) : la spec ne demande qu'un bonus quotidien fixe.
+- Les lectures de collection passent par PostgREST (1 000 lignes max par requête) : suffisant pour les collections actuelles, à paginer ou agréger en SQL en phase 9 si un joueur dépasse 1 000 exemplaires.
+
 ## Phases suivantes
-4. Économie · 5. Marché · 6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
+5. Marché · 6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).

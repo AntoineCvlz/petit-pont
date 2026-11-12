@@ -3,24 +3,27 @@ import { ActivityFeed } from "@/components/ActivityFeed";
 import { AlbumProgress, albumPercent } from "@/components/albums/AlbumProgress";
 import { BoosterPack } from "@/components/boosters/BoosterPack";
 import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
+import { DailyBonusButton } from "@/components/economy/DailyBonusButton";
 import { buttonClasses } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { EmptyState, PageHeader, Panel } from "@/components/ui/Panel";
 import { getActivityFeed } from "@/lib/data/activity";
 import { listAlbums } from "@/lib/data/albums";
+import { getDailyBonusStatus } from "@/lib/data/economy";
 import { getFreeBoosterNextAt } from "@/lib/data/boosters";
 import { getCollectionTotal, getRecentCards } from "@/lib/data/cards";
 import { getCollectionStats, requireProfile } from "@/lib/data/profile";
 
 export default async function AccueilPage() {
   const profile = await requireProfile();
-  const [recent, total, stats, feed, freeBooster, albums] = await Promise.all([
+  const [recent, total, stats, feed, freeBooster, albums, dailyBonus] = await Promise.all([
     getRecentCards(profile.id, 6),
     getCollectionTotal(),
     getCollectionStats(profile.id),
     getActivityFeed(12),
     getFreeBoosterNextAt(),
     listAlbums(profile.id),
+    getDailyBonusStatus(),
   ]);
   const inProgress = albums
     .filter((a) => !a.completedAt)
@@ -34,6 +37,17 @@ export default async function AccueilPage() {
 
       <div className="grid gap-5 xl:grid-cols-[1fr_380px]">
         <div className="space-y-5">
+          {dailyBonus.available && (
+            <Panel className="border-coin/30">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p className="font-display text-xl font-extrabold tracking-wide uppercase italic">Bonus du jour</p>
+                  <p className="text-sm text-chalk-muted">Ta prime de présence au vestiaire t&apos;attend.</p>
+                </div>
+                <DailyBonusButton amount={dailyBonus.amount} />
+              </div>
+            </Panel>
+          )}
           {freeBooster && (
             <Panel className="pp-net">
               <div className="flex items-center gap-4">

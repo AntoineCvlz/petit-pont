@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Avatar } from "@/components/ui/Avatar";
 import { CoinAmount } from "@/components/ui/CoinAmount";
 import { PageHeader, Panel } from "@/components/ui/Panel";
@@ -42,7 +43,9 @@ export default async function ProfilPage() {
               <p className="font-display text-xl font-extrabold">
                 <CoinAmount amount={profile.coins} />
               </p>
-              <p className="text-xs text-chalk-muted">Pièces</p>
+              <Link href="/profil/pieces" className="text-xs text-turf hover:underline">
+                Historique des pièces
+              </Link>
             </div>
           </div>
           <div className="mt-5 border-t border-line pt-4">

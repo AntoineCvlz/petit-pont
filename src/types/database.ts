@@ -872,6 +872,9 @@ isOneToOne: false
             "_apply_coins":
 { Args: { "p_amount": number,"p_description"?: string,"p_ref_id"?: string,"p_ref_type"?: string,"p_type": Database["public"]['Enums']["coin_tx_type"],"p_user": string }; Returns: number
                            },
+"_game_timezone":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
 "_mint_card":
 { Args: { "p_owner": string,"p_template": number,"p_via"?: string }; Returns: string
                            },
@@ -892,17 +895,31 @@ isOneToOne: false
 "claim_album_reward":
 { Args: { "p_album_id": number }; Returns: Json
                            },
+"claim_daily_bonus":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"daily_bonus_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "get_setting":
 { Args: { "p_key": string }; Returns: Json
                            },
 "is_admin":
 { Args: Record<PropertyKey, never>; Returns: boolean
                            },
+"my_coin_totals":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "earned": number,"spent": number
+            }[]
+                           },
 "open_booster":
 { Args: { "p_booster_id": number }; Returns: Json
                            },
 "rarity_rank":
 { Args: { "r": Database["public"]['Enums']["rarity"] }; Returns: number
+                           },
+"sell_all_duplicates":
+{ Args: { "p_max_rarity"?: Database["public"]['Enums']["rarity"] }; Returns: Json
                            },
 "sell_duplicates":
 { Args: { "p_instance_ids": (string)[] }; Returns: Json

@@ -27,7 +27,8 @@ export function FilterBar({
   selects,
   toggles = [],
 }: {
-  searchName?: string;
+  /** null = pas de champ de recherche. */
+  searchName?: string | null;
   searchPlaceholder?: string;
   selects: FilterSelect[];
   toggles?: FilterToggle[];
@@ -36,7 +37,7 @@ export function FilterBar({
   const pathname = usePathname();
   const params = useSearchParams();
   const [pending, startTransition] = useTransition();
-  const [search, setSearch] = useState(params.get(searchName) ?? "");
+  const [search, setSearch] = useState(searchName ? (params.get(searchName) ?? "") : "");
   const debounce = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => () => {
@@ -45,6 +46,7 @@ export function FilterBar({
 
   function update(name: string, value: string | null) {
     const next = new URLSearchParams(params.toString());
+    next.delete("page"); // tout changement de filtre revient à la première page
     if (value) next.set(name, value);
     else next.delete(name);
     const qs = next.toString();
@@ -54,24 +56,32 @@ export function FilterBar({
   function onSearch(value: string) {
     setSearch(value);
     if (debounce.current) clearTimeout(debounce.current);
+    if (!searchName) return;
     debounce.current = setTimeout(() => update(searchName, value.trim() || null), 250);
   }
 
-  const active = selects.some((s) => s.allLabel && params.get(s.name)) || toggles.some((t) => params.get(t.name)) || Boolean(params.get(searchName));
+  const active =
+    selects.some((s) => s.allLabel && params.get(s.name)) ||
+    toggles.some((t) => params.get(t.name)) ||
+    Boolean(searchName && params.get(searchName));
 
   return (
     <div role="search" className={clsx("flex flex-wrap items-center gap-2 transition-opacity", pending && "opacity-70")}>
-      <label className="sr-only" htmlFor={`filter-${searchName}`}>
-        {searchPlaceholder}
-      </label>
-      <input
-        id={`filter-${searchName}`}
-        type="search"
-        value={search}
-        onChange={(e) => onSearch(e.target.value)}
-        placeholder={searchPlaceholder}
-        className={clsx(fieldClass, "w-full min-w-0 placeholder:text-chalk-faint sm:w-56")}
-      />
+      {searchName && (
+        <>
+          <label className="sr-only" htmlFor={`filter-${searchName}`}>
+            {searchPlaceholder}
+          </label>
+          <input
+            id={`filter-${searchName}`}
+            type="search"
+            value={search}
+            onChange={(e) => onSearch(e.target.value)}
+            placeholder={searchPlaceholder}
+            className={clsx(fieldClass, "w-full min-w-0 placeholder:text-chalk-faint sm:w-56")}
+          />
+        </>
+      )}
       {selects.map((s) => (
         <label key={s.name} className="flex-1 sm:flex-none">
           <span className="sr-only">{s.label}</span>

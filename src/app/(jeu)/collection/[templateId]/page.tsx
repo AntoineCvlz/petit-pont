@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CopySeller } from "@/components/collection/CopySeller";
 import { Card } from "@/components/ui/Card";
+import { getDuplicatePrices } from "@/lib/data/boosters";
 import { Panel } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 import { getCollectionTotal, getOwnedCard, type CopyHistoryEvent } from "@/lib/data/cards";
@@ -37,9 +39,10 @@ export default async function CardDetailPage({ params }: PageProps<"/collection/
   if (!Number.isInteger(id) || id <= 0) notFound();
 
   const profile = await requireProfile();
-  const [card, total] = await Promise.all([getOwnedCard(profile.id, id), getCollectionTotal()]);
+  const [card, total, prices] = await Promise.all([getOwnedCard(profile.id, id), getCollectionTotal(), getDuplicatePrices()]);
   if (!card) notFound();
   const t = card.template;
+  const unitPrice = prices[t.rarity] ?? 0;
 
   return (
     <>
@@ -99,6 +102,15 @@ export default async function CardDetailPage({ params }: PageProps<"/collection/
               ))}
             </ul>
           </Panel>
+
+          {card.copies.length > 1 && (
+            <Panel title="Revendre des doublons au système">
+              <CopySeller
+                copies={card.copies.map((c) => ({ id: c.id, label: formatSerial(c.serialNumber, t.maxSupply), isLocked: c.isLocked }))}
+                unitPrice={unitPrice}
+              />
+            </Panel>
+          )}
         </div>
       </div>
     </>

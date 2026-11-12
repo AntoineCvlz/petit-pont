@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Logo, LogoMark } from "@/components/brand/Logo";
 import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
+import { DailyBonusButton } from "@/components/economy/DailyBonusButton";
 import { CoinAmount } from "@/components/ui/CoinAmount";
 import { Skeleton } from "@/components/ui/Skeleton";
 import type { CurrentProfile } from "@/lib/data/profile";
@@ -19,15 +20,17 @@ export function TopBarSkeleton() {
 }
 
 /**
- * Barre supérieure : booster gratuit, solde, avatar.
+ * Barre supérieure : bonus quotidien (écrans larges), booster gratuit, solde, avatar.
  * La cloche de notifications arrivera avec la phase 7.
  */
 export function TopBar({
   profile,
   freeBooster,
+  dailyBonus,
 }: {
   profile: CurrentProfile;
   freeBooster: { slug: string; nextAt: string | null } | null;
+  dailyBonus: { available: boolean; amount: number };
 }) {
   return (
     <header className="sticky top-0 z-30 h-14 border-b border-line bg-night-900/90 backdrop-blur">
@@ -37,6 +40,11 @@ export function TopBar({
           <LogoMark className="h-8 w-8 sm:hidden" />
         </Link>
         <div className="flex items-center gap-2 sm:gap-3">
+          {dailyBonus.available && (
+            <span className="hidden sm:contents">
+              <DailyBonusButton amount={dailyBonus.amount} compact />
+            </span>
+          )}
           {freeBooster && <FreeBoosterTimer slug={freeBooster.slug} nextAt={freeBooster.nextAt} />}
           <div className="rounded-lg border border-line bg-night-850 px-2.5 py-1 text-sm" title="Ton solde de pièces">
             <CoinAmount amount={profile.coins} />

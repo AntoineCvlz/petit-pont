@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
+import { BulkSellButton } from "@/components/collection/BulkSellButton";
 import { Card } from "@/components/ui/Card";
 import { FilterBar, FilterBarSkeleton } from "@/components/ui/FilterBar";
 import { EmptyState, PageHeader } from "@/components/ui/Panel";
 import { applyCollectionQuery, filterOptions, parseCollectionQuery, SORTS, type CollectionItem } from "@/lib/collection";
+import { getDuplicatePrices } from "@/lib/data/boosters";
 import { getCollection, getCollectionTotal } from "@/lib/data/cards";
 import { requireProfile } from "@/lib/data/profile";
 import { POSITION_LABELS, RARITIES, RARITY_LABELS } from "@/lib/rarity";
@@ -13,7 +15,15 @@ export const metadata: Metadata = { title: "Collection" };
 
 export default async function CollectionPage({ searchParams }: PageProps<"/collection">) {
   const profile = await requireProfile();
-  const [groups, total, params] = await Promise.all([getCollection(profile.id), getCollectionTotal(), searchParams]);
+  const [groups, total, params, prices] = await Promise.all([
+    getCollection(profile.id),
+    getCollectionTotal(),
+    searchParams,
+    getDuplicatePrices(),
+  ]);
+  const allCopies = groups.flatMap((g) =>
+    g.copies.map((c) => ({ templateId: g.template.id, serialNumber: c.serialNumber, rarity: g.template.rarity, isLocked: c.isLocked })),
+  );
   const copies = groups.reduce((n, g) => n + g.copies.length, 0);
 
   const items = groups.map((g) => ({
@@ -35,7 +45,9 @@ export default async function CollectionPage({ searchParams }: PageProps<"/colle
             ? `${groups.length} cartes différentes sur ${total} · ${copies} exemplaires`
             : `0 carte sur ${total}`
         }
-      />
+      >
+        {groups.length > 0 && <BulkSellButton copies={allCopies} prices={prices} />}
+      </PageHeader>
 
       {groups.length === 0 ? (
         <EmptyState title="Ta collection est vide">
