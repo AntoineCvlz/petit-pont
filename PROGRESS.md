@@ -156,8 +156,30 @@ npm run dev
 - Pas de graphique d'historique de prix : tableau + statistiques (un graphique pourra être ajouté en phase 9).
 - Pas d'expiration automatique des annonces (non demandée).
 
+## Phase 6 — Échanges ✅ (2026-11-12)
+
+### Fait
+- **Migration** `20261112050000_trades.sql` :
+  - `propose_trade(destinataire, offerts[], demandés[], pièces données, pièces demandées, message, parent)` : au moins une carte, 10 max par côté, pas de doublon, cartes possédées par le bon joueur et non en vente, offre en pièces couverte par le solde, 20 propositions en attente max, blocage dans un sens ou dans l'autre = refus. **Aucun verrouillage** à la proposition (impossible de bloquer les cartes d'autrui en lui envoyant des propositions). Avec `parent` : contre-proposition (l'originale passe « contre-proposée »). Notification au destinataire.
+  - `accept_trade` : verrou de l'échange, des deux profils (ordre fixe) puis des exemplaires (ordre fixe) ; **revérifie** propriété et absence de mise en vente de chaque exemplaire, applique les pièces dans les deux sens (`trade_sent` / `trade_received`), transfère, historise, retire des vitrines ; les autres propositions en attente portant sur ces exemplaires deviennent **caduques** (annulées). Notification au proposant.
+  - `decline_trade` (destinataire), `cancel_trade` (proposant), `expire_trades()` + tâche **pg_cron** horaire (`petit-pont-expire-trades`) ; une proposition échue est aussi refusée à l'acceptation et affichée « Expiré » même avant le passage de la tâche.
+  - Trigger `welcome_first_real_player` : au **premier vrai compte** inscrit, trois joueurs de démo lui proposent chacun un doublon contre des pièces (spec §12).
+- **Seed** : 3 propositions en attente vers Joueur A (dont une demandant 50 pièces) et 1 de Joueur A vers Joueur B, créées via `propose_trade`.
+- **Échanges** `/echanges` : onglets Reçus (avec compteur) / Envoyés / Terminés ; chaque échange montre les cartes et pièces des deux côtés, le message, l'expiration ; Accepter (confirmation), Refuser, Contre-proposer, Annuler. **En direct** : la page se rafraîchit dès qu'un échange me concernant change (Realtime + RLS).
+- **Composeur** `/echanges/nouveau?avec=pseudo` : recherche du joueur (insensible à la casse), deux colonnes sélectionnables avec filtre, cartes **souhaitées par l'autre joueur** et cartes **absentes de ma collection** mises en évidence, pièces des deux côtés, message. `?contre=id` : contre-proposition préremplie (côtés inversés).
+- **Accueil** : bandeau « N échanges en attente ».
+
+### Comment tester
+- `npm run test:db` : 139 tests pgTAP (dont 34 échanges : propositions invalides, RLS, contre-proposition, acceptation, carte mise en vente entre-temps, refus, annulation, expiration, blocage).
+- `npm run test:integration` : 20 tests, dont 5 acceptations simultanées (1 transfert), deux propositions pour la même carte acceptées en même temps (1 acceptée, l'autre caduque), acceptation vs mise en vente simultanées, acceptation vs annulation simultanées, Realtime (le proposant voit l'acceptation).
+- **Deux comptes** : Joueur A (fenêtre normale) → Échanges → « Proposer un échange » → `Rabona` → choisir une carte de chaque côté → envoyer ; Joueur B (fenêtre privée) voit la proposition apparaître sans recharger → « Contre-proposer » (ajouter 25 pièces demandées) → A voit la contre-proposition en direct → Accepter → les cartes et pièces ont changé de main, historique visible sur la fiche de la carte.
+
+### Limites connues
+- Le blocage d'un joueur est appliqué par la RPC, mais l'interface pour bloquer arrive en phase 8 (modération) ; les profils publics avec bouton « Proposer un échange » en phase 7.
+- « Premier vrai compte » : si les tests d'intégration tournent avant ta première inscription, c'est un compte de test qui reçoit les propositions de bienvenue → `npx supabase db reset` avant de t'inscrire.
+
 ## Phases suivantes
-6. Échanges · 7. Communauté · 8. Administration · 9. Finitions
+7. Communauté · 8. Administration · 9. Finitions
 
 ## Conventions techniques à retenir
 - Toute nouvelle table : `enable row level security` + `revoke insert, update, delete … from anon, authenticated` (les privilèges par défaut de Supabase les accordent).

@@ -750,3 +750,37 @@ begin
   perform set_config('request.jwt.claims', '{}', true);
 end;
 $$;
+
+-- -----------------------------------------------------------------------------
+-- Échanges en attente (créés via la RPC propose_trade) :
+-- 3 propositions vers Joueur A (Panenka), 1 de Joueur A vers Joueur B (Rabona)
+-- -----------------------------------------------------------------------------
+do $$
+declare
+  v_a uuid := '00000000-0000-4000-a000-000000000001';
+  v_b uuid := '00000000-0000-4000-a000-000000000002';
+  d record;
+  v_mine uuid;
+  v_theirs uuid;
+  n int := 0;
+begin
+  for d in
+    select id, username from public.profiles where is_demo and id not in (v_a, v_b) order by username limit 3
+  loop
+    select ci.id into v_theirs from public.card_instances ci join public.card_templates ct on ct.id = ci.template_id
+    where ci.owner_id = d.id and not ci.is_locked order by public.rarity_rank(ct.rarity) desc, ci.id limit 1;
+    select ci.id into v_mine from public.card_instances ci
+    where ci.owner_id = v_a and not ci.is_locked order by ci.serial_number desc, ci.id limit 1 offset n;
+    perform set_config('request.jwt.claims', json_build_object('sub', d.id, 'role', 'authenticated')::text, true);
+    perform public.propose_trade(v_a, array[v_theirs], array[v_mine], 0, case n when 1 then 50 else 0 end,
+      case n when 0 then 'Salut ! Ma meilleure carte contre une des tiennes ?' when 1 then 'Avec 50 pièces de ta part, deal ?' else null end);
+    n := n + 1;
+  end loop;
+
+  select ci.id into v_mine from public.card_instances ci where ci.owner_id = v_a and not ci.is_locked order by ci.id limit 1;
+  select ci.id into v_theirs from public.card_instances ci where ci.owner_id = v_b and not ci.is_locked order by ci.id limit 1;
+  perform set_config('request.jwt.claims', json_build_object('sub', v_a, 'role', 'authenticated')::text, true);
+  perform public.propose_trade(v_b, array[v_mine], array[v_theirs], 100, 0, 'Petit échange entre testeurs ?');
+  perform set_config('request.jwt.claims', '{}', true);
+end;
+$$;

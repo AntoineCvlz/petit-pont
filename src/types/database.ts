@@ -960,6 +960,9 @@ isOneToOne: false
 "_roll_rarity":
 { Args: { "p_booster": number,"p_min_rank"?: number }; Returns: Database["public"]['Enums']["rarity"]
                            },
+"accept_trade":
+{ Args: { "p_trade_id": string }; Returns: undefined
+                           },
 "album_progress":
 { Args: { "p_album": number,"p_user": string }; Returns: {
               "owned": number,"total": number
@@ -974,6 +977,9 @@ isOneToOne: false
 "cancel_listing":
 { Args: { "p_listing_id": string }; Returns: undefined
                            },
+"cancel_trade":
+{ Args: { "p_trade_id": string }; Returns: undefined
+                           },
 "claim_album_reward":
 { Args: { "p_album_id": number }; Returns: Json
                            },
@@ -985,6 +991,12 @@ isOneToOne: false
                            },
 "daily_bonus_status":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"decline_trade":
+{ Args: { "p_trade_id": string }; Returns: undefined
+                           },
+"expire_trades":
+{ Args: Record<PropertyKey, never>; Returns: number
                            },
 "get_setting":
 { Args: { "p_key": string }; Returns: Json
@@ -999,6 +1011,9 @@ isOneToOne: false
                            },
 "open_booster":
 { Args: { "p_booster_id": number }; Returns: Json
+                           },
+"propose_trade":
+{ Args: { "p_message"?: string,"p_offered"?: (string)[],"p_parent"?: string,"p_proposer_coins"?: number,"p_recipient": string,"p_recipient_coins"?: number,"p_requested"?: (string)[] }; Returns: string
                            },
 "rarity_rank":
 { Args: { "r": Database["public"]['Enums']["rarity"] }; Returns: number

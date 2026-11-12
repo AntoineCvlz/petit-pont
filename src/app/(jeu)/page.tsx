@@ -12,13 +12,14 @@ import { getActivityFeed } from "@/lib/data/activity";
 import { listAlbums } from "@/lib/data/albums";
 import { getDailyBonusStatus } from "@/lib/data/economy";
 import { listRecentSales } from "@/lib/data/market";
+import { countPendingReceived } from "@/lib/data/trades";
 import { getFreeBoosterNextAt } from "@/lib/data/boosters";
 import { getCollectionTotal, getRecentCards } from "@/lib/data/cards";
 import { getCollectionStats, requireProfile } from "@/lib/data/profile";
 
 export default async function AccueilPage() {
   const profile = await requireProfile();
-  const [recent, total, stats, feed, freeBooster, albums, dailyBonus, sales] = await Promise.all([
+  const [recent, total, stats, feed, freeBooster, albums, dailyBonus, sales, pendingTrades] = await Promise.all([
     getRecentCards(profile.id, 6),
     getCollectionTotal(),
     getCollectionStats(profile.id),
@@ -27,6 +28,7 @@ export default async function AccueilPage() {
     listAlbums(profile.id),
     getDailyBonusStatus(),
     listRecentSales(5),
+    countPendingReceived(profile.id),
   ]);
   const inProgress = albums
     .filter((a) => !a.completedAt)
@@ -50,6 +52,17 @@ export default async function AccueilPage() {
                 <DailyBonusButton amount={dailyBonus.amount} />
               </div>
             </Panel>
+          )}
+          {pendingTrades > 0 && (
+            <Link
+              href="/echanges"
+              className="flex items-center justify-between gap-3 rounded-xl border border-turf/40 bg-turf/10 px-4 py-3 transition-colors duration-150 hover:bg-turf/15"
+            >
+              <span className="font-display text-lg font-extrabold tracking-wide uppercase italic">
+                {pendingTrades} échange{pendingTrades > 1 ? "s" : ""} en attente
+              </span>
+              <span className="text-sm font-semibold text-turf">Voir les propositions →</span>
+            </Link>
           )}
           {freeBooster && (
             <Panel className="pp-net">

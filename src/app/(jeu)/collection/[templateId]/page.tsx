@@ -105,7 +105,7 @@ export default async function CardDetailPage({ params }: PageProps<"/collection/
                       <span>·</span>
                       <span>Obtenu le {formatDate(c.obtainedAt)}</span>
                       {c.isLocked && !listingByInstance.has(c.serialNumber) && (
-                        <span className="rounded-md border border-coin/40 px-1.5 py-px text-coin">Engagé dans un échange</span>
+                        <span className="rounded-md border border-coin/40 px-1.5 py-px text-coin">Verrouillé</span>
                       )}
                       {listingByInstance.has(c.serialNumber) && (
                         <span className="inline-flex items-center gap-1 rounded-md border border-coin/40 px-1.5 py-px text-coin">
