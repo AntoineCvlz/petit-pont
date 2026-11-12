@@ -72,7 +72,8 @@ jobs:
     name: Image Docker
     needs: test
     # Déploiement actif seulement une fois la production configurée (variable SITE_HOST)
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && vars.SITE_HOST != ''
+    # Push sur main ou lancement manuel (Run workflow) sur main
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' && vars.SITE_HOST != ''
     runs-on: ubuntu-latest
     permissions:
       contents: read
