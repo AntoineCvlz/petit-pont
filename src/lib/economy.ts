@@ -14,6 +14,7 @@ export const COIN_TX_LABELS: Record<CoinTxType, string> = {
   trade_sent: "Pièces envoyées (échange)",
   trade_received: "Pièces reçues (échange)",
   admin_adjustment: "Ajustement",
+  minigame_reward: "Mini-jeu (tirs au but)",
 };
 
 export const COIN_TX_TYPES = Object.keys(COIN_TX_LABELS) as CoinTxType[];

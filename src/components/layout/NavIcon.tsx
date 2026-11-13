@@ -26,6 +26,13 @@ const PATHS: Record<NavIconName | "more", ReactNode> = {
       <path d="M9 3v3h6V3M9 21v-3h6v3" />
     </>
   ),
+  penalty: (
+    <>
+      <path d="M3 18V6h18v12" />
+      <path d="M3 10h18M3 14h18M9 6v12M15 6v12" opacity="0.5" />
+      <circle cx="12" cy="20" r="1.6" />
+    </>
+  ),
   ranking: <path d="M5 20v-6h4v6M10 20V9h4v11M15 20v-9h4v9" />,
   wiki: (
     <>

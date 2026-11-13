@@ -375,3 +375,24 @@ Les 9 phases de la spec sont livrées.
 
 ### Limites connues
 - Postes simplifiés aux 4 postes des cartes (GB, DEF, MIL, ATT) : pas de malus de poste, pas de remplaçants ni de capitaine.
+
+## Mini-jeu : tirs au but (2026-11-13)
+
+### Fait
+- **`/penalty`** : tournoi contre l'ordinateur, **quart → demi-finale → finale**. Le joueur aligne **5 tireurs et 1 gardien
+  de sa collection** (composition automatique proposée ; sans gardien, un joueur de champ garde les buts avec −20).
+- Séance classique : 5 tirs chacun (le joueur commence), arrêt dès qu'un écart est irrattrapable, puis mort subite.
+  En attaque on clique un côté du but, en défense on choisit le plongeon (ballon et gardien animés, 300 ms).
+- **Tout se joue côté serveur** : le client n'envoie qu'une direction ; l'ordinateur (choix uniforme, mais qui « lit » les
+  habitudes du joueur une fois sur deux) et l'issue (précision selon la note du tireur, arrêt selon l'écart gardien/tireur)
+  sont tirés par la base. Adversaires : un club tiré au sort, de plus en plus fort (notes 70–82, 80–88, 86–99).
+- Gratuit, **5 tournois par jour** (`penalty_daily_limit`). Récompenses (`penalty_rewards`) : demi 50, finale 100,
+  victoire 250 pièces, versées via le journal (nouveau type `minigame_reward`). Abandon = match perdu.
+- Classement : tournois gagnés, puis finales atteintes.
+- Équilibrage simulé (cartes ~84) : en variant ses choix, 60 % de demies, 28 % de finales, 10 % de victoires
+  (≈ 60 pièces par tournoi) ; en tirant toujours au même endroit, 1,5 % de victoires.
+- Migrations `20261113000000_coin_type_minigame.sql`, `20261113000100_penalty.sql` ; tests pgTAP `12_penalty` (28),
+  unitaires `penalty.test.ts`.
+
+### Comment tester
+- `/penalty` → « Lancer le tournoi » → cliquer dans le but jusqu'à la fin ; le solde augmente selon le tour atteint.

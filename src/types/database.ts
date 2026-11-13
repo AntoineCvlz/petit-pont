@@ -1003,6 +1003,120 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"penalty_kicks": {
+                  Row: {
+                    "direction": string,"dive": string,"match_id": string,"n": number,"result": string,"shooter": number,"side": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "direction": string,"dive": string,"match_id": string,"n": number,"result": string,"shooter": number,"side": string
+                  }
+                  Update: {
+                    "direction"?: string,"dive"?: string,"match_id"?: string,"n"?: number,"result"?: string,"shooter"?: number,"side"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "penalty_kicks_match_id_fkey"
+      columns: ["match_id"]
+isOneToOne: false
+      referencedRelation: "penalty_matches"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "penalty_kicks_shooter_fkey"
+      columns: ["shooter"]
+isOneToOne: false
+      referencedRelation: "card_templates"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "penalty_kicks_shooter_fkey"
+      columns: ["shooter"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
+    }
+                  ]
+                },"penalty_matches": {
+                  Row: {
+                    "id": string,"opp_keeper": number,"opp_keeper_rating": number,"opp_score": number,"opp_shooter_ratings": (number)[],"opp_shooters": (number)[],"opponent_club_id": number | null,"player_score": number,"round": number,"status": string,"tournament_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id"?: string,"opp_keeper": number,"opp_keeper_rating": number,"opp_score"?: number,"opp_shooter_ratings": (number)[],"opp_shooters": (number)[],"opponent_club_id"?: number | null,"player_score"?: number,"round": number,"status"?: string,"tournament_id": string
+                  }
+                  Update: {
+                    "id"?: string,"opp_keeper"?: number,"opp_keeper_rating"?: number,"opp_score"?: number,"opp_shooter_ratings"?: (number)[],"opp_shooters"?: (number)[],"opponent_club_id"?: number | null,"player_score"?: number,"round"?: number,"status"?: string,"tournament_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "penalty_matches_opp_keeper_fkey"
+      columns: ["opp_keeper"]
+isOneToOne: false
+      referencedRelation: "card_templates"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "penalty_matches_opp_keeper_fkey"
+      columns: ["opp_keeper"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
+    },{
+      foreignKeyName: "penalty_matches_opponent_club_id_fkey"
+      columns: ["opponent_club_id"]
+isOneToOne: false
+      referencedRelation: "clubs"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "penalty_matches_tournament_id_fkey"
+      columns: ["tournament_id"]
+isOneToOne: false
+      referencedRelation: "penalty_tournaments"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"penalty_tournaments": {
+                  Row: {
+                    "created_at": string,"finished_at": string | null,"id": string,"keeper": number,"keeper_rating": number,"reward": number,"round": number,"shooter_ratings": (number)[],"shooters": (number)[],"status": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"finished_at"?: string | null,"id"?: string,"keeper": number,"keeper_rating": number,"reward"?: number,"round"?: number,"shooter_ratings": (number)[],"shooters": (number)[],"status"?: string,"user_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"finished_at"?: string | null,"id"?: string,"keeper"?: number,"keeper_rating"?: number,"reward"?: number,"round"?: number,"shooter_ratings"?: (number)[],"shooters"?: (number)[],"status"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "penalty_tournaments_keeper_fkey"
+      columns: ["keeper"]
+isOneToOne: false
+      referencedRelation: "card_templates"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "penalty_tournaments_keeper_fkey"
+      columns: ["keeper"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
+    },{
+      foreignKeyName: "penalty_tournaments_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "penalty_tournaments_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "penalty_tournaments_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"player_clubs": {
                   Row: {
                     "club_id": number,"end_year": number | null,"player_id": number,"start_year": number | null
@@ -1387,6 +1501,27 @@ isOneToOne: false
 "_mint_card":
 { Args: { "p_owner": string,"p_template": number,"p_via"?: string }; Returns: string
                            },
+"_penalty_ai_direction":
+{ Args: { "p_follow": boolean,"p_habit": string }; Returns: string
+                           },
+"_penalty_finish":
+{ Args: { "p_round_reached": number,"p_status": string,"p_tournament": string }; Returns: undefined
+                           },
+"_penalty_new_match":
+{ Args: { "p_round": number,"p_tournament": string }; Returns: string
+                           },
+"_penalty_opponent":
+{ Args: { "p_round": number }; Returns: Json
+                           },
+"_penalty_outcome":
+{ Args: { "p_direction": string,"p_dive": string,"p_keeper_rating": number,"p_shooter_rating": number }; Returns: string
+                           },
+"_penalty_state":
+{ Args: { "p_tournament": string }; Returns: Json
+                           },
+"_penalty_winner":
+{ Args: { "o_score": number,"o_taken": number,"p_score": number,"p_taken": number }; Returns: string
+                           },
 "_pick_template":
 { Args: { "p_booster": number,"p_floor_rank"?: number,"p_rarity": Database["public"]['Enums']["rarity"] }; Returns: number
                            },
@@ -1401,6 +1536,9 @@ isOneToOne: false
                            },
 "abandon_draft":
 { Args: { "p_draft_id": string }; Returns: undefined
+                           },
+"abandon_penalty_tournament":
+{ Args: { "p_tournament_id": string }; Returns: undefined
                            },
 "accept_trade":
 { Args: { "p_trade_id": string }; Returns: undefined
@@ -1512,6 +1650,17 @@ isOneToOne: false
 "open_granted_booster":
 { Args: { "p_grant_id": string }; Returns: Json
                            },
+"penalty_kick":
+{ Args: { "p_direction": string,"p_tournament_id": string }; Returns: Json
+                           },
+"penalty_leaderboard":
+{ Args: { "p_limit"?: number }; Returns: {
+              "avatar_url": string,"finals": number,"is_me": boolean,"played": number,"rank": number,"user_id": string,"username": string,"wins": number
+            }[]
+                           },
+"penalty_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "propose_trade":
 { Args: { "p_message"?: string,"p_offered"?: (string)[],"p_parent"?: string,"p_proposer_coins"?: number,"p_recipient": string,"p_recipient_coins"?: number,"p_requested"?: (string)[] }; Returns: string
                            },
@@ -1539,6 +1688,9 @@ isOneToOne: false
 "start_draft":
 { Args: { "p_formation": string }; Returns: Json
                            },
+"start_penalty_tournament":
+{ Args: { "p_keeper": string,"p_shooters": (string)[] }; Returns: Json
+                           },
 "unblock_player":
 { Args: { "p_blocked": string }; Returns: undefined
                            },
@@ -1555,7 +1707,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "activity_type": "rare_pull"|"album_completed"|"big_sale"|"leaderboard_top10","album_kind": "competition"|"club"|"nation"|"season"|"legends","booster_kind": "free"|"standard"|"premium"|"event"|"limited","coin_tx_type": "starting_balance"|"daily_bonus"|"booster_purchase"|"duplicate_sale"|"market_sale"|"market_purchase"|"album_reward"|"trade_sent"|"trade_received"|"admin_adjustment","listing_status": "active"|"sold"|"cancelled","player_position": "GB"|"DEF"|"MIL"|"ATT","rarity": "commune"|"rare"|"epique"|"legendaire"|"iconique"|"speciale","report_status": "open"|"resolved"|"dismissed","trade_status": "pending"|"accepted"|"declined"|"cancelled"|"expired"|"countered"
+            "activity_type": "rare_pull"|"album_completed"|"big_sale"|"leaderboard_top10","album_kind": "competition"|"club"|"nation"|"season"|"legends","booster_kind": "free"|"standard"|"premium"|"event"|"limited","coin_tx_type": "starting_balance"|"daily_bonus"|"booster_purchase"|"duplicate_sale"|"market_sale"|"market_purchase"|"album_reward"|"trade_sent"|"trade_received"|"admin_adjustment"|"minigame_reward","listing_status": "active"|"sold"|"cancelled","player_position": "GB"|"DEF"|"MIL"|"ATT","rarity": "commune"|"rare"|"epique"|"legendaire"|"iconique"|"speciale","report_status": "open"|"resolved"|"dismissed","trade_status": "pending"|"accepted"|"declined"|"cancelled"|"expired"|"countered"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -1675,7 +1827,7 @@ export const Constants = {
           }
         },"public": {
           Enums: {
-            "activity_type": ["rare_pull", "album_completed", "big_sale", "leaderboard_top10"],"album_kind": ["competition", "club", "nation", "season", "legends"],"booster_kind": ["free", "standard", "premium", "event", "limited"],"coin_tx_type": ["starting_balance", "daily_bonus", "booster_purchase", "duplicate_sale", "market_sale", "market_purchase", "album_reward", "trade_sent", "trade_received", "admin_adjustment"],"listing_status": ["active", "sold", "cancelled"],"player_position": ["GB", "DEF", "MIL", "ATT"],"rarity": ["commune", "rare", "epique", "legendaire", "iconique", "speciale"],"report_status": ["open", "resolved", "dismissed"],"trade_status": ["pending", "accepted", "declined", "cancelled", "expired", "countered"]
+            "activity_type": ["rare_pull", "album_completed", "big_sale", "leaderboard_top10"],"album_kind": ["competition", "club", "nation", "season", "legends"],"booster_kind": ["free", "standard", "premium", "event", "limited"],"coin_tx_type": ["starting_balance", "daily_bonus", "booster_purchase", "duplicate_sale", "market_sale", "market_purchase", "album_reward", "trade_sent", "trade_received", "admin_adjustment", "minigame_reward"],"listing_status": ["active", "sold", "cancelled"],"player_position": ["GB", "DEF", "MIL", "ATT"],"rarity": ["commune", "rare", "epique", "legendaire", "iconique", "speciale"],"report_status": ["open", "resolved", "dismissed"],"trade_status": ["pending", "accepted", "declined", "cancelled", "expired", "countered"]
           }
         }
 } as const

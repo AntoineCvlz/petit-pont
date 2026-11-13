@@ -1,4 +1,4 @@
-export type NavIcon = "home" | "booster" | "collection" | "album" | "market" | "trade" | "ranking" | "wiki" | "profile" | "draft";
+export type NavIcon = "home" | "booster" | "collection" | "album" | "market" | "trade" | "ranking" | "wiki" | "profile" | "draft" | "penalty";
 
 export type NavItem = { href: string; label: string; icon: NavIcon };
 
@@ -12,6 +12,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { href: "/collection", label: "Collection", icon: "collection" },
   { href: "/albums", label: "Albums", icon: "album" },
   { href: "/draft", label: "Draft", icon: "draft" },
+  { href: "/penalty", label: "Tirs au but", icon: "penalty" },
   { href: "/marche", label: "Marché", icon: "market" },
   { href: "/echanges", label: "Échanges", icon: "trade" },
   { href: "/classement", label: "Classement", icon: "ranking" },
