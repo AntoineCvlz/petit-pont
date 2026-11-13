@@ -2055,6 +2055,9 @@ isOneToOne: false
 "_discord_avatar":
 { Args: { "p_url": string }; Returns: string
                            },
+"_discord_rarity_label":
+{ Args: { "p_rarity": string }; Returns: string
+                           },
 "_draft_chemistry":
 { Args: { "p_draft_id": string }; Returns: number
                            },

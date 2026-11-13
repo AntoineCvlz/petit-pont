@@ -1,7 +1,7 @@
 -- Social : matchs amicaux (Elo), ligues privées, clans, webhook Discord.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(45);
+select plan(48);
 
 -- 4 joueurs, chacun avec un onze complet (11 footballeurs distincts)
 insert into auth.users (id, email, raw_user_meta_data) values
@@ -147,6 +147,20 @@ select is((select owner_id from public.clans where id = (select v::uuid from st 
 select throws_ok($$select public.admin_set_discord_webhook('https://discord.com/api/webhooks/1/abc')$$, '42501', null, 'Webhook : réservé aux admins');
 select throws_ok($$select * from public.private_settings$$, '42501', null, 'Paramètres privés illisibles');
 
+-- Annonces d'ouverture : seulement Iconique et mieux
 reset role;
+insert into public.private_settings (key, value) values ('discord_webhook', 'https://discord.com/api/webhooks/1/test')
+on conflict (key) do update set value = excluded.value;
+create temp table q0 as select count(*) as n from net.http_request_queue;
+insert into public.activity_feed (user_id, type, template_id, payload)
+select '5a5a5a5a-0000-4000-8000-000000000001', 'rare_pull', id, jsonb_build_object('rarity', 'legendaire', 'serial_number', 1)
+from public.card_templates where rarity = 'legendaire' limit 1;
+select is((select count(*) from net.http_request_queue) - (select n from q0), 0::bigint, 'Légendaire : pas d''annonce Discord');
+insert into public.activity_feed (user_id, type, template_id, payload)
+select '5a5a5a5a-0000-4000-8000-000000000001', 'rare_pull', id, jsonb_build_object('rarity', 'iconique', 'serial_number', 1)
+from public.card_templates where rarity = 'iconique' limit 1;
+select is((select count(*) from net.http_request_queue) - (select n from q0), 1::bigint, 'Iconique : annonce Discord envoyée');
+select ok((select convert_from(body, 'UTF8') from net.http_request_queue order by id desc limit 1) like '%Iconique%',
+  'Annonce : rareté en clair');
 select * from finish();
 rollback;

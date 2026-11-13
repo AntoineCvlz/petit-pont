@@ -451,7 +451,8 @@ Regroupé sous **Jouer** (et bouton « Défier en match » sur les profils publi
 
 ### Discord
 - **Annonces** (webhook configuré dans l'admin, stocké dans une table illisible via l'API, envoi asynchrone pg_net) :
-  grosses ouvertures, albums complétés, grosses ventes, vainqueurs de ligue, objectifs de clan.
+  ouvertures **Iconique et Spéciale** (migration `20261113070000_discord_pull_threshold.sql` ; les Légendaires restent
+  dans le fil du site), albums complétés, grosses ventes, vainqueurs de ligue, objectifs de clan.
 - **Commande `/carte <joueur>`** : route `/api/discord/interactions` (signature Ed25519 vérifiée, recherche
   sans accents), embed avec toutes les versions de la carte. Mise en service : `deploy/DEPLOIEMENT.md` § 4 ter.
 
