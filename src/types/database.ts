@@ -957,6 +957,58 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"mission_progress": {
+                  Row: {
+                    "claimed_at": string | null,"mission_id": number,"period_start": string,"progress": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "claimed_at"?: string | null,"mission_id": number,"period_start": string,"progress"?: number,"user_id": string
+                  }
+                  Update: {
+                    "claimed_at"?: string | null,"mission_id"?: number,"period_start"?: string,"progress"?: number,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "mission_progress_mission_id_fkey"
+      columns: ["mission_id"]
+isOneToOne: false
+      referencedRelation: "missions"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "mission_progress_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "mission_progress_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "mission_progress_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"missions": {
+                  Row: {
+                    "event": string,"id": number,"is_active": boolean,"link": string | null,"period": string,"slug": string,"sort_order": number,"target": number,"title": string,"tokens": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "event": string,"id"?: never,"is_active"?: boolean,"link"?: string | null,"period": string,"slug": string,"sort_order"?: number,"target": number,"title": string,"tokens": number
+                  }
+                  Update: {
+                    "event"?: string,"id"?: never,"is_active"?: boolean,"link"?: string | null,"period"?: string,"slug"?: string,"sort_order"?: number,"target"?: number,"title"?: string,"tokens"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"nations": {
                   Row: {
                     "code": string,"flag_colors": (string)[],"flag_layout": string,"id": number,"name": string
@@ -1203,14 +1255,14 @@ isOneToOne: false
                   ]
                 },"profiles": {
                   Row: {
-                    "avatar_url": string | null,"ban_reason": string | null,"banned_at": string | null,"coins": number,"created_at": string,"hide_activity": boolean,"id": string,"is_admin": boolean,"is_demo": boolean,"last_daily_bonus_at": string | null,"last_free_booster_at": string | null,"reduced_motion": boolean,"sound_enabled": boolean,"username": string
+                    "avatar_url": string | null,"ban_reason": string | null,"banned_at": string | null,"coins": number,"created_at": string,"hide_activity": boolean,"id": string,"is_admin": boolean,"is_demo": boolean,"last_daily_bonus_at": string | null,"last_free_booster_at": string | null,"reduced_motion": boolean,"sound_enabled": boolean,"tokens": number,"username": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "avatar_url"?: string | null,"ban_reason"?: string | null,"banned_at"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id": string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"username": string
+                    "avatar_url"?: string | null,"ban_reason"?: string | null,"banned_at"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id": string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"tokens"?: number,"username": string
                   }
                   Update: {
-                    "avatar_url"?: string | null,"ban_reason"?: string | null,"banned_at"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id"?: string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"username"?: string
+                    "avatar_url"?: string | null,"ban_reason"?: string | null,"banned_at"?: string | null,"coins"?: number,"created_at"?: string,"hide_activity"?: boolean,"id"?: string,"is_admin"?: boolean,"is_demo"?: boolean,"last_daily_bonus_at"?: string | null,"last_free_booster_at"?: string | null,"reduced_motion"?: boolean,"sound_enabled"?: boolean,"tokens"?: number,"username"?: string
                   }
                   Relationships: [
                     
@@ -1260,6 +1312,186 @@ isOneToOne: false
     },{
       foreignKeyName: "reports_reporter_id_fkey"
       columns: ["reporter_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"sbc_challenges": {
+                  Row: {
+                    "description": string,"id": number,"is_active": boolean,"name": string,"repeat": string,"requirements": NonNullable<Json>,"reward_booster": string,"reward_count": number,"slug": string,"sort_order": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "description": string,"id"?: never,"is_active"?: boolean,"name": string,"repeat"?: string,"requirements": NonNullable<Json>,"reward_booster": string,"reward_count"?: number,"slug": string,"sort_order"?: number
+                  }
+                  Update: {
+                    "description"?: string,"id"?: never,"is_active"?: boolean,"name"?: string,"repeat"?: string,"requirements"?: NonNullable<Json>,"reward_booster"?: string,"reward_count"?: number,"slug"?: string,"sort_order"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"sbc_completions": {
+                  Row: {
+                    "cards_used": (number)[],"challenge_id": number,"completed_at": string,"id": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "cards_used": (number)[],"challenge_id": number,"completed_at"?: string,"id"?: never,"user_id": string
+                  }
+                  Update: {
+                    "cards_used"?: (number)[],"challenge_id"?: number,"completed_at"?: string,"id"?: never,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "sbc_completions_challenge_id_fkey"
+      columns: ["challenge_id"]
+isOneToOne: false
+      referencedRelation: "sbc_challenges"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "sbc_completions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "sbc_completions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "sbc_completions_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"season_fixtures": {
+                  Row: {
+                    "goals1": number | null,"goals2": number | null,"matchday": number,"opp_goals1": number | null,"opp_goals2": number | null,"opp_strength": number,"opp_tactic1": string | null,"opp_tactic2": string | null,"opponent_club_id": number | null,"played_at": string | null,"run_id": string,"started_at": string | null,"status": string,"tactic1": string | null,"tactic2": string | null,"team_strength": number | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "goals1"?: number | null,"goals2"?: number | null,"matchday": number,"opp_goals1"?: number | null,"opp_goals2"?: number | null,"opp_strength": number,"opp_tactic1"?: string | null,"opp_tactic2"?: string | null,"opponent_club_id"?: number | null,"played_at"?: string | null,"run_id": string,"started_at"?: string | null,"status"?: string,"tactic1"?: string | null,"tactic2"?: string | null,"team_strength"?: number | null
+                  }
+                  Update: {
+                    "goals1"?: number | null,"goals2"?: number | null,"matchday"?: number,"opp_goals1"?: number | null,"opp_goals2"?: number | null,"opp_strength"?: number,"opp_tactic1"?: string | null,"opp_tactic2"?: string | null,"opponent_club_id"?: number | null,"played_at"?: string | null,"run_id"?: string,"started_at"?: string | null,"status"?: string,"tactic1"?: string | null,"tactic2"?: string | null,"team_strength"?: number | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "season_fixtures_opponent_club_id_fkey"
+      columns: ["opponent_club_id"]
+isOneToOne: false
+      referencedRelation: "clubs"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "season_fixtures_run_id_fkey"
+      columns: ["run_id"]
+isOneToOne: false
+      referencedRelation: "season_runs"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"season_runs": {
+                  Row: {
+                    "created_at": string,"draws": number,"finished_at": string | null,"goals_against": number,"goals_for": number,"id": string,"losses": number,"matchday": number,"number": number,"points": number,"rewards_given": (number)[],"status": string,"tier": number,"user_id": string,"wins": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "created_at"?: string,"draws"?: number,"finished_at"?: string | null,"goals_against"?: number,"goals_for"?: number,"id"?: string,"losses"?: number,"matchday"?: number,"number": number,"points"?: number,"rewards_given"?: (number)[],"status"?: string,"tier": number,"user_id": string,"wins"?: number
+                  }
+                  Update: {
+                    "created_at"?: string,"draws"?: number,"finished_at"?: string | null,"goals_against"?: number,"goals_for"?: number,"id"?: string,"losses"?: number,"matchday"?: number,"number"?: number,"points"?: number,"rewards_given"?: (number)[],"status"?: string,"tier"?: number,"user_id"?: string,"wins"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "season_runs_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "season_runs_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "season_runs_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"season_squads": {
+                  Row: {
+                    "formation": string,"slots": NonNullable<Json>,"updated_at": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "formation": string,"slots": NonNullable<Json>,"updated_at"?: string,"user_id": string
+                  }
+                  Update: {
+                    "formation"?: string,"slots"?: NonNullable<Json>,"updated_at"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "season_squads_formation_fkey"
+      columns: ["formation"]
+isOneToOne: false
+      referencedRelation: "draft_formations"
+      referencedColumns: ["code"]
+    },{
+      foreignKeyName: "season_squads_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: true
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "season_squads_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: true
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "season_squads_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: true
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"token_purchases": {
+                  Row: {
+                    "booster": string,"cost": number,"created_at": string,"id": number,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "booster": string,"cost": number,"created_at"?: string,"id"?: never,"user_id": string
+                  }
+                  Update: {
+                    "booster"?: string,"cost"?: number,"created_at"?: string,"id"?: never,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "token_purchases_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "token_purchases_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "token_purchases_user_id_fkey"
+      columns: ["user_id"]
 isOneToOne: false
       referencedRelation: "profiles"
       referencedColumns: ["id"]
@@ -1492,14 +1724,23 @@ isOneToOne: false
 "_draw_booster":
 { Args: { "p_booster_id": number,"p_grant_id"?: string,"p_price": number,"p_uid": string }; Returns: Json
                            },
+"_formation_chemistry":
+{ Args: { "p_formation": string,"p_picks": Json }; Returns: number
+                           },
 "_game_timezone":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"_grant_boosters":
+{ Args: { "p_booster_slug": string,"p_count": number,"p_reason": string,"p_user": string }; Returns: undefined
                            },
 "_leaderboard_metrics":
 { Args: Record<PropertyKey, never>; Returns: (string)[]
                            },
 "_mint_card":
 { Args: { "p_owner": string,"p_template": number,"p_via"?: string }; Returns: string
+                           },
+"_mission_event":
+{ Args: { "p_amount"?: number,"p_event": string,"p_user": string }; Returns: undefined
                            },
 "_penalty_ai_direction":
 { Args: { "p_follow": boolean,"p_habit": string }; Returns: string
@@ -1522,14 +1763,41 @@ isOneToOne: false
 "_penalty_winner":
 { Args: { "o_score": number,"o_taken": number,"p_score": number,"p_taken": number }; Returns: string
                            },
+"_period_start":
+{ Args: { "p_period": string }; Returns: string
+                           },
 "_pick_template":
 { Args: { "p_booster": number,"p_floor_rank"?: number,"p_rarity": Database["public"]['Enums']["rarity"] }; Returns: number
+                           },
+"_poisson":
+{ Args: { "p_lambda": number }; Returns: number
                            },
 "_release_instances":
 { Args: { "p_instance_ids": (string)[] }; Returns: undefined
                            },
 "_roll_rarity":
 { Args: { "p_booster": number,"p_min_rank"?: number }; Returns: Database["public"]['Enums']["rarity"]
+                           },
+"_sbc_available":
+{ Args: { "p_challenge": Omit<Database["public"]['Tables']["sbc_challenges"]['Row'], Database["public"]['Tables']["sbc_challenges"]['ComputedFields']>,"p_user": string }; Returns: boolean
+                           },
+"_sbc_check":
+{ Args: { "p_requirements": Json,"p_templates": (number)[] }; Returns: string
+                           },
+"_season_ai_tactic":
+{ Args: { "p_run": string }; Returns: string
+                           },
+"_season_half":
+{ Args: { "p_opp": number,"p_opp_tactic": string,"p_tactic": string,"p_team": number }; Returns: (number)[]
+                           },
+"_season_next_tier":
+{ Args: { "p_user": string }; Returns: number
+                           },
+"_season_state":
+{ Args: { "p_user": string }; Returns: Json
+                           },
+"_season_team":
+{ Args: { "p_user": string }; Returns: Json
                            },
 "_username_from":
 { Args: { "p_candidates": (string)[] }; Returns: string
@@ -1539,6 +1807,9 @@ isOneToOne: false
                            },
 "abandon_penalty_tournament":
 { Args: { "p_tournament_id": string }; Returns: undefined
+                           },
+"abandon_season":
+{ Args: Record<PropertyKey, never>; Returns: Json
                            },
 "accept_trade":
 { Args: { "p_trade_id": string }; Returns: undefined
@@ -1590,6 +1861,9 @@ isOneToOne: false
 "buy_listing":
 { Args: { "p_listing_id": string }; Returns: Json
                            },
+"buy_with_tokens":
+{ Args: { "p_booster": string }; Returns: number
+                           },
 "cancel_listing":
 { Args: { "p_listing_id": string }; Returns: undefined
                            },
@@ -1601,6 +1875,9 @@ isOneToOne: false
                            },
 "claim_daily_bonus":
 { Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"claim_mission":
+{ Args: { "p_mission_id": number }; Returns: number
                            },
 "create_listing":
 { Args: { "p_instance_id": string,"p_price": number }; Returns: string
@@ -1639,6 +1916,9 @@ isOneToOne: false
 "mark_all_notifications_read":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
+"missions_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "my_coin_totals":
 { Args: Record<PropertyKey, never>; Returns: {
               "earned": number,"spent": number
@@ -1676,11 +1956,25 @@ isOneToOne: false
 "report_player":
 { Args: { "p_reason": string,"p_reported": string }; Returns: undefined
                            },
+"sbc_list":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "available": boolean,"completions": number,"description": string,"id": number,"name": string,"repeat": string,"requirements": Json,"reward_booster": string,"reward_booster_name": string,"reward_count": number,"slug": string
+            }[]
+                           },
+"season_play_half":
+{ Args: { "p_tactic": string }; Returns: Json
+                           },
+"season_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "sell_all_duplicates":
 { Args: { "p_max_rarity"?: Database["public"]['Enums']["rarity"] }; Returns: Json
                            },
 "sell_duplicates":
 { Args: { "p_instance_ids": (string)[] }; Returns: Json
+                           },
+"set_season_squad":
+{ Args: { "p_formation": string,"p_slots": Json }; Returns: Json
                            },
 "set_showcase":
 { Args: { "p_instance_ids": (string)[] }; Returns: undefined
@@ -1690,6 +1984,12 @@ isOneToOne: false
                            },
 "start_penalty_tournament":
 { Args: { "p_keeper": string,"p_shooters": (string)[] }; Returns: Json
+                           },
+"start_season":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"submit_sbc":
+{ Args: { "p_challenge_id": number,"p_instance_ids": (string)[] }; Returns: Json
                            },
 "unblock_player":
 { Args: { "p_blocked": string }; Returns: undefined

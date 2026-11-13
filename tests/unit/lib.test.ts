@@ -94,5 +94,8 @@ describe("navigation", () => {
     expect(isActivePath("/wiki/mbappe", "/wiki")).toBe(true);
     expect(isActivePath("/wiki", "/")).toBe(false);
     expect(isActivePath("/wikipedia", "/wiki")).toBe(false);
+    expect(isActivePath("/saison", "/jouer")).toBe(true);
+    expect(isActivePath("/draft/abc", "/jouer")).toBe(true);
+    expect(isActivePath("/marche", "/jouer")).toBe(false);
   });
 });

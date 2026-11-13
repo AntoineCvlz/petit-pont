@@ -18,6 +18,7 @@ const PATHS: Record<NavIconName | "more", ReactNode> = {
   ),
   market: <path d="M4 9 6 4h12l2 5M4 9h16v11H4zM9 20v-6h6v6" />,
   trade: <path d="M4 8h13l-3-3M20 16H7l3 3" />,
+  play: <path d="M7 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L8.5 4.64A1 1 0 0 0 7 5.5z" />,
   draft: (
     <>
       <rect x="4" y="3" width="16" height="18" rx="1.5" />

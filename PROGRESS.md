@@ -396,3 +396,34 @@ Les 9 phases de la spec sont livrées.
 
 ### Comment tester
 - `/penalty` → « Lancer le tournoi » → cliquer dans le but jusqu'à la fin ; le solde augmente selon le tour atteint.
+
+## Modes « farm » : défis d'équipe, saison, missions (2026-11-13)
+
+Les packs gagnés arrivent dans l'inventaire « Packs offerts » (page Boosters), ouverts avec l'animation habituelle.
+Nouvelle entrée de menu **Jouer** (`/jouer`) qui regroupe Saison, Défis, Missions, Draft et Tirs au but.
+
+### Défis d'équipe (`/defis`)
+- 8 défis : sacrifier des cartes respectant des conditions (nombre, ligue, nation, note moyenne, rareté, nations
+  différentes) contre des packs. Fréquence : quotidien, hebdomadaire ou unique. Doublons proposés en premier,
+  vérification des conditions en direct, avertissement si l'on sacrifie son dernier exemplaire.
+- Côté serveur (`submit_sbc`) : cartes possédées, libres (ni en vente ni dans un échange en attente), conditions
+  revérifiées, cartes détruites, packs attribués. Migration `20261113010000_sbc.sql`.
+
+### Saison de clubs (`/saison`)
+- Onze composé depuis sa collection (formations du Draft, −15 hors poste, collectif identique au Draft) ;
+  force = note moyenne + collectif / 10. Composition automatique.
+- 10 journées contre des clubs de plus en plus forts ; match en 2 mi-temps, une tactique par mi-temps
+  (pressing > possession > contre-attaque > pressing) ; l'ordinateur contre la tactique favorite du joueur une fois
+  sur deux. Buts tirés côté serveur (loi de Poisson, moyenne bornée à 1,5 par mi-temps). 3 matchs par jour.
+- Paliers 6 / 12 / 18 / 24 points → packs (dernier palier bonifié dans les divisions supérieures).
+  **Divisions** : montée à 18 points, descente sous 9. Migration `20261113020000_season.sql`.
+- Équilibrage simulé : une équipe de force 84 se stabilise vers la division 3 (≈ 2 packs par saison de ~3 jours).
+
+### Missions (`/missions`)
+- 5 missions quotidiennes et 5 hebdomadaires (boosters, bonus, saison, draft, tirs au but, défis, marché),
+  comptées automatiquement par déclencheurs sur les tables de jeu. Récompense en jetons à récupérer.
+- Boutique à jetons : Booster Tribune 100 jetons, Booster Loge 250. Migration `20261113030000_missions.sql`.
+- Gain maximal ≈ 500 jetons par semaine (≈ 5 Tribune).
+
+### Tests
+- pgTAP `13_farm` (38) ; unitaires `sbc.test.ts`, navigation. Parcours navigateur desktop + mobile.
