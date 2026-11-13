@@ -351,3 +351,27 @@ Les 9 phases de la spec sont livrées.
 
 ### Limites connues
 - Un bannissement ne supprime pas les cartes déjà vendues ou échangées à d'autres joueurs (utiliser « retirer des cartes »).
+
+## Mode Draft et collectif (2026-11-13)
+
+### Fait
+- **`/draft`** : choix d'une formation (4-3-3, 4-4-2, 4-2-3-1, 3-5-2), puis 11 choix successifs parmi **5 cartes tirées au
+  hasard dans tout le catalogue** (poste du créneau, un footballeur une seule fois, tirage pondéré par rareté).
+  Les cartes ne sont ni possédées ni conservées. Gratuit, **5 drafts par jour** (réglage `draft_daily_limit`, abandons compris),
+  un seul draft en cours à la fois (on le reprend en revenant sur la page).
+- **Collectif** à l'ancienne entre postes voisins : **vert** = même club, ou même ligue et même nation ; **orange** = même
+  ligue ou même nation ; **rouge** = rien en commun. Chaque joueur vaut jusqu'à 10 (moyenne de ses liens), total plafonné à 100.
+  Terrain avec liens colorés et collectif par joueur en direct.
+- **Score = note moyenne des 11 + collectif / 20** (jusqu'à +5), calculé par la base. **Classement all-time** (meilleur score
+  par joueur, comptes suspendus exclus) ; chaque équipe classée est consultable (`/draft/[id]`).
+- **Ligues** : table `leagues` (15 championnats) et `clubs.league_id`, ligue actuelle de chaque club recoupée Wikidata
+  (P118) / Wikipédia (Deportivo en LaLiga, Saint-Étienne en Ligue 2, Bordeaux en National 2…).
+- Migration `20261112140000_draft.sql` (tirage, liens, collectif, score : tout côté serveur, le client n'envoie que l'index
+  choisi), tests pgTAP `11_draft` (26) et unitaires `draft.test.ts` (règles identiques côté client pour l'affichage).
+
+### Comment tester
+- Joueur A : `/draft` → formation → 11 choix → page résultat (rang). Joueur B dans une autre fenêtre : classement à jour,
+  équipe de A consultable, son propre draft en cours invisible pour A.
+
+### Limites connues
+- Postes simplifiés aux 4 postes des cartes (GB, DEF, MIL, ATT) : pas de malus de poste, pas de remplaçants ni de capitaine.

@@ -18,6 +18,14 @@ const PATHS: Record<NavIconName | "more", ReactNode> = {
   ),
   market: <path d="M4 9 6 4h12l2 5M4 9h16v11H4zM9 20v-6h6v6" />,
   trade: <path d="M4 8h13l-3-3M20 16H7l3 3" />,
+  draft: (
+    <>
+      <rect x="4" y="3" width="16" height="18" rx="1.5" />
+      <path d="M4 12h16" />
+      <circle cx="12" cy="12" r="2.5" />
+      <path d="M9 3v3h6V3M9 21v-3h6v3" />
+    </>
+  ),
   ranking: <path d="M5 20v-6h4v6M10 20V9h4v11M15 20v-9h4v9" />,
   wiki: (
     <>

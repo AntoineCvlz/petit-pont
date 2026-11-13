@@ -105,6 +105,11 @@ from (values
 ) as c(code, name, short_name, city, nation, p, s)
 left join public.nations n on n.code = c.nation;
 
+-- Ligue actuelle de chaque club (fonction de la migration …_draft.sql)
+update public.clubs c set league_id = l.id
+from public.leagues l
+where l.code = public._club_league_code(c.code);
+
 -- -----------------------------------------------------------------------------
 -- Joueurs
 -- -----------------------------------------------------------------------------

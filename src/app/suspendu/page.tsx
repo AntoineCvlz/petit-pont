@@ -15,12 +15,8 @@ async function SuspendedNotice() {
 
   return (
     <div className="w-full max-w-sm rounded-2xl border border-danger/40 bg-night-850/95 p-6 text-center shadow-2xl">
-      <h1 className="font-display text-2xl font-extrabold tracking-wide uppercase italic">
-        Carton rouge
-      </h1>
-      <p className="mt-2 text-sm text-chalk-muted">
-        Ton compte a été suspendu par l&apos;équipe de Petit Pont.
-      </p>
+      <h1 className="font-display text-2xl font-extrabold tracking-wide uppercase italic">Carton rouge</h1>
+      <p className="mt-2 text-sm text-chalk-muted">Ton compte a été suspendu par l&apos;équipe de Petit Pont.</p>
       {profile.banReason && (
         <p className="mt-3 rounded-lg bg-night-900 px-3 py-2 text-sm">
           <span className="text-chalk-faint">Motif : </span>

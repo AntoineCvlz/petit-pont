@@ -585,17 +585,23 @@ isOneToOne: false
                   ]
                 },"clubs": {
                   Row: {
-                    "city": string | null,"code": string,"color_primary": string,"color_secondary": string,"crest_url": string | null,"id": number,"name": string,"nation_id": number | null,"short_name": string
+                    "city": string | null,"code": string,"color_primary": string,"color_secondary": string,"crest_url": string | null,"id": number,"league_id": number | null,"name": string,"nation_id": number | null,"short_name": string
                   }
                   ComputedFields: never
                   Insert: {
-                    "city"?: string | null,"code": string,"color_primary"?: string,"color_secondary"?: string,"crest_url"?: string | null,"id"?: never,"name": string,"nation_id"?: number | null,"short_name": string
+                    "city"?: string | null,"code": string,"color_primary"?: string,"color_secondary"?: string,"crest_url"?: string | null,"id"?: never,"league_id"?: number | null,"name": string,"nation_id"?: number | null,"short_name": string
                   }
                   Update: {
-                    "city"?: string | null,"code"?: string,"color_primary"?: string,"color_secondary"?: string,"crest_url"?: string | null,"id"?: never,"name"?: string,"nation_id"?: number | null,"short_name"?: string
+                    "city"?: string | null,"code"?: string,"color_primary"?: string,"color_secondary"?: string,"crest_url"?: string | null,"id"?: never,"league_id"?: number | null,"name"?: string,"nation_id"?: number | null,"short_name"?: string
                   }
                   Relationships: [
                     {
+      foreignKeyName: "clubs_league_id_fkey"
+      columns: ["league_id"]
+isOneToOne: false
+      referencedRelation: "leagues"
+      referencedColumns: ["id"]
+    },{
       foreignKeyName: "clubs_nation_id_fkey"
       columns: ["nation_id"]
 isOneToOne: false
@@ -635,6 +641,90 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"draft_formations": {
+                  Row: {
+                    "code": string,"links": NonNullable<Json>,"name": string,"slots": NonNullable<Json>,"sort_order": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "code": string,"links": NonNullable<Json>,"name": string,"slots": NonNullable<Json>,"sort_order"?: number
+                  }
+                  Update: {
+                    "code"?: string,"links"?: NonNullable<Json>,"name"?: string,"slots"?: NonNullable<Json>,"sort_order"?: number
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"draft_picks": {
+                  Row: {
+                    "draft_id": string,"slot_index": number,"slot_key": string,"template_id": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "draft_id": string,"slot_index": number,"slot_key": string,"template_id": number
+                  }
+                  Update: {
+                    "draft_id"?: string,"slot_index"?: number,"slot_key"?: string,"template_id"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "draft_picks_draft_id_fkey"
+      columns: ["draft_id"]
+isOneToOne: false
+      referencedRelation: "drafts"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "draft_picks_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "card_templates"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "draft_picks_template_id_fkey"
+      columns: ["template_id"]
+isOneToOne: false
+      referencedRelation: "most_wanted_cards"
+      referencedColumns: ["template_id"]
+    }
+                  ]
+                },"drafts": {
+                  Row: {
+                    "chemistry": number | null,"completed_at": string | null,"created_at": string,"current_slot": number,"formation": string,"id": string,"offer": (number)[],"rating": number | null,"score": number | null,"status": string,"user_id": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "chemistry"?: number | null,"completed_at"?: string | null,"created_at"?: string,"current_slot"?: number,"formation": string,"id"?: string,"offer"?: (number)[],"rating"?: number | null,"score"?: number | null,"status"?: string,"user_id": string
+                  }
+                  Update: {
+                    "chemistry"?: number | null,"completed_at"?: string | null,"created_at"?: string,"current_slot"?: number,"formation"?: string,"id"?: string,"offer"?: (number)[],"rating"?: number | null,"score"?: number | null,"status"?: string,"user_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "drafts_formation_fkey"
+      columns: ["formation"]
+isOneToOne: false
+      referencedRelation: "draft_formations"
+      referencedColumns: ["code"]
+    },{
+      foreignKeyName: "drafts_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "coin_balance_audit"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "drafts_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "leaderboard_stats"
+      referencedColumns: ["user_id"]
+    },{
+      foreignKeyName: "drafts_user_id_fkey"
+      columns: ["user_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"leaderboard_top10": {
                   Row: {
                     "metric": string,"user_id": string
@@ -664,6 +754,26 @@ isOneToOne: false
       columns: ["user_id"]
 isOneToOne: false
       referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"leagues": {
+                  Row: {
+                    "code": string,"id": number,"name": string,"nation_id": number | null,"short_name": string,"sort_order": number
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "code": string,"id"?: never,"name": string,"nation_id"?: number | null,"short_name": string,"sort_order"?: number
+                  }
+                  Update: {
+                    "code"?: string,"id"?: never,"name"?: string,"nation_id"?: number | null,"short_name"?: string,"sort_order"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "leagues_nation_id_fkey"
+      columns: ["nation_id"]
+isOneToOne: false
+      referencedRelation: "nations"
       referencedColumns: ["id"]
     }
                   ]
@@ -1247,8 +1357,23 @@ isOneToOne: false
 "_clean_reason":
 { Args: { "p_reason": string }; Returns: string
                            },
+"_club_league_code":
+{ Args: { "p_club_code": string }; Returns: string
+                           },
 "_discord_avatar":
 { Args: { "p_url": string }; Returns: string
+                           },
+"_draft_chemistry":
+{ Args: { "p_draft_id": string }; Returns: number
+                           },
+"_draft_link":
+{ Args: { "p_a": number,"p_b": number }; Returns: number
+                           },
+"_draft_offer":
+{ Args: { "p_draft_id": string,"p_position": Database["public"]['Enums']["player_position"] }; Returns: (number)[]
+                           },
+"_draft_state":
+{ Args: { "p_draft_id": string }; Returns: Json
                            },
 "_draw_booster":
 { Args: { "p_booster_id": number,"p_grant_id"?: string,"p_price": number,"p_uid": string }; Returns: Json
@@ -1273,6 +1398,9 @@ isOneToOne: false
                            },
 "_username_from":
 { Args: { "p_candidates": (string)[] }; Returns: string
+                           },
+"abandon_draft":
+{ Args: { "p_draft_id": string }; Returns: undefined
                            },
 "accept_trade":
 { Args: { "p_trade_id": string }; Returns: undefined
@@ -1345,6 +1473,17 @@ isOneToOne: false
 "decline_trade":
 { Args: { "p_trade_id": string }; Returns: undefined
                            },
+"draft_leaderboard":
+{ Args: { "p_limit"?: number }; Returns: {
+              "avatar_url": string,"chemistry": number,"completed_at": string,"draft_id": string,"formation": string,"is_me": boolean,"rank": number,"rating": number,"score": number,"user_id": string,"username": string
+            }[]
+                           },
+"draft_pick":
+{ Args: { "p_choice": number,"p_draft_id": string }; Returns: Json
+                           },
+"draft_status":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
 "expire_trades":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
@@ -1396,6 +1535,9 @@ isOneToOne: false
                            },
 "set_showcase":
 { Args: { "p_instance_ids": (string)[] }; Returns: undefined
+                           },
+"start_draft":
+{ Args: { "p_formation": string }; Returns: Json
                            },
 "unblock_player":
 { Args: { "p_blocked": string }; Returns: undefined
