@@ -58,7 +58,10 @@ export type AccountFilter = "tous" | "bannis" | "demo";
 
 export async function listAccounts(search: string, filter: AccountFilter = "tous"): Promise<AdminAccount[]> {
   const supabase = await createClient();
-  const term = search.trim().replace(/[^A-Za-z0-9_.-]/g, "").slice(0, 20);
+  const term = search
+    .trim()
+    .replace(/[^A-Za-z0-9_.-]/g, "")
+    .slice(0, 20);
   let query = supabase.from("profiles").select(ACCOUNT_SELECT).order("created_at", { ascending: false }).limit(100);
   if (term) query = query.ilike("username", `%${term.replace(/[_%]/g, (m) => `\\${m}`)}%`);
   if (filter === "bannis") query = query.not("banned_at", "is", null);
@@ -176,8 +179,7 @@ export async function getAccountDetail(id: string): Promise<AccountDetail | null
   if (error) throw error;
   if (!account) return null;
 
-  const [catalog, copies, gifts, openings, trades, coins, actions] = await Promise.all([
-    getTemplateCatalog(),
+  const [copies, gifts, openings, trades, coins, actions] = await Promise.all([
     fetchAll((from, to) =>
       supabase
         .from("card_instances")
@@ -188,7 +190,12 @@ export async function getAccountDetail(id: string): Promise<AccountDetail | null
         .range(from, to),
     ),
     supabase.from("booster_grants").select("boosters!inner ( name )").eq("user_id", id).is("opened_at", null),
-    supabase.from("booster_openings").select(OPENING_SELECT).eq("user_id", id).order("created_at", { ascending: false }).limit(20),
+    supabase
+      .from("booster_openings")
+      .select(OPENING_SELECT)
+      .eq("user_id", id)
+      .order("created_at", { ascending: false })
+      .limit(20),
     supabase
       .from("trades")
       .select(TRADE_SELECT)
@@ -209,6 +216,10 @@ export async function getAccountDetail(id: string): Promise<AccountDetail | null
   if (trades.error) throw trades.error;
   if (coins.error) throw coins.error;
   if (actions.error) throw actions.error;
+  const catalog = await getTemplateCatalog([
+    ...copies.map((c) => c.template_id),
+    ...(openings.data as unknown as OpeningRow[]).flatMap((o) => o.template_ids),
+  ]);
 
   const giftCounts = new Map<string, number>();
   for (const g of gifts.data) giftCounts.set(g.boosters.name, (giftCounts.get(g.boosters.name) ?? 0) + 1);
@@ -248,12 +259,15 @@ export async function getAccountDetail(id: string): Promise<AccountDetail | null
 /** Dernières ouvertures de boosters, tous joueurs confondus (« cartes packées »). */
 export async function listOpenings(limit = 60): Promise<AdminOpening[]> {
   const supabase = await createClient();
-  const [catalog, { data, error }] = await Promise.all([
-    getTemplateCatalog(),
-    supabase.from("booster_openings").select(OPENING_SELECT).order("created_at", { ascending: false }).limit(limit),
-  ]);
+  const { data, error } = await supabase
+    .from("booster_openings")
+    .select(OPENING_SELECT)
+    .order("created_at", { ascending: false })
+    .limit(limit);
   if (error) throw error;
-  return (data as unknown as OpeningRow[]).map((o) => toOpening(o, catalog));
+  const rows = data as unknown as OpeningRow[];
+  const catalog = await getTemplateCatalog(rows.flatMap((o) => o.template_ids));
+  return rows.map((o) => toOpening(o, catalog));
 }
 
 export async function listAllTrades(status: TradeStatus | "tous", limit = 50): Promise<TradeView[]> {
@@ -276,16 +290,10 @@ export async function listAdminActions(limit = 100): Promise<AdminActionEntry[]>
   return (data as unknown as ActionRow[]).map(toAction);
 }
 
-/** Choix proposés dans les formulaires « offrir » (boosters actifs, catalogue de cartes). */
-export async function getGiftOptions(): Promise<{ boosters: { id: number; name: string }[]; templates: CardTemplateView[] }> {
+/** Boosters proposés dans le formulaire « offrir » (les cartes se cherchent par nom, cf. searchGiftTemplates). */
+export async function getGiftOptions(): Promise<{ boosters: { id: number; name: string }[] }> {
   const supabase = await createClient();
-  const [catalog, { data: boosters, error }] = await Promise.all([
-    getTemplateCatalog(),
-    supabase.from("boosters").select("id, name").eq("is_active", true).order("sort_order"),
-  ]);
+  const { data: boosters, error } = await supabase.from("boosters").select("id, name").eq("is_active", true).order("sort_order");
   if (error) throw error;
-  return {
-    boosters,
-    templates: [...catalog.values()].sort((a, b) => a.collectionNumber - b.collectionNumber),
-  };
+  return { boosters };
 }

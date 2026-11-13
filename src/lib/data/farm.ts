@@ -20,7 +20,7 @@ export type OwnedCopy = {
 /** Tous les exemplaires du joueur, avec la ligue de leur club et le nombre de copies de chaque carte. */
 export async function getOwnedCopies(ownerId: string): Promise<OwnedCopy[]> {
   const supabase = await createClient();
-  const [rows, catalog, leagues] = await Promise.all([
+  const [rows, leagues] = await Promise.all([
     fetchAll((from, to) =>
       supabase
         .from("card_instances")
@@ -30,9 +30,9 @@ export async function getOwnedCopies(ownerId: string): Promise<OwnedCopy[]> {
         .order("serial_number", { ascending: false })
         .range(from, to),
     ),
-    getTemplateCatalog(),
     getClubLeagues(),
   ]);
+  const catalog = await getTemplateCatalog(rows.map((r) => r.template_id));
   const counts = new Map<number, number>();
   for (const r of rows) counts.set(r.template_id, (counts.get(r.template_id) ?? 0) + 1);
   return rows.flatMap((r) => {

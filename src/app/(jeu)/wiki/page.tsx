@@ -4,19 +4,25 @@ import { Flag } from "@/components/ui/Flag";
 import { EmptyState, PageHeader } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 import { buttonClasses } from "@/components/ui/Button";
-import { listPlayers } from "@/lib/data/wiki";
+import { listPlayers, WIKI_PAGE_SIZE } from "@/lib/data/wiki";
 import { POSITION_LABELS } from "@/lib/rarity";
 
 export const metadata: Metadata = { title: "Wiki des joueurs" };
 
 export default async function WikiPage({ searchParams }: PageProps<"/wiki">) {
-  const { q } = await searchParams;
+  const { q, page: pageParam } = await searchParams;
   const search = typeof q === "string" ? q : "";
-  const players = await listPlayers(search);
+  const page = Math.max(1, Math.min(10_000, Number(typeof pageParam === "string" ? pageParam : 1) || 1));
+  const { players, total } = await listPlayers(search, page);
+  const pages = Math.max(1, Math.ceil(total / WIKI_PAGE_SIZE));
+  const pageHref = (p: number) => `/wiki?${new URLSearchParams({ ...(search ? { q: search } : {}), page: String(p) })}`;
 
   return (
     <>
-      <PageHeader title="Wiki des joueurs" subtitle={`${players.length} joueur${players.length > 1 ? "s" : ""}`}>
+      <PageHeader
+        title="Wiki des joueurs"
+        subtitle={`${total.toLocaleString("fr-FR")} joueur${total > 1 ? "s" : ""}${pages > 1 ? ` · page ${page}/${pages}` : ""}`}
+      >
         <form role="search" className="flex w-full gap-2 sm:w-auto">
           <label htmlFor="q" className="sr-only">
             Rechercher un joueur
@@ -58,6 +64,27 @@ export default async function WikiPage({ searchParams }: PageProps<"/wiki">) {
             </li>
           ))}
         </ul>
+      )}
+      {pages > 1 && (
+        <nav aria-label="Pages" className="mt-4 flex items-center justify-between">
+          {page > 1 ? (
+            <Link href={pageHref(page - 1)} className={buttonClasses("secondary", "sm")}>
+              ← Précédents
+            </Link>
+          ) : (
+            <span />
+          )}
+          <span className="text-xs text-chalk-muted tabular-nums">
+            {page} / {pages}
+          </span>
+          {page < pages ? (
+            <Link href={pageHref(page + 1)} className={buttonClasses("secondary", "sm")}>
+              Suivants →
+            </Link>
+          ) : (
+            <span />
+          )}
+        </nav>
       )}
 
       <p className="mt-6 text-xs text-chalk-faint">

@@ -51,3 +51,7 @@ deploy/supabase/
 
 # Médias : fichiers sources téléchargés (régénérables)
 scripts/media/raw/
+
+# Catalogue externe (données sous droits, dépôt public) : jamais versionné
+archive/
+scripts/fc27/out/

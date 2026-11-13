@@ -8,7 +8,26 @@ import { RarityBadge } from "@/components/ui/RarityBadge";
 import { getCollectionTotal } from "@/lib/data/cards";
 import { getPlayer } from "@/lib/data/wiki";
 import { formatCoins } from "@/lib/format";
+import { DETAIL_POSITIONS, statRows } from "@/lib/positions";
 import { POSITION_LABELS } from "@/lib/rarity";
+
+function Stars({ value }: { value: number }) {
+  return (
+    <span aria-label={`${value} étoile${value > 1 ? "s" : ""} sur 5`}>
+      <span className="text-coin">{"★".repeat(value)}</span>
+      <span className="text-chalk-faint">{"★".repeat(5 - value)}</span>
+    </span>
+  );
+}
+
+function formatBirthdate(iso: string): string {
+  return new Date(`${iso}T12:00:00Z`).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
 
 export async function generateMetadata({ params }: PageProps<"/wiki/[slug]">): Promise<Metadata> {
   const { slug } = await params;
@@ -21,7 +40,10 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
   const [player, total] = await Promise.all([getPlayer(slug), getCollectionTotal()]);
   if (!player) notFound();
 
-  const currentClub = player.clubs.find((c) => c.endYear === null && c.startYear !== null) ?? null;
+  const currentClub =
+    player.clubs.find((c) => c.endYear === null && c.startYear !== null) ?? player.clubs.find((c) => c.endYear === null) ?? null;
+  const detail = player.positionDetail ? DETAIL_POSITIONS[player.positionDetail] : undefined;
+  const stats = statRows(player.stats);
   const bio =
     player.bio ??
     `${POSITION_LABELS[player.position]} international (${player.nation.name})${currentClub ? `, actuellement à ${currentClub.name}` : ""}.`;
@@ -57,11 +79,41 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
             <dt className="text-chalk-faint">Nation</dt>
             <dd>{player.nation.name}</dd>
             <dt className="text-chalk-faint">Poste</dt>
-            <dd>{POSITION_LABELS[player.position]}</dd>
-            {player.birthYear && (
+            <dd>
+              {detail ? `${detail.label} (${detail.short})` : POSITION_LABELS[player.position]}
+              {player.altPositions.length > 0 && (
+                <span className="text-chalk-faint">
+                  {" "}
+                  · aussi {player.altPositions.map((p) => DETAIL_POSITIONS[p]?.short ?? p).join(", ")}
+                </span>
+              )}
+            </dd>
+            {(player.birthdate || player.birthYear) && (
               <>
                 <dt className="text-chalk-faint">Naissance</dt>
-                <dd>{player.birthYear}</dd>
+                <dd>{player.birthdate ? formatBirthdate(player.birthdate) : player.birthYear}</dd>
+              </>
+            )}
+            {player.preferredFoot && (
+              <>
+                <dt className="text-chalk-faint">Pied fort</dt>
+                <dd>{player.preferredFoot}</dd>
+              </>
+            )}
+            {player.weakFoot !== null && (
+              <>
+                <dt className="text-chalk-faint">Mauvais pied</dt>
+                <dd>
+                  <Stars value={player.weakFoot} />
+                </dd>
+              </>
+            )}
+            {player.skillMoves !== null && (
+              <>
+                <dt className="text-chalk-faint">Gestes techniques</dt>
+                <dd>
+                  <Stars value={player.skillMoves} />
+                </dd>
               </>
             )}
             <dt className="text-chalk-faint">Clubs</dt>
@@ -85,6 +137,30 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
               </ul>
             </dd>
           </dl>
+          {stats.length > 0 && (
+            <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-line pt-4 text-sm">
+              {stats.map((s) => (
+                <div key={s.key}>
+                  <div className="flex items-baseline justify-between">
+                    <dt className="text-chalk-muted">{s.label}</dt>
+                    <dd className="font-display font-bold tabular-nums">{s.value}</dd>
+                  </div>
+                  <div className="mt-1 h-1 rounded-full bg-night-700" aria-hidden="true">
+                    <div
+                      className={
+                        s.value >= 80
+                          ? "h-full rounded-full bg-turf"
+                          : s.value >= 60
+                            ? "h-full rounded-full bg-coin"
+                            : "h-full rounded-full bg-danger"
+                      }
+                      style={{ width: `${s.value}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </dl>
+          )}
         </Panel>
 
         <Panel title={`Versions de cartes (${player.versions.length})`}>

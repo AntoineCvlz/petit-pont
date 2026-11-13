@@ -2,7 +2,7 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/data/cards";
 import { normalizeOdds, parseAvailability, type Availability, type BoosterKind, type Odds } from "@/lib/boosters";
-import { compareRarityDesc, type Rarity } from "@/lib/rarity";
+import { RARITIES, type Rarity } from "@/lib/rarity";
 
 export type BoosterView = {
   id: number;
@@ -96,22 +96,44 @@ export async function getBooster(slug: string): Promise<BoosterView | null> {
   return view!;
 }
 
-/** Cartes possibles : pool restreint du booster, sinon tout le catalogue actif. */
-export async function getBoosterPool(boosterId: number): Promise<CardTemplateView[]> {
-  const supabase = await createClient();
-  const { data: pool, error: poolError } = await supabase
-    .from("booster_cards")
-    .select("template_id")
-    .eq("booster_id", boosterId);
-  if (poolError) throw poolError;
+export type BoosterPoolGroup = { rarity: Rarity; count: number; cards: CardTemplateView[] };
 
-  let query = supabase.from("card_templates").select(TEMPLATE_SELECT).eq("is_active", true);
-  if (pool.length > 0) query = query.in("id", pool.map((p) => p.template_id));
-  const { data, error } = await query;
-  if (error) throw error;
-  return data
-    .map((row) => toTemplateView(row as never))
-    .sort((a, b) => compareRarityDesc(a.rarity, b.rarity) || b.rating - a.rating);
+/**
+ * Cartes possibles par rareté : pool restreint du booster, sinon tout le catalogue actif (des milliers de cartes :
+ * on compte tout mais on ne montre que les mieux notées de chaque rareté).
+ */
+export async function getBoosterPool(boosterId: number, perRarity = 40): Promise<{ total: number; groups: BoosterPoolGroup[] }> {
+  const supabase = await createClient();
+  const { data: pool, error: poolError } = await supabase.from("booster_cards").select("template_id").eq("booster_id", boosterId);
+  if (poolError) throw poolError;
+  const ids = pool.map((p) => p.template_id);
+
+  const groups = await Promise.all(
+    [...RARITIES].reverse().map(async (rarity): Promise<BoosterPoolGroup> => {
+      let countQ = supabase
+        .from("card_templates")
+        .select("id", { count: "exact", head: true })
+        .eq("is_active", true)
+        .eq("rarity", rarity);
+      let cardsQ = supabase
+        .from("card_templates")
+        .select(TEMPLATE_SELECT)
+        .eq("is_active", true)
+        .eq("rarity", rarity)
+        .order("rating", { ascending: false })
+        .order("collection_number")
+        .limit(perRarity);
+      if (ids.length > 0) {
+        countQ = countQ.in("id", ids);
+        cardsQ = cardsQ.in("id", ids);
+      }
+      const [c, d] = await Promise.all([countQ, cardsQ]);
+      if (c.error) throw c.error;
+      if (d.error) throw d.error;
+      return { rarity, count: c.count ?? 0, cards: d.data.map((row) => toTemplateView(row as never)) };
+    }),
+  );
+  return { total: groups.reduce((s, g) => s + g.count, 0), groups: groups.filter((g) => g.count > 0) };
 }
 
 /** Date à laquelle le booster gratuit sera de nouveau disponible (null = disponible). */

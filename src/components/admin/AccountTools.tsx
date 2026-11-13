@@ -1,8 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState, useTransition } from "react";
-import { adjustCoins, giveBoosters, giveCards, removeCards, resetAccount, setBan, type AdminResult } from "@/lib/actions/admin";
+import { useEffect, useMemo, useState, useTransition } from "react";
+import {
+  adjustCoins,
+  giveBoosters,
+  giveCards,
+  removeCards,
+  resetAccount,
+  searchGiftTemplates,
+  setBan,
+  type AdminResult,
+} from "@/lib/actions/admin";
 import { AdminForm } from "@/components/admin/AdminForm";
 import { SelectField, TextField } from "@/components/admin/Fields";
 import { Button } from "@/components/ui/Button";
@@ -35,17 +44,46 @@ export function GiveBoostersForm({ userId, boosters }: { userId: string; booster
         <SelectField label="Booster" name="booster_id" required options={boosters.map((b) => ({ value: b.id, label: b.name }))} />
         <TextField label="Nombre" name="count" type="number" min={1} max={50} defaultValue={1} required />
       </div>
-      <TextField label="Message (facultatif)" name="reason" maxLength={300} placeholder="Ex. : merci pour ton signalement de bug" />
+      <TextField
+        label="Message (facultatif)"
+        name="reason"
+        maxLength={300}
+        placeholder="Ex. : merci pour ton signalement de bug"
+      />
     </AdminForm>
   );
 }
 
-export function GiveCardsForm({ userId, templates }: { userId: string; templates: { id: number; label: string }[] }) {
+export function GiveCardsForm({ userId }: { userId: string }) {
+  const [query, setQuery] = useState("");
+  const [results, setResults] = useState<{ id: number; label: string }[]>([]);
+  const [searching, startSearch] = useTransition();
+  useEffect(() => {
+    const term = query.trim();
+    const timer = setTimeout(() => {
+      if (term.length < 2) setResults([]);
+      else startSearch(async () => setResults(await searchGiftTemplates(term)));
+    }, 250);
+    return () => clearTimeout(timer);
+  }, [query]);
   return (
     <AdminForm action={giveCards} submitLabel="Offrir">
       <input type="hidden" name="user_id" value={userId} />
+      <TextField
+        label="Chercher un joueur"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Ex. : mbappe"
+        hint={searching ? "Recherche…" : query.trim().length >= 2 && results.length === 0 ? "Aucune carte trouvée." : undefined}
+      />
       <div className="grid gap-3 sm:grid-cols-[1fr_90px]">
-        <SelectField label="Carte" name="template_id" required options={templates.map((t) => ({ value: t.id, label: t.label }))} />
+        <SelectField
+          key={results.map((r) => r.id).join(",")}
+          label="Carte"
+          name="template_id"
+          required
+          options={results.map((t) => ({ value: t.id, label: t.label }))}
+        />
         <TextField label="Exemplaires" name="count" type="number" min={1} max={20} defaultValue={1} required />
       </div>
       <TextField label="Message (facultatif)" name="reason" maxLength={300} />
@@ -183,7 +221,9 @@ export function AccountDangerZone({
           run={(reason) => setBan(userId, true, reason)}
         />
       )}
-      {protectedAccount && <p className="text-xs text-chalk-faint">Compte administrateur : réinitialisation et bannissement impossibles.</p>}
+      {protectedAccount && (
+        <p className="text-xs text-chalk-faint">Compte administrateur : réinitialisation et bannissement impossibles.</p>
+      )}
     </div>
   );
 }
@@ -279,7 +319,9 @@ export function CopyManager({ copies }: { copies: CopyRow[] }) {
                   #{c.serialNumber}
                   {c.maxSupply ? `/${c.maxSupply}` : ""}
                 </td>
-                <td className="hidden px-2 py-1.5 text-chalk-muted sm:table-cell">{VIA_LABELS[c.obtainedVia] ?? c.obtainedVia}</td>
+                <td className="hidden px-2 py-1.5 text-chalk-muted sm:table-cell">
+                  {VIA_LABELS[c.obtainedVia] ?? c.obtainedVia}
+                </td>
                 <td className="hidden px-2 py-1.5 text-chalk-muted md:table-cell">{formatDate(c.obtainedAt)}</td>
               </tr>
             ))}
@@ -319,7 +361,12 @@ export function CopyManager({ copies }: { copies: CopyRow[] }) {
           Les exemplaires sont supprimés ; une annonce ou un échange en attente qui les contient est annulé (les deux joueurs sont
           prévenus).
         </p>
-        <TextField label="Motif (facultatif, visible par le joueur)" value={reason} maxLength={300} onChange={(e) => setReason(e.target.value)} />
+        <TextField
+          label="Motif (facultatif, visible par le joueur)"
+          value={reason}
+          maxLength={300}
+          onChange={(e) => setReason(e.target.value)}
+        />
       </Modal>
     </div>
   );

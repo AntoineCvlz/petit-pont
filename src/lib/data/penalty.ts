@@ -126,7 +126,7 @@ export async function getOpponentClub(clubId: number | null): Promise<ClubView |
 }
 
 export async function resolveTemplates(ids: number[]): Promise<Record<number, CardTemplateView>> {
-  const catalog = await getTemplateCatalog();
+  const catalog = await getTemplateCatalog(ids);
   const out: Record<number, CardTemplateView> = {};
   for (const id of ids) {
     const t = catalog.get(id);
@@ -140,18 +140,10 @@ export type RosterCard = { instanceId: string; template: CardTemplateView };
 /** Cartes du joueur utilisables : un exemplaire par carte (le premier obtenu). */
 export async function getPenaltyRoster(ownerId: string): Promise<RosterCard[]> {
   const supabase = await createClient();
-  const [rows, catalog] = await Promise.all([
-    fetchAll((from, to) =>
-      supabase
-        .from("card_instances")
-        .select("id, template_id")
-        .eq("owner_id", ownerId)
-        .order("obtained_at")
-        .order("id")
-        .range(from, to),
-    ),
-    getTemplateCatalog(),
-  ]);
+  const rows = await fetchAll((from, to) =>
+    supabase.from("card_instances").select("id, template_id").eq("owner_id", ownerId).order("obtained_at").order("id").range(from, to),
+  );
+  const catalog = await getTemplateCatalog(rows.map((r) => r.template_id));
   const seen = new Set<number>();
   const roster: RosterCard[] = [];
   for (const r of rows) {

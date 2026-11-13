@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import type { CardTemplateView } from "@/lib/data/cards";
 import { formatCollectionNumber, formatSerial } from "@/lib/format";
+import { DETAIL_POSITIONS, positionShort, statRows } from "@/lib/positions";
 import { POSITION_LABELS, RARITY_LABELS, hasShine } from "@/lib/rarity";
 import { Crest } from "./Crest";
 import { Flag } from "./Flag";
@@ -50,6 +51,7 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
   const accent = t.club?.colorSecondary ?? "#8fd16a";
   const isLimited = t.maxSupply !== null;
   const label = `${t.playerName}, ${RARITY_LABELS[t.rarity]}, note ${t.rating}`;
+  const stats = statRows(t.stats);
 
   const content = (
     <div className="pp-card-inner flex flex-col">
@@ -93,13 +95,15 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
           </span>
           <span
             className="mt-0.5 font-display text-[10px] font-bold tracking-wider text-chalk/85 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]"
-            title={POSITION_LABELS[t.position]}
+            title={(t.positionDetail && DETAIL_POSITIONS[t.positionDetail]?.label) || POSITION_LABELS[t.position]}
           >
-            {t.position}
+            {positionShort(t.positionDetail, t.position)}
           </span>
           <span className="my-1 h-px w-3/5 bg-chalk/25" aria-hidden="true" />
           <Flag nation={t.nation} className={size === "sm" ? "h-3 w-4" : "h-3.5 w-5"} />
-          {t.club && <Crest club={t.club} className={clsx("mt-1", size === "sm" ? "h-5 w-5" : size === "md" ? "h-6 w-6" : "h-8 w-8")} />}
+          {t.club && (
+            <Crest club={t.club} className={clsx("mt-1", size === "sm" ? "h-5 w-5" : size === "md" ? "h-6 w-6" : "h-8 w-8")} />
+          )}
         </div>
 
         {copies !== undefined && copies > 1 && (
@@ -122,6 +126,22 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
         <p className="truncate text-[11px] text-chalk-muted">
           {t.club?.name ?? "Sans club"} · {t.edition === "Base" ? t.season : t.edition}
         </p>
+        {size === "lg" && stats.length > 0 && (
+          <dl className="mt-1 grid grid-cols-3 gap-x-2 font-display text-[12px] leading-tight">
+            {stats.map((s) => (
+              <div key={s.key} className="flex items-baseline gap-1" title={s.label}>
+                <dd className="font-extrabold text-chalk tabular-nums">{s.value}</dd>
+                <dt className="text-[10px] font-semibold tracking-wider text-chalk-muted">{s.short}</dt>
+              </div>
+            ))}
+          </dl>
+        )}
+        {size === "lg" && t.weakFoot !== null && t.skillMoves !== null && (
+          <p className="mt-0.5 text-[10px] text-chalk-muted">
+            Mauvais pied <span className="text-chalk">{t.weakFoot}★</span> · Gestes{" "}
+            <span className="text-chalk">{t.skillMoves}★</span>
+          </p>
+        )}
         <div className="mt-auto flex items-center justify-between pt-1 font-display text-[10px] font-semibold tracking-wider text-chalk-faint">
           <span className="tabular-nums">{formatCollectionNumber(t.collectionNumber, collectionTotal)}</span>
           <span className="font-bold uppercase" style={{ color: "var(--rarity)" }}>

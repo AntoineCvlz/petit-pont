@@ -462,3 +462,29 @@ Regroupé sous **Jouer** (et bouton « Défier en match » sur les profils publi
 
 ### Limites connues
 - Pas de messages privés Discord (il faudrait un bot connecté en permanence).
+
+## Catalogue complet importé (2026-11-14)
+
+Import d'un fichier de 17 849 joueurs masculins (identité, club, ligue, nation, poste précis, pied fort,
+étoiles mauvais pied / gestes techniques, statistiques) : outillage dans `scripts/fc27/` (voir son README).
+**Données jamais versionnées** (dépôt public) : `archive/` et `scripts/fc27/out/` ignorés, chargement par script
+sur chaque base (local et VPS). Accès au site restreint par le porteur du projet (liste blanche, hors code).
+
+- Migration `20261114000000_player_profile_fields.sql` : `ext_id`, `birthdate`, `preferred_foot`, `weak_foot`,
+  `skill_moves`, `position_detail`, `alt_positions`, `stats` (+ index du tirage par rareté).
+- Cartes de base « Saison 2026-27 » (Commune < 70, Rare 70-76, Épique 77-82, Légendaire ≥ 83) ; les cartes de
+  base « Saison 2026 » ne sont plus tirables (exemplaires conservés) ; Légendes et éditions spéciales inchangées.
+  164 nations (drapeaux flag-icons), 49 ligues, 673 clubs ; 98 albums (clubs des 5 grands championnats, Équipe de France).
+- Photos libres Wikimedia pour les joueurs notés 80+ (Wikidata : nom + date de naissance exacte), crédits sur `/credits`.
+- Carte grand format : poste précis (BU, MOC, DC…), 6 statistiques, étoiles. Wiki : fiche complète, stats, pagination.
+- Montée en charge (des milliers de cartes au lieu de 170) : le catalogue n'est plus chargé en entier
+  (`getTemplateCatalog(ids)`), page booster par rareté (cartes les mieux notées + effectifs), wiki paginé,
+  formulaire admin « offrir une carte » par recherche, listes admin bornées, `/carte` Discord par recherche.
+- Draft (`20261114000100_draft_offer_weights.sql`) : part fixe par rareté (Rare 35 %, Épique 30 %, Légendaire 20 %,
+  Iconique 10 %, Spéciale 5 %), sans Communes, quel que soit le nombre de cartes.
+- Tests : pgTAP `15_catalog`, unitaires `positions.test.ts` ; suite complète verte sur base neuve et sur base importée.
+
+### Limites connues
+- Neymar, Mahrez et Kessié absents du fichier : seules leurs anciennes cartes existent (plus tirables).
+- Écussons réels seulement pour les 48 clubs historiques ; les autres ont l'écusson généré.
+- Un transfert lors d'une réimport ne retire pas la carte de l'album de son ancien club.

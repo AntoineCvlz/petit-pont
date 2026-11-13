@@ -28,11 +28,51 @@ async function adminAction(run: (supabase: Awaited<ReturnType<typeof createClien
     if (e instanceof FormError) return { ok: false, message: e.message };
     const err = e as { code?: string; message?: string };
     if (err.code === "23505") return { ok: false, message: "Cette valeur existe déjà (slug ou numéro en double)." };
-    if (err.code === "23503") return { ok: false, message: "Élément utilisé ailleurs : désactive-le plutôt que de le supprimer." };
-    if (err.code === "23514") return { ok: false, message: "Valeur refusée par une règle du jeu (vérifie les bornes et les stocks)." };
+    if (err.code === "23503")
+      return { ok: false, message: "Élément utilisé ailleurs : désactive-le plutôt que de le supprimer." };
+    if (err.code === "23514")
+      return { ok: false, message: "Valeur refusée par une règle du jeu (vérifie les bornes et les stocks)." };
     if (err.code === "P0001") return { ok: false, message: err.message ?? "Refusé." };
     return { ok: false, message: "Enregistrement impossible." };
   }
+}
+
+/** Recherche de cartes pour le formulaire « offrir » (le catalogue est trop grand pour une liste déroulante). */
+export async function searchGiftTemplates(query: string): Promise<{ id: number; label: string }[]> {
+  const profile = await getCurrentProfile();
+  if (!profile?.isAdmin) return [];
+  const term = query
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .trim()
+    .slice(0, 60);
+  if (term.length < 2) return [];
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("card_templates")
+    .select(
+      "id, season, edition, rarity, rating, collection_number, max_supply, minted_count, players!inner ( display_name, search_text )",
+    )
+    .ilike("players.search_text", `%${term}%`)
+    .order("rating", { ascending: false })
+    .limit(30);
+  if (error) return [];
+  const labels: Record<string, string> = {
+    commune: "Commune",
+    rare: "Rare",
+    epique: "Épique",
+    legendaire: "Légendaire",
+    iconique: "Iconique",
+    speciale: "Spéciale",
+  };
+  return data.map((t) => ({
+    id: t.id,
+    label: `#${t.collection_number} ${t.players.display_name} · ${t.edition === "Base" ? t.season : t.edition} · ${labels[t.rarity]} ${t.rating}${
+      t.max_supply ? ` (${t.minted_count}/${t.max_supply})` : ""
+    }`,
+  }));
 }
 
 function check<T>(r: { data: T; error: unknown }): T {
@@ -129,7 +169,7 @@ export async function saveBooster(_prev: AdminResult, fd: FormData): Promise<Adm
       starts_at: f.dateTime("starts_at"),
       ends_at: f.dateTime("ends_at"),
       stock_total: kind === "limited" ? stockTotal : null,
-      stock_remaining: kind === "limited" ? f.int("stock_remaining", { min: 0, max: 10_000_000 }) ?? stockTotal : null,
+      stock_remaining: kind === "limited" ? (f.int("stock_remaining", { min: 0, max: 10_000_000 }) ?? stockTotal) : null,
       image_url: f.text("image_url", { max: 500 }),
       is_active: f.bool("is_active"),
       sort_order: f.int("sort_order", { min: 0, max: 1000 }) ?? 0,
@@ -149,7 +189,13 @@ export async function saveBooster(_prev: AdminResult, fd: FormData): Promise<Adm
     } else {
       const slug = f.text("slug", { max: 60 }) ?? slugify(name);
       if (!SLUG_PATTERN.test(slug)) throw new FormError("Slug invalide.");
-      boosterId = check(await supabase.from("boosters").insert({ ...row, slug, kind }).select("id").single())!.id;
+      boosterId = check(
+        await supabase
+          .from("boosters")
+          .insert({ ...row, slug, kind })
+          .select("id")
+          .single(),
+      )!.id;
     }
     check(
       await supabase.rpc("admin_set_booster_odds", {
@@ -239,7 +285,9 @@ export async function removeCards(instanceIds: string[], reason: string): Promis
     if (instanceIds.length === 0 || instanceIds.length > 200 || !instanceIds.every((id) => UUID.test(id))) {
       throw new FormError("Sélectionne entre 1 et 200 exemplaires.");
     }
-    const n = check(await supabase.rpc("admin_remove_cards", { p_instance_ids: instanceIds, p_reason: reason.trim() || undefined }));
+    const n = check(
+      await supabase.rpc("admin_remove_cards", { p_instance_ids: instanceIds, p_reason: reason.trim() || undefined }),
+    );
     return n === 1 ? "Carte retirée." : `${n} cartes retirées.`;
   });
 }

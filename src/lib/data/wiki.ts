@@ -14,19 +14,30 @@ export type PlayerListItem = {
   versions: number;
 };
 
-export async function listPlayers(search?: string): Promise<PlayerListItem[]> {
+export const WIKI_PAGE_SIZE = 60;
+
+/** Joueurs du wiki, par page (le catalogue compte des milliers de joueurs). */
+export async function listPlayers(search?: string, page = 1): Promise<{ players: PlayerListItem[]; total: number }> {
   const supabase = await createClient();
+  const from = (Math.max(1, page) - 1) * WIKI_PAGE_SIZE;
   let query = supabase
     .from("players")
-    .select("slug, display_name, position, is_legend, nations!inner ( code, name, flag_colors, flag_layout ), card_templates ( rarity )")
-    .order("display_name");
+    .select(
+      "slug, display_name, position, is_legend, nations!inner ( code, name, flag_colors, flag_layout ), card_templates ( rarity )",
+      {
+        count: "exact",
+      },
+    )
+    .order("display_name")
+    .order("id")
+    .range(from, from + WIKI_PAGE_SIZE - 1);
   // Insensible aux accents ; caractères spéciaux neutralisés par normalizeSearch
   const term = normalizeSearch(search ?? "").slice(0, 60);
   if (term) query = query.ilike("search_text", `%${term}%`);
-  const { data, error } = await query;
+  const { data, error, count } = await query;
   if (error) throw error;
 
-  return data.map((p) => {
+  const players = data.map((p) => {
     const rarities = p.card_templates.map((t) => t.rarity).sort(compareRarityDesc);
     return {
       slug: p.slug,
@@ -43,6 +54,7 @@ export async function listPlayers(search?: string): Promise<PlayerListItem[]> {
       versions: rarities.length,
     };
   });
+  return { players, total: count ?? players.length };
 }
 
 export type PlayerDetail = {
@@ -52,6 +64,13 @@ export type PlayerDetail = {
   lastName: string;
   position: PlayerPosition;
   birthYear: number | null;
+  birthdate: string | null;
+  preferredFoot: string | null;
+  weakFoot: number | null;
+  skillMoves: number | null;
+  positionDetail: string | null;
+  altPositions: string[];
+  stats: Record<string, number> | null;
   isLegend: boolean;
   bio: string | null;
   nation: NationView;
@@ -66,6 +85,7 @@ export async function getPlayer(slug: string): Promise<PlayerDetail | null> {
     .from("players")
     .select(
       `id, slug, display_name, first_name, last_name, position, birth_year, is_legend, bio, image_url,
+       birthdate, preferred_foot, weak_foot, skill_moves, position_detail, alt_positions, stats,
        nations!inner ( code, name, flag_colors, flag_layout ),
        player_clubs ( start_year, end_year, clubs!inner ( name, crest_url ) )`,
     )
@@ -106,6 +126,13 @@ export async function getPlayer(slug: string): Promise<PlayerDetail | null> {
     lastName: player.last_name,
     position: player.position,
     birthYear: player.birth_year,
+    birthdate: player.birthdate,
+    preferredFoot: player.preferred_foot,
+    weakFoot: player.weak_foot,
+    skillMoves: player.skill_moves,
+    positionDetail: player.position_detail,
+    altPositions: player.alt_positions,
+    stats: (player.stats as Record<string, number> | null) ?? null,
     isLegend: player.is_legend,
     bio: player.bio,
     imageUrl: player.image_url,

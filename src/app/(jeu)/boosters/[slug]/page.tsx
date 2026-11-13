@@ -13,7 +13,7 @@ import { getCollectionTotal } from "@/lib/data/cards";
 import { getBooster, getBoosterPool, getDuplicatePrices, listMyGifts } from "@/lib/data/boosters";
 import { requireProfile } from "@/lib/data/profile";
 import { formatDate } from "@/lib/format";
-import { RARITIES, RARITY_LABELS } from "@/lib/rarity";
+import { RARITY_LABELS } from "@/lib/rarity";
 
 export async function generateMetadata({ params }: PageProps<"/boosters/[slug]">): Promise<Metadata> {
   const { slug } = await params;
@@ -124,15 +124,16 @@ export default async function BoosterPage({ params, searchParams }: PageProps<"/
         </div>
       </div>
 
-      <Panel title={`Cartes possibles (${pool.length})`} className="mt-5">
+      <Panel title={`Cartes possibles (${pool.total.toLocaleString("fr-FR")})`} className="mt-5">
         <div className="space-y-4">
-          {RARITIES.toReversed().map((r) => {
-            const cards = pool.filter((c) => c.rarity === r);
-            if (cards.length === 0) return null;
+          {pool.groups.map(({ rarity: r, count, cards }) => {
             return (
-              <details key={r} open={cards.length <= 12}>
-                <summary className="cursor-pointer font-display text-sm font-bold tracking-wider uppercase" style={{ color: `var(--color-r-${r})` }}>
-                  {RARITY_LABELS[r]} · {cards.length}
+              <details key={r} open={count <= 12}>
+                <summary
+                  className="cursor-pointer font-display text-sm font-bold tracking-wider uppercase"
+                  style={{ color: `var(--color-r-${r})` }}
+                >
+                  {RARITY_LABELS[r]} · {count.toLocaleString("fr-FR")}
                 </summary>
                 <ul className="mt-2 flex flex-wrap gap-1.5">
                   {cards.map((c) => (
@@ -153,6 +154,11 @@ export default async function BoosterPage({ params, searchParams }: PageProps<"/
                     </li>
                   ))}
                 </ul>
+                {count > cards.length && (
+                  <p className="mt-1.5 text-xs text-chalk-faint">
+                    Les {cards.length} mieux notées sont affichées, sur {count.toLocaleString("fr-FR")}.
+                  </p>
+                )}
               </details>
             );
           })}

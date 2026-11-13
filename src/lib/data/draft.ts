@@ -108,7 +108,7 @@ export function linkIdentity(c: DraftCard): LinkIdentity {
 
 /** Résout des identifiants de cartes en cartes affichables (avec ligue). */
 export async function resolveDraftCards(ids: number[]): Promise<Map<number, DraftCard>> {
-  const [catalog, leagues] = await Promise.all([getTemplateCatalog(), getClubLeagues()]);
+  const [catalog, leagues] = await Promise.all([getTemplateCatalog(ids), getClubLeagues()]);
   const out = new Map<number, DraftCard>();
   for (const id of ids) {
     const t = catalog.get(id);

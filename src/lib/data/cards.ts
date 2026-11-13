@@ -33,11 +33,16 @@ export type CardTemplateView = {
   maxSupply: number | null;
   mintedCount: number;
   imageUrl: string | null;
+  /** Fiche détaillée (catalogue importé) ; null pour les joueurs sans données. */
+  positionDetail: string | null;
+  weakFoot: number | null;
+  skillMoves: number | null;
+  stats: Record<string, number> | null;
 };
 
 export const TEMPLATE_SELECT = `
   id, season, edition, rarity, rating, collection_number, max_supply, minted_count, image_url,
-  players!inner ( slug, display_name, position, image_url,
+  players!inner ( slug, display_name, position, image_url, position_detail, weak_foot, skill_moves, stats,
     nations!inner ( code, name, flag_colors, flag_layout ) ),
   clubs ( code, name, short_name, color_primary, color_secondary, crest_url )
 ` as const;
@@ -57,6 +62,10 @@ type TemplateRow = {
     display_name: string;
     position: PlayerPosition;
     image_url: string | null;
+    position_detail: string | null;
+    weak_foot: number | null;
+    skill_moves: number | null;
+    stats: unknown;
     nations: { code: string; name: string; flag_colors: string[]; flag_layout: string };
   };
   clubs: {
@@ -99,6 +108,10 @@ export function toTemplateView(row: TemplateRow): CardTemplateView {
     maxSupply: row.max_supply,
     mintedCount: row.minted_count,
     imageUrl: row.image_url ?? row.players.image_url,
+    positionDetail: row.players.position_detail,
+    weakFoot: row.players.weak_foot,
+    skillMoves: row.players.skill_moves,
+    stats: (row.players.stats as Record<string, number> | null) ?? null,
   };
 }
 
@@ -118,12 +131,26 @@ export type OwnedCardGroup = {
   copies: { id: string; serialNumber: number; obtainedAt: string; isLocked: boolean }[];
 };
 
-/** Catalogue complet indexé par id (≈ quelques centaines de lignes, lu une fois par requête). */
-export const getTemplateCatalog = cache(async (): Promise<Map<number, CardTemplateView>> => {
+/**
+ * Fiches des cartes demandées, indexées par id. Le catalogue compte des milliers de cartes :
+ * on ne lit que celles dont la page a besoin (requêtes par lots pour rester sous la limite d'URL).
+ */
+export async function getTemplateCatalog(ids: Iterable<number>): Promise<Map<number, CardTemplateView>> {
+  const unique = [...new Set(ids)];
+  if (unique.length === 0) return new Map();
   const supabase = await createClient();
-  const rows = await fetchAll((from, to) => supabase.from("card_templates").select(TEMPLATE_SELECT).order("id").range(from, to));
-  return new Map(rows.map((r) => [r.id, toTemplateView(r as never)]));
-});
+  const chunks: number[][] = [];
+  for (let i = 0; i < unique.length; i += 200) chunks.push(unique.slice(i, i + 200));
+  const results = await Promise.all(
+    chunks.map((chunk) => supabase.from("card_templates").select(TEMPLATE_SELECT).in("id", chunk)),
+  );
+  const out = new Map<number, CardTemplateView>();
+  for (const { data, error } of results) {
+    if (error) throw error;
+    for (const r of data) out.set(r.id, toTemplateView(r as never));
+  }
+  return out;
+}
 
 /**
  * Collection d'un joueur, regroupée par carte (exemplaires et doublons).
@@ -132,18 +159,16 @@ export const getTemplateCatalog = cache(async (): Promise<Map<number, CardTempla
  */
 export async function getCollection(ownerId: string): Promise<OwnedCardGroup[]> {
   const supabase = await createClient();
-  const [rows, catalog] = await Promise.all([
-    fetchAll((from, to) =>
-      supabase
-        .from("card_instances")
-        .select("id, template_id, serial_number, obtained_at, is_locked")
-        .eq("owner_id", ownerId)
-        .order("obtained_at", { ascending: false })
-        .order("id")
-        .range(from, to),
-    ),
-    getTemplateCatalog(),
-  ]);
+  const rows = await fetchAll((from, to) =>
+    supabase
+      .from("card_instances")
+      .select("id, template_id, serial_number, obtained_at, is_locked")
+      .eq("owner_id", ownerId)
+      .order("obtained_at", { ascending: false })
+      .order("id")
+      .range(from, to),
+  );
+  const catalog = await getTemplateCatalog(rows.map((r) => r.template_id));
 
   const groups = new Map<number, OwnedCardGroup>();
   for (const row of rows) {
@@ -231,7 +256,7 @@ export async function getOwnedCard(ownerId: string, templateId: number): Promise
   };
 }
 
-export type RecentCard ={ instanceId: string; serialNumber: number; obtainedAt: string; template: CardTemplateView };
+export type RecentCard = { instanceId: string; serialNumber: number; obtainedAt: string; template: CardTemplateView };
 
 export async function getRecentCards(ownerId: string, limit = 6): Promise<RecentCard[]> {
   const supabase = await createClient();

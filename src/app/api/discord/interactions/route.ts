@@ -1,7 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import type { Database } from "@/types/database";
-import { cardEmbedResponse, ephemeral, findPlayerVersions, verifyDiscordSignature, type CardVersion } from "@/lib/discord";
+import {
+  cardEmbedResponse,
+  ephemeral,
+  findPlayerVersions,
+  normalizeName,
+  verifyDiscordSignature,
+  type CardVersion,
+} from "@/lib/discord";
 import { supabaseEnv } from "@/lib/env";
 import { publicOrigin } from "@/lib/origin";
 import type { Rarity } from "@/lib/rarity";
@@ -33,13 +40,18 @@ export async function POST(request: NextRequest) {
     const query = String(interaction.data.options?.find((o) => o.name === "joueur")?.value ?? "").slice(0, 60);
     const { url, key } = supabaseEnv();
     const supabase = createClient<Database>(url, key, { auth: { persistSession: false } });
+    // Catalogue de plusieurs milliers de cartes : présélection par recherche plein texte (sans accents)
+    const term = normalizeName(query);
+    if (!term) return NextResponse.json(ephemeral("Indique un nom de joueur."));
     const { data, error } = await supabase
       .from("card_templates")
       .select(
-        "rarity, rating, edition, season, max_supply, minted_count, image_url, players!inner ( slug, display_name, image_url ), clubs ( name )",
+        "rarity, rating, edition, season, max_supply, minted_count, image_url, players!inner ( slug, display_name, image_url, search_text ), clubs ( name )",
       )
       .eq("is_active", true)
-      .limit(5000);
+      .ilike("players.search_text", `%${term}%`)
+      .order("rating", { ascending: false })
+      .limit(300);
     if (error) return NextResponse.json(ephemeral("Catalogue indisponible, réessaie dans un instant."));
 
     const versions: CardVersion[] = data.map((t) => ({

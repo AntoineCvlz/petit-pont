@@ -30,6 +30,8 @@ L'avancement est suivi dans `PROGRESS.md` (à créer et tenir à jour).
    - Photos de joueurs : **uniquement sous licence libre** (Wikimedia Commons), détourées via `scripts/media/`, créditées sur `/credits`. Jamais d'images FUT, Flashscore ou autre site.
    - Écussons : logos des clubs (fichiers Wikipédia), marques de leurs clubs, mentionnées sur `/credits`.
    - Sans image, repli sur la silhouette / l'écusson génériques ; `image_url` et `crest_url` restent remplaçables.
+   - Catalogue joueurs importé (`scripts/fc27/`) : le fichier source et le SQL généré ne sont **jamais versionnés**
+     (dépôt public) ; ils sont chargés par script sur chaque base.
 7. Ne copie aucun élément graphique, texte ou code de kyara.games ni d'un autre site.
 8. **Toujours penser multijoueur.** Chaque fonctionnalité qui implique deux joueurs (achat, vente, échange, notification) se teste avec deux comptes distincts, y compris le cas où les deux agissent en même temps.
 9. Les événements publics (fil d'activité, notifications) sont créés par les RPC côté serveur, jamais par le client.

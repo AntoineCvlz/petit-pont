@@ -54,9 +54,11 @@ export async function listReports(status: "open" | "closed"): Promise<ReportView
   const supabase = await createClient();
   let q = supabase
     .from("reports")
-    .select(`id, reason, status, created_at,
+    .select(
+      `id, reason, status, created_at,
       reporter:profiles!reports_reporter_id_fkey ( username ),
-      reported:profiles!reports_reported_id_fkey ( id, username )`)
+      reported:profiles!reports_reported_id_fkey ( id, username )`,
+    )
     .order("created_at", { ascending: false })
     .limit(100);
   q = status === "open" ? q.eq("status", "open") : q.neq("status", "open");
@@ -73,12 +75,26 @@ export async function listReports(status: "open" | "closed"): Promise<ReportView
   }));
 }
 
-export async function getReferenceOptions() {
+/**
+ * Listes des formulaires d'administration. Le catalogue compte des milliers de joueurs (au-delà de la limite
+ * de 1 000 lignes de l'API) : on ne propose que les joueurs correspondant à la recherche, plus ceux demandés.
+ */
+export async function getReferenceOptions(search = "", playerIds: number[] = []) {
   const supabase = await createClient();
+  const term = search
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .trim();
+  const ids = [...new Set(playerIds)].slice(0, 400);
+  let players = supabase.from("players").select("id, display_name").order("display_name").limit(400);
+  if (term && ids.length) players = players.or(`search_text.ilike.%${term}%,id.in.(${ids.join(",")})`);
+  else if (term) players = players.ilike("search_text", `%${term}%`);
+  else players = players.in("id", ids.length ? ids : [0]);
   const [n, c, p] = await Promise.all([
     supabase.from("nations").select("id, code, name").order("name"),
     supabase.from("clubs").select("id, code, name").order("name"),
-    supabase.from("players").select("id, display_name").order("display_name"),
+    players,
   ]);
   if (n.error) throw n.error;
   if (c.error) throw c.error;
@@ -91,7 +107,11 @@ export type AdminPlayer = Tables["players"]["Row"] & { nationName: string; versi
 export async function listAdminPlayers(search: string): Promise<AdminPlayer[]> {
   const supabase = await createClient();
   let q = supabase.from("players").select("*, nations!inner ( name ), card_templates ( id )").order("display_name").limit(300);
-  const term = search.trim().toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim();
+  const term = search
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .trim();
   if (term) q = q.ilike("search_text", `%${term}%`);
   const { data, error } = await q;
   if (error) throw error;
@@ -107,7 +127,11 @@ export async function listAdminTemplates(search: string): Promise<AdminTemplate[
     .select("*, players!inner ( display_name, search_text ), clubs ( name )")
     .order("collection_number")
     .limit(400);
-  const term = search.trim().toLowerCase().replace(/[^a-z0-9 ]/g, " ").trim();
+  const term = search
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9 ]/g, " ")
+    .trim();
   if (term) q = q.ilike("players.search_text", `%${term}%`);
   const { data, error } = await q;
   if (error) throw error;
@@ -125,7 +149,9 @@ export async function listAdminAlbums(): Promise<AdminAlbum[]> {
   if (error) throw error;
   return data.map(({ album_slots, ...a }) => ({
     ...a,
-    collectionNumbers: [...album_slots].sort((x, y) => x.slot_number - y.slot_number).map((s) => s.card_templates.collection_number!),
+    collectionNumbers: [...album_slots]
+      .sort((x, y) => x.slot_number - y.slot_number)
+      .map((s) => s.card_templates.collection_number!),
   }));
 }
 
@@ -141,7 +167,10 @@ export async function listAdminBoosters(): Promise<AdminBooster[]> {
 /** Le joueur connecté a-t-il bloqué ce joueur ? (RLS : on ne lit que ses propres blocages) */
 export async function hasBlocked(otherId: string): Promise<boolean> {
   const supabase = await createClient();
-  const { count, error } = await supabase.from("blocks").select("blocked_id", { count: "exact", head: true }).eq("blocked_id", otherId);
+  const { count, error } = await supabase
+    .from("blocks")
+    .select("blocked_id", { count: "exact", head: true })
+    .eq("blocked_id", otherId);
   if (error) throw error;
   return (count ?? 0) > 0;
 }

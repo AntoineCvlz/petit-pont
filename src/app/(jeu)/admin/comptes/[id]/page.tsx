@@ -34,12 +34,6 @@ export default async function AdminAccountPage({ params }: PageProps<"/admin/com
     rarity: c.template.rarity,
     maxSupply: c.template.maxSupply,
   }));
-  const templates = options.templates.map((t) => ({
-    id: t.id,
-    label: `#${t.collectionNumber} ${t.playerName} · ${t.edition === "Base" ? t.season : t.edition} · ${RARITY_LABELS[t.rarity]} ${t.rating}${
-      t.maxSupply ? ` (${t.mintedCount}/${t.maxSupply})` : ""
-    }`,
-  }));
 
   return (
     <>
@@ -80,7 +74,7 @@ export default async function AdminAccountPage({ params }: PageProps<"/admin/com
           )}
         </Panel>
         <Panel title="Offrir des cartes">
-          <GiveCardsForm userId={a.id} templates={templates} />
+          <GiveCardsForm userId={a.id} />
         </Panel>
         <Panel title="Pièces">
           <CoinsForm userId={a.id} />

@@ -19,6 +19,10 @@ function item(over: Partial<CardTemplateView> & { copies?: number; at?: string }
     maxSupply: null,
     mintedCount: 0,
     imageUrl: null,
+    positionDetail: null,
+    weakFoot: null,
+    skillMoves: null,
+    stats: null,
   };
   return { template, copies: over.copies ?? 1, lastObtainedAt: over.at ?? "2026-11-01T00:00:00Z" };
 }

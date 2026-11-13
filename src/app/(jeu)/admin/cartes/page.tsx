@@ -17,7 +17,8 @@ export default async function AdminCardsPage({ searchParams }: PageProps<"/admin
   await requireAdmin();
   const { id, q } = await searchParams;
   const search = typeof q === "string" ? q : "";
-  const [templates, refs] = await Promise.all([listAdminTemplates(search), getReferenceOptions()]);
+  const templates = await listAdminTemplates(search);
+  const refs = await getReferenceOptions(search, templates.map((t) => t.player_id));
   const editing = id === "nouveau" ? null : templates.find((t) => String(t.id) === id) ?? null;
   const showForm = id === "nouveau" || editing;
 

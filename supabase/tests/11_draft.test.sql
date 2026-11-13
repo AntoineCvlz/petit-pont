@@ -12,17 +12,17 @@ select is((select count(*)::int from public.clubs where league_id is null), 0, '
 
 create temporary table t as select
   (select ct.id from public.card_templates ct join public.players p on p.id = ct.player_id
-   where p.slug = 'mbappe' and ct.edition = 'Base') as mbappe_rma,              -- FRA, Real (LaLiga)
+   where p.slug = 'mbappe' and ct.edition = 'Base' and ct.season = 'Saison 2026') as mbappe_rma,              -- FRA, Real (LaLiga)
   (select ct.id from public.card_templates ct join public.players p on p.id = ct.player_id
-   where p.slug = 'vinicius-jr' and ct.edition = 'Base') as vini_rma,           -- BRA, Real (LaLiga)
+   where p.slug = 'vinicius-jr' and ct.edition = 'Base' and ct.season = 'Saison 2026') as vini_rma,           -- BRA, Real (LaLiga)
   (select ct.id from public.card_templates ct join public.players p on p.id = ct.player_id
-   where p.slug = 'kounde' and ct.edition = 'Base') as kounde_fcb,              -- FRA, Barça (LaLiga)
+   where p.slug = 'kounde' and ct.edition = 'Base' and ct.season = 'Saison 2026') as kounde_fcb,              -- FRA, Barça (LaLiga)
   (select ct.id from public.card_templates ct join public.players p on p.id = ct.player_id
-   where p.slug = 'raphinha' and ct.edition = 'Base') as raphinha_fcb,          -- BRA, Barça (LaLiga)
+   where p.slug = 'raphinha' and ct.edition = 'Base' and ct.season = 'Saison 2026') as raphinha_fcb,          -- BRA, Barça (LaLiga)
   (select ct.id from public.card_templates ct join public.players p on p.id = ct.player_id
-   where p.slug = 'saka' and ct.edition = 'Base') as saka_ars,                  -- ENG, Arsenal (PL)
+   where p.slug = 'saka' and ct.edition = 'Base' and ct.season = 'Saison 2026') as saka_ars,                  -- ENG, Arsenal (PL)
   (select ct.id from public.card_templates ct join public.players p on p.id = ct.player_id
-   where p.slug = 'dembele' and ct.edition = 'Base') as dembele_psg;            -- FRA, PSG (L1)
+   where p.slug = 'dembele' and ct.edition = 'Base' and ct.season = 'Saison 2026') as dembele_psg;            -- FRA, PSG (L1)
 grant select on t to authenticated;
 
 select is(public._draft_link((select mbappe_rma from t), (select vini_rma from t)), 2::smallint, 'Même club : lien vert');
