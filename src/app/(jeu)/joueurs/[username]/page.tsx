@@ -63,9 +63,20 @@ export default async function PublicProfilePage({ params }: PageProps<"/joueurs/
               Modifier mon profil
             </Link>
           ) : blocked ? null : (
-            <Link href={`/echanges/nouveau?avec=${encodeURIComponent(player.username)}`} className={buttonClasses("primary", "md")}>
-              Proposer un échange
-            </Link>
+            <>
+              <Link
+                href={`/echanges/nouveau?avec=${encodeURIComponent(player.username)}`}
+                className={buttonClasses("primary", "md")}
+              >
+                Proposer un échange
+              </Link>
+              <Link
+                href={`/matchs?adversaire=${encodeURIComponent(player.username)}`}
+                className={buttonClasses("secondary", "md")}
+              >
+                Défier en match
+              </Link>
+            </>
           )}
         </div>
       </div>
@@ -97,7 +108,9 @@ export default async function PublicProfilePage({ params }: PageProps<"/joueurs/
 
       <Panel title="Vitrine" className="mb-5">
         {showcase.length === 0 ? (
-          <p className="text-sm text-chalk-muted">{isMe ? "Choisis tes 5 cartes vitrines depuis ton profil." : "Aucune carte en vitrine."}</p>
+          <p className="text-sm text-chalk-muted">
+            {isMe ? "Choisis tes 5 cartes vitrines depuis ton profil." : "Aucune carte en vitrine."}
+          </p>
         ) : (
           <div className="flex flex-wrap gap-3">
             {showcase.map((s) => (
@@ -114,7 +127,10 @@ export default async function PublicProfilePage({ params }: PageProps<"/joueurs/
           ) : (
             <ul className="flex flex-wrap gap-1.5">
               {duplicates.slice(0, 40).map((d) => (
-                <li key={d.template.id} className="inline-flex items-center gap-1.5 rounded-md border border-line bg-night-800 px-2 py-1 text-xs">
+                <li
+                  key={d.template.id}
+                  className="inline-flex items-center gap-1.5 rounded-md border border-line bg-night-800 px-2 py-1 text-xs"
+                >
                   <span className="font-display font-bold tabular-nums">{d.template.rating}</span>
                   {d.template.playerName}
                   <RarityBadge rarity={d.template.rarity} />

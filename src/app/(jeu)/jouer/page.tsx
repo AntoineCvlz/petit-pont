@@ -5,6 +5,8 @@ import { PageHeader } from "@/components/ui/Panel";
 import { getDraftStatus } from "@/lib/data/draft";
 import { getMissionsStatus, getSbcList, getSeasonState } from "@/lib/data/farm";
 import { getPenaltyStatus } from "@/lib/data/penalty";
+import { requireProfile } from "@/lib/data/profile";
+import { getMyClanId, getMyDuels, getMyLeagues } from "@/lib/data/social";
 
 export const metadata: Metadata = { title: "Jouer" };
 
@@ -14,17 +16,25 @@ type Mode = {
   pitch: string;
   status: string;
   highlight?: boolean;
-  icon: "play" | "draft" | "penalty" | "album" | "trade";
+  icon: "play" | "draft" | "penalty" | "album" | "trade" | "ranking" | "profile";
 };
 
 export default async function PlayPage() {
-  const [season, sbc, missions, draft, penalty] = await Promise.all([
+  const profile = await requireProfile();
+  const [season, sbc, missions, draft, penalty, duels, leagues, clanId] = await Promise.all([
     getSeasonState(),
     getSbcList(),
     getMissionsStatus(),
     getDraftStatus(),
     getPenaltyStatus(),
+    getMyDuels(),
+    getMyLeagues(),
+    getMyClanId(profile.id),
   ]);
+  const duelsToPlay = duels.filter(
+    (d) => d.status === "waiting" && ((d.homeId === profile.id && !d.homePlayed) || (d.awayId === profile.id && !d.awayPlayed)),
+  ).length;
+  const leagueToPlay = leagues.reduce((n, l) => n + l.toPlay, 0);
 
   const claimable = missions.missions.filter((m) => m.progress >= m.target && !m.claimed).length;
   const run = season.run?.status === "active" ? season.run : null;
@@ -32,6 +42,32 @@ export default async function PlayPage() {
   const sbcOpen = sbc.filter((c) => c.available).length;
 
   const modes: Mode[] = [
+    {
+      href: "/matchs",
+      title: "Matchs amicaux",
+      icon: "trade",
+      pitch: "Défie un autre joueur avec ton onze. Classement Elo.",
+      status: duelsToPlay > 0 ? `${duelsToPlay} match${duelsToPlay > 1 ? "s" : ""} à jouer` : "Lance un défi",
+      highlight: duelsToPlay > 0,
+    },
+    {
+      href: "/ligues",
+      title: "Ligues privées",
+      icon: "ranking",
+      pitch: "Un championnat aller-retour entre amis, une journée par jour.",
+      status:
+        leagueToPlay > 0
+          ? `${leagueToPlay} match${leagueToPlay > 1 ? "s" : ""} de ligue à jouer`
+          : `${leagues.length} ligue${leagues.length > 1 ? "s" : ""}`,
+      highlight: leagueToPlay > 0,
+    },
+    {
+      href: clanId ? `/clans/${clanId}` : "/clans",
+      title: "Clan",
+      icon: "profile",
+      pitch: "Discussion, objectif commun chaque semaine, packs pour les contributeurs.",
+      status: clanId ? "Voir mon clan" : "Rejoins ou fonde un clan",
+    },
     {
       href: "/saison",
       title: "Saison",

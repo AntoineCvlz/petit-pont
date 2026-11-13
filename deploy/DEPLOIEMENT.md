@@ -80,6 +80,17 @@ Panneau IONOS → Serveurs & Cloud → Réseau → Stratégies de pare-feu : aut
    ```
 Le déploiement s'arrête (sans toucher aux conteneurs) si ces deux valeurs manquent.
 
+### 4 ter. Discord : annonces et commande /carte (facultatif)
+- **Annonces dans un salon** : Discord → paramètres du salon → Intégrations → Webhooks → Nouveau → Copier l'URL,
+  puis sur le site : Admin → Tableau de bord → « Annonces Discord » (URL du webhook + URL du site).
+- **Commande `/carte`** (même application Discord que la connexion) :
+  1. Portail développeur → ton application → *General Information* : copier la **Public Key** dans `deploy/.env` :
+     `DISCORD_PUBLIC_KEY=...` (sur le VPS), puis redéployer.
+  2. *General Information* → **Interactions Endpoint URL** : `https://petit-pont.antoine-cuvilliez.fr/api/discord/interactions`.
+  3. *Bot* → **Reset Token** (le jeton ne sert qu'une fois, sur ton PC), puis enregistrer la commande :
+     `$env:DISCORD_APP_ID="<Application ID>"; $env:DISCORD_BOT_TOKEN="<jeton>"; node scripts/discord/register-commands.mjs`
+  4. *Installation* → lien d'installation **Guild Install** (scope `applications.commands`) → l'ajouter à ton serveur.
+
 ### 5. Lancer le premier déploiement
 GitHub → Actions → **CI/CD** → *Run workflow* sur `main` (ou un push sur `main`). Durée : ~10 min.
 Le premier déploiement initialise la base, applique les migrations, charge le seed, et Caddy obtient le certificat.

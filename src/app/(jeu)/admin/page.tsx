@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PurgeDemoButton } from "@/components/admin/AdminButtons";
+import { DiscordForm } from "@/components/admin/DiscordForm";
 import { CoinAmount } from "@/components/ui/CoinAmount";
 import { Panel } from "@/components/ui/Panel";
 import { getEconomyStats, requireAdmin } from "@/lib/data/admin";
+import { getDiscordStatus } from "@/lib/data/social";
 import { COIN_TX_LABELS, isCoinTxType } from "@/lib/economy";
 import { formatCoins } from "@/lib/format";
 import { RARITIES, RARITY_LABELS } from "@/lib/rarity";
@@ -24,7 +26,7 @@ function Stat({ label, children, tone }: { label: string; children: React.ReactN
 export default async function AdminDashboard() {
   // Chaque page vérifie elle-même le rôle : un layout n'est pas une frontière d'autorisation
   await requireAdmin();
-  const s = await getEconomyStats();
+  const [s, discord] = await Promise.all([getEconomyStats(), getDiscordStatus()]);
   const created = Object.entries(s.coins_by_type).filter(([, v]) => v > 0);
   const destroyed = Object.entries(s.coins_by_type).filter(([, v]) => v < 0);
   const label = (t: string) => (isCoinTxType(t) ? COIN_TX_LABELS[t] : t);
@@ -103,6 +105,10 @@ export default async function AdminDashboard() {
           Les comptes fictifs du seed (marqués <code>is_demo</code>) animent le jeu en test. Supprime-les avant d&apos;ouvrir aux vrais joueurs.
         </p>
         <PurgeDemoButton count={s.demo_players} />
+      </Panel>
+
+      <Panel title="Annonces Discord">
+        <DiscordForm configured={discord?.configured ?? false} siteUrl={discord?.siteUrl ?? ""} />
       </Panel>
     </div>
   );

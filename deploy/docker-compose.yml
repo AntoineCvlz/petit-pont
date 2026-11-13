@@ -152,6 +152,9 @@ services:
     # pour ne pas dépendre du routage externe.
     extra_hosts:
       - "${SITE_HOST}:host-gateway"
+    environment:
+      # Commandes Discord (/carte) : clé publique de l'application Discord (facultatif)
+      DISCORD_PUBLIC_KEY: ${DISCORD_PUBLIC_KEY:-}
     mem_limit: 384m
 
   caddy:

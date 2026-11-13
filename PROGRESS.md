@@ -427,3 +427,37 @@ Nouvelle entrée de menu **Jouer** (`/jouer`) qui regroupe Saison, Défis, Missi
 
 ### Tests
 - pgTAP `13_farm` (38) ; unitaires `sbc.test.ts`, navigation. Parcours navigateur desktop + mobile.
+
+## Social et multijoueur (2026-11-13)
+
+Regroupé sous **Jouer** (et bouton « Défier en match » sur les profils publics).
+
+### Matchs amicaux (`/matchs`)
+- Défi lancé à un joueur avec son **onze de saison** : chacun choisit une tactique par mi-temps quand il veut
+  (48 h), le match est simulé dès que les deux ont répondu (moteur de la saison, force figée au moment du choix).
+- Tactiques adverses invisibles avant le match (colonnes non lisibles, révélées par `duel_detail`).
+- **Classement Elo** (K = 24, somme conservée). Refus / retrait d'un défi, 5 défis en attente max, blocages respectés.
+
+### Ligues privées (`/ligues`)
+- 3 à 8 joueurs, **code d'invitation**, championnat **aller-retour** (méthode du cercle, exempt si impair),
+  une journée par jour. À l'échéance, `resolve_due_duels` (pg_cron, toutes les heures) joue d'office avec des
+  tactiques au hasard. Classement, calendrier, vainqueur et notification de fin.
+
+### Clans (`/clans`)
+- 20 membres max, un clan par joueur, ouvert ou sur code, chef (transmis s'il part), exclusion.
+- **Discussion en temps réel** (Supabase Realtime, RLS : membres seulement), anti-flood 3 s.
+- **Objectif hebdomadaire** tournant (boosters, saison, défis, draft, tirs au but), cible proportionnelle aux membres,
+  alimenté par les mêmes événements que les missions ; atteint → Booster Tribune pour chaque contributeur.
+
+### Discord
+- **Annonces** (webhook configuré dans l'admin, stocké dans une table illisible via l'API, envoi asynchrone pg_net) :
+  grosses ouvertures, albums complétés, grosses ventes, vainqueurs de ligue, objectifs de clan.
+- **Commande `/carte <joueur>`** : route `/api/discord/interactions` (signature Ed25519 vérifiée, recherche
+  sans accents), embed avec toutes les versions de la carte. Mise en service : `deploy/DEPLOIEMENT.md` § 4 ter.
+
+### Tests
+- pgTAP `14_social` (45), unitaires `discord.test.ts`. Parcours navigateur à 3 comptes (défi, ligue, clan en
+  temps réel, mobile) et requêtes Discord signées / non signées.
+
+### Limites connues
+- Pas de messages privés Discord (il faudrait un bot connecté en permanence).

@@ -1,4 +1,16 @@
-export type NavIcon = "home" | "booster" | "collection" | "album" | "market" | "trade" | "ranking" | "wiki" | "profile" | "draft" | "penalty" | "play";
+export type NavIcon =
+  | "home"
+  | "booster"
+  | "collection"
+  | "album"
+  | "market"
+  | "trade"
+  | "ranking"
+  | "wiki"
+  | "profile"
+  | "draft"
+  | "penalty"
+  | "play";
 
 export type NavItem = { href: string; label: string; icon: NavIcon };
 
@@ -26,7 +38,17 @@ export function splitMobileNav(items: readonly NavItem[], max = 5): { primary: N
 }
 
 /** Modes de jeu regroupés sous l'entrée « Jouer ». */
-export const PLAY_PATHS = ["/jouer", "/saison", "/defis", "/missions", "/draft", "/penalty"] as const;
+export const PLAY_PATHS = [
+  "/jouer",
+  "/saison",
+  "/defis",
+  "/missions",
+  "/draft",
+  "/penalty",
+  "/matchs",
+  "/ligues",
+  "/clans",
+] as const;
 
 function underPath(pathname: string, href: string): boolean {
   return pathname === href || pathname.startsWith(`${href}/`);

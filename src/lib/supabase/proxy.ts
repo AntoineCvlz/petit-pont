@@ -9,6 +9,8 @@ const AUTH_CALLBACK = "/auth/callback";
 
 /** Rafraîchit la session Supabase et protège les pages du jeu. */
 export async function updateSession(request: NextRequest) {
+  // Webhooks entrants (Discord) : pas de session utilisateur, authentifiés par leur propre signature
+  if (request.nextUrl.pathname.startsWith("/api/discord/")) return NextResponse.next();
   let response = NextResponse.next({ request });
   const { url, key } = supabaseEnv();
 
