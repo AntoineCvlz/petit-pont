@@ -65,18 +65,7 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
           ["--pp-glow" as string]: `radial-gradient(circle at 68% 38%, color-mix(in srgb, ${accent} 38%, transparent), transparent 62%)`,
         }}
       >
-        {t.imageUrl?.startsWith("/media-ext/") ? (
-          // Portrait carré non détouré (source externe) : médaillon aux couleurs du club
-          // eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable
-          <img
-            src={t.imageUrl}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="absolute top-[12%] right-[8%] aspect-square w-[60%] rounded-2xl border-2 object-cover shadow-lg"
-            style={{ borderColor: `color-mix(in srgb, ${accent} 70%, transparent)` }}
-          />
-        ) : t.imageUrl ? (
+        {t.imageUrl ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable (fichier statique ou domaine libre) */}
             <img
@@ -84,7 +73,11 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
               alt=""
               loading="lazy"
               decoding="async"
-              className="absolute right-[-5%] bottom-0 h-[96%] w-[84%] object-contain object-bottom"
+              className={clsx(
+                "absolute bottom-0 object-contain object-bottom",
+                // Portraits API détourés (plan serré tête-épaules) : un peu moins hauts pour garder la tête dans le cadre
+                t.imageUrl.startsWith("/media-ext/") ? "right-[-2%] h-[88%] w-[80%]" : "right-[-5%] h-[96%] w-[84%]",
+              )}
             />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[16%] bg-gradient-to-t from-night-850 to-transparent" />
           </>

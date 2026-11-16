@@ -34,6 +34,8 @@ node scripts/fc27/publish-crests.mjs CODE_FAUX_1 CODE_FAUX_2 …
 # 2 ter. Photos de repli API-Football (offre gratuite, 100 requêtes/jour : relancer chaque jour, reprise automatique)
 #        clé API_FOOTBALL_KEY dans .env.local ; photos hors Git dans scripts/fc27/out/media-ext/players/
 node scripts/fc27/apifootball.mjs archive/players.csv
+#        détourage des nouveaux portraits (fond blanc retiré, originaux gardés dans out/apifootball/orig)
+node cutout-ext.mjs <projet>/scripts/fc27/out      # depuis le dossier de l'outil de détourage
 #        envoi sur le VPS (servies par Caddy sous /media-ext, dossier deploy/media-ext jamais écrasé)
 scp -r scripts/fc27/out/media-ext/players deploy@<vps>:/opt/petit-pont/deploy/media-ext/
 # 3. SQL d'import
@@ -47,5 +49,5 @@ ssh deploy@<vps> 'cd /opt/petit-pont/deploy && docker compose exec -T db psql -U
 
 `supabase db reset` efface l'import local : relancer l'étape 4a.
 
-Ordre des photos : photo libre détourée (Wikimedia, versionnée) > photo API-Football (hors Git, médaillon) > silhouette.
+Ordre des photos : photo libre détourée (Wikimedia, versionnée) > portrait API-Football détouré (hors Git) > silhouette.
 En local, copier `scripts/fc27/out/media-ext` dans `public/media-ext` (ignoré par Git) pour les voir.
