@@ -27,6 +27,10 @@ node scripts/fc27/photos.mjs archive/players.csv 80
 # 2. Détourage (cf. scripts/media/cutout.mjs, dépendance hors projet), puis publication + crédits
 node cutout.mjs <projet>/scripts/media/raw/players <sortie> fc12345 fc67890 …
 node scripts/fc27/publish-photos.mjs <sortie>
+# 2 bis. Écussons des clubs (Wikipédia, infobox du club ; recherche mise en cache), vérification visuelle,
+#        puis publication en écartant les logos faux
+node scripts/fc27/crests.mjs archive/players.csv
+node scripts/fc27/publish-crests.mjs CODE_FAUX_1 CODE_FAUX_2 …
 # 3. SQL d'import
 node scripts/fc27/build-sql.mjs archive/players.csv        # → scripts/fc27/out/import.sql
 # 4a. Base locale

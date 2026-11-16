@@ -486,5 +486,6 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 
 ### Limites connues
 - Neymar, Mahrez et Kessié absents du fichier : seules leurs anciennes cartes existent (plus tirables).
-- Écussons réels seulement pour les 48 clubs historiques ; les autres ont l'écusson généré.
+- Écussons : 625 clubs sur 673 ont leur logo (Wikipédia, vérifiés visuellement ; 12 correspondances fausses écartées) ;
+  les 48 autres gardent l'écusson généré.
 - Un transfert lors d'une réimport ne retire pas la carte de l'album de son ancien club.

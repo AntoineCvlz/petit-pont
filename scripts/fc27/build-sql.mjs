@@ -8,7 +8,8 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { displayName, loadPlayers, normalize, slugify } from "./csv.mjs";
-import { CLUB_CODES, CLUB_NAMES, LEAGUES, NATIONS, PLAYER_MATCHES, POSITIONS, rarityFor } from "./referentiel.mjs";
+import { clubCodes } from "./clubs.mjs";
+import { LEAGUES, NATIONS, PLAYER_MATCHES, POSITIONS, rarityFor } from "./referentiel.mjs";
 
 const dir = fileURLToPath(new URL("./", import.meta.url));
 const root = fileURLToPath(new URL("../../", import.meta.url));
@@ -24,22 +25,9 @@ const q = (v) => (v === null || v === undefined || v === "" ? "null" : `'${Strin
 const arr = (a) => `array[${a.map(q).join(",")}]::text[]`;
 const players = loadPlayers(csvPath);
 
-// --- Clubs : clé ligue|club (un même nom peut exister dans deux ligues)
-const clubs = new Map();
-const usedCodes = new Set(Object.values(CLUB_CODES));
-for (const r of players) {
-  const key = `${r.league}|${r.club}`;
-  if (clubs.has(key)) continue;
-  let code = CLUB_CODES[r.club];
-  if (!code || [...clubs.values()].some((c) => c.code === code)) {
-    const base = slugify(r.club).toUpperCase().slice(0, 24) || "CLUB";
-    code = base;
-    for (let k = 2; usedCodes.has(code); k++) code = `${base}-${k}`;
-  }
-  usedCodes.add(code);
-  const name = CLUB_NAMES[r.club] ?? r.club;
-  clubs.set(key, { code, name, short: name.length > 18 ? name.slice(0, 18).trim() : name, league: LEAGUES[r.league][0] });
-}
+// --- Clubs (codes partagés avec crests.mjs)
+const clubs = clubCodes(players);
+const crestFile = (code) => existsSync(`${root}public/media/clubs/${code}.webp`);
 
 // --- Joueurs : slugs uniques dans le fichier
 const slugCount = new Map();
@@ -110,13 +98,19 @@ on conflict (code) do update set sort_order = excluded.sort_order,
   nation_id = coalesce(public.leagues.nation_id, excluded.nation_id);
 
 -- Clubs (ceux déjà présents gardent nom, couleurs et écusson ; leur ligue est mise à jour)
-create temp table fc_clubs (code text, name text, short text, league text) on commit drop;
+create temp table fc_clubs (code text, name text, short text, league text, crest_url text) on commit drop;
 insert into fc_clubs values
-${[...clubs.values()].map((c) => `(${q(c.code)},${q(c.name)},${q(c.short)},${q(c.league)})`).join(",\n")};
-insert into public.clubs (code, name, short_name, nation_id, league_id)
-select c.code, c.name, c.short, l.nation_id, l.id
+${[...clubs.values()]
+  .map(
+    (c) =>
+      `(${q(c.code)},${q(c.name)},${q(c.short)},${q(c.leagueCode)},${crestFile(c.code) ? q(`/media/clubs/${c.code}.webp`) : "null"})`,
+  )
+  .join(",\n")};
+insert into public.clubs (code, name, short_name, nation_id, league_id, crest_url)
+select c.code, c.name, c.short, l.nation_id, l.id, c.crest_url
 from fc_clubs c join public.leagues l on l.code = c.league
-on conflict (code) do update set league_id = excluded.league_id;
+on conflict (code) do update set league_id = excluded.league_id,
+  crest_url = coalesce(public.clubs.crest_url, excluded.crest_url);
 
 -- Joueurs du fichier
 create temp table fc_players (

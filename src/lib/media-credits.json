@@ -1851,9 +1851,184 @@
   ],
   "clubs": [
     {
+      "code": "1-FC-KOLN",
+      "name": "1. FC Köln",
+      "source": "https://commons.wikimedia.org/wiki/File:1._FC_Koeln_Logo_2014%E2%80%93.svg"
+    },
+    {
+      "code": "1-FC-MAGDEBURG",
+      "name": "1. FC Magdeburg",
+      "source": "https://commons.wikimedia.org/wiki/File:1._FC_Magdeburg.svg"
+    },
+    {
+      "code": "1-FC-NURNBERG",
+      "name": "1. FC Nürnberg",
+      "source": "https://commons.wikimedia.org/wiki/File:1._FC_N%C3%BCrnberg_logo.svg"
+    },
+    {
+      "code": "1-FSV-MAINZ-05",
+      "name": "1. FSV Mainz 05",
+      "source": "https://commons.wikimedia.org/wiki/File:1._FSV_Mainz_05_logo.svg"
+    },
+    {
+      "code": "AALESUNDS-FK",
+      "name": "Aalesunds FK",
+      "source": "https://en.wikipedia.org/wiki/File:Aalesunds_FK_logo.svg"
+    },
+    {
+      "code": "ABERDEEN",
+      "name": "Aberdeen",
+      "source": "https://en.wikipedia.org/wiki/File:Aberdeen_FC_stars_crest.svg"
+    },
+    {
+      "code": "ABHA-CLUB",
+      "name": "Abha Club",
+      "source": "https://en.wikipedia.org/wiki/File:Abha_Club_Logo.svg"
+    },
+    {
+      "code": "AC-HORSENS",
+      "name": "AC Horsens",
+      "source": "https://en.wikipedia.org/wiki/File:AC_Horsens_logo_2017.svg"
+    },
+    {
       "code": "ACM",
       "name": "AC Milan",
       "source": "https://commons.wikimedia.org/wiki/File:Logo_of_AC_Milan.svg"
+    },
+    {
+      "code": "ACADEMICO-DE-VISEU-FC",
+      "name": "Académico de Viseu FC",
+      "source": "https://commons.wikimedia.org/wiki/File:A.C._Viseu.svg"
+    },
+    {
+      "code": "ACCRINGTON",
+      "name": "Accrington",
+      "source": "https://en.wikipedia.org/wiki/File:Accrington_Stanley_F.C._logo.svg"
+    },
+    {
+      "code": "AD-CEUTA-FC",
+      "name": "AD Ceuta FC",
+      "source": "https://en.wikipedia.org/wiki/File:AD_Ceuta_FC_logo.svg"
+    },
+    {
+      "code": "ADELAIDE-UNITED",
+      "name": "Adelaide United",
+      "source": "https://en.wikipedia.org/wiki/File:Adelaide_United_Football_Club_logo.svg"
+    },
+    {
+      "code": "ADO-DEN-HAAG",
+      "name": "ADO Den Haag",
+      "source": "https://en.wikipedia.org/wiki/File:ADO_Den_Haag_logo.svg"
+    },
+    {
+      "code": "AEK-ATHENS",
+      "name": "AEK Athens",
+      "source": "https://en.wikipedia.org/wiki/File:AEK_Athens_FC_logo.svg"
+    },
+    {
+      "code": "AFC-BOURNEMOUTH",
+      "name": "AFC Bournemouth",
+      "source": "https://en.wikipedia.org/wiki/File:AFC_Bournemouth_(2013).svg"
+    },
+    {
+      "code": "AFC-WIMBLEDON",
+      "name": "AFC Wimbledon",
+      "source": "https://en.wikipedia.org/wiki/File:AFC_Wimbledon_(2020)_logo.svg"
+    },
+    {
+      "code": "AGF",
+      "name": "AGF",
+      "source": "https://en.wikipedia.org/wiki/File:AGF_Aarhus_logo.svg"
+    },
+    {
+      "code": "AIK",
+      "name": "AIK",
+      "source": "https://en.wikipedia.org/wiki/File:AIK_Fotboll_(shield).svg"
+    },
+    {
+      "code": "AJ-AUXERRE",
+      "name": "AJ Auxerre",
+      "source": "https://en.wikipedia.org/wiki/File:AJAuxerreLogo.svg"
+    },
+    {
+      "code": "AJX",
+      "name": "Ajax Amsterdam",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_AFC_Ajax_(1928-1991,_2025-).png"
+    },
+    {
+      "code": "AL-AIN-FC",
+      "name": "Al Ain FC",
+      "source": "https://en.wikipedia.org/wiki/File:Al_Ain_FC_logo.svg"
+    },
+    {
+      "code": "AL-DIRIYAH",
+      "name": "Al Diriyah",
+      "source": "https://en.wikipedia.org/wiki/File:Diriyah_Club_Logo.svg"
+    },
+    {
+      "code": "AL-ETTIFAQ",
+      "name": "Al Ettifaq",
+      "source": "https://en.wikipedia.org/wiki/File:Al-Ettifaq_FC_logo.svg"
+    },
+    {
+      "code": "AL-FAISALY",
+      "name": "Al Faisaly",
+      "source": "https://en.wikipedia.org/wiki/File:Al_Faisaly_FC_logo.svg"
+    },
+    {
+      "code": "AL-FATEH",
+      "name": "Al Fateh",
+      "source": "https://commons.wikimedia.org/wiki/File:Nassr_FC_Logo.svg"
+    },
+    {
+      "code": "AL-FAYHA",
+      "name": "Al Fayha",
+      "source": "https://en.wikipedia.org/wiki/File:Al-Fayha_FC.svg"
+    },
+    {
+      "code": "AL-HAZEM",
+      "name": "Al Hazem",
+      "source": "https://en.wikipedia.org/wiki/File:Al-Hazem_FC_Logo.svg"
+    },
+    {
+      "code": "AL-KHALEEJ",
+      "name": "Al Khaleej",
+      "source": "https://en.wikipedia.org/wiki/File:Al-Khaleej_FC_Logo.svg"
+    },
+    {
+      "code": "AL-KHOLOOD",
+      "name": "Al Kholood",
+      "source": "https://en.wikipedia.org/wiki/File:Al_Kholood_Club_Logo.svg"
+    },
+    {
+      "code": "NAS",
+      "name": "Al Nasr Riyad",
+      "source": "https://commons.wikimedia.org/wiki/File:Nassr_FC_Logo.svg"
+    },
+    {
+      "code": "AL-QADSIAH",
+      "name": "Al Qadsiah",
+      "source": "https://commons.wikimedia.org/wiki/File:QAD_LOGO.png"
+    },
+    {
+      "code": "AL-RIYADH",
+      "name": "Al Riyadh",
+      "source": "https://en.wikipedia.org/wiki/File:Al-Riyadh_SC.svg"
+    },
+    {
+      "code": "AL-SHABAB",
+      "name": "Al Shabab",
+      "source": "https://en.wikipedia.org/wiki/File:Al_Shabab_FC_(Riyadh).svg"
+    },
+    {
+      "code": "SHA",
+      "name": "Al Shamal",
+      "source": "https://en.wikipedia.org/wiki/File:Al-Shamal_SC_logo.svg"
+    },
+    {
+      "code": "AL-TAAWOUN",
+      "name": "Al Taawoun",
+      "source": "https://en.wikipedia.org/wiki/File:Al_Taawoun_FC_Logo.svg"
     },
     {
       "code": "AHL",
@@ -1861,9 +2036,69 @@
       "source": "https://en.wikipedia.org/wiki/File:Al_Ahli_Saudi_FC_logo.svg"
     },
     {
-      "code": "AJX",
-      "name": "Ajax Amsterdam",
-      "source": "https://commons.wikimedia.org/wiki/File:Logo_AFC_Ajax_(1928-1991,_2025-).png"
+      "code": "HIL",
+      "name": "Al-Hilal SFC",
+      "source": "https://commons.wikimedia.org/wiki/File:Al_Hilal_SFC_Logo.svg"
+    },
+    {
+      "code": "ALANYASPOR",
+      "name": "Alanyaspor",
+      "source": "https://en.wikipedia.org/wiki/File:Alanyaspor_logo.svg"
+    },
+    {
+      "code": "ALBACETE-BP",
+      "name": "Albacete BP",
+      "source": "https://en.wikipedia.org/wiki/File:Albacete_balompie.svg"
+    },
+    {
+      "code": "ALDOSIVI",
+      "name": "Aldosivi",
+      "source": "https://en.wikipedia.org/wiki/File:Aldosivi_logo.svg"
+    },
+    {
+      "code": "ALWAYS-READY",
+      "name": "Always Ready",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Always_Ready_logo.svg"
+    },
+    {
+      "code": "AMED-SPORTIF-FAALIYETLER",
+      "name": "Amed Sportif Faaliyetler",
+      "source": "https://en.wikipedia.org/wiki/File:Amed_S.F.K._logo.svg"
+    },
+    {
+      "code": "AMERICA-DE-CALI",
+      "name": "América de Cali",
+      "source": "https://en.wikipedia.org/wiki/File:Am%C3%A9rica_de_Cali_logo.svg"
+    },
+    {
+      "code": "ANGERS-SCO",
+      "name": "Angers SCO",
+      "source": "https://commons.wikimedia.org/wiki/File:Angers_Sporting_Club_de_l%27Ouest_logo.svg"
+    },
+    {
+      "code": "APOEL-FC",
+      "name": "APOEL FC",
+      "source": "https://commons.wikimedia.org/wiki/File:APOEL_(logo_with_stars).svg"
+    },
+    {
+      "code": "AREZZO",
+      "name": "Arezzo",
+      "source": "https://en.wikipedia.org/wiki/File:SS_Arezzo_crest.svg"
+    },
+    {
+      "code": "ARGENTINOS-JRS",
+      "name": "Argentinos Jrs.",
+      "source": "https://commons.wikimedia.org/wiki/File:Asociaci%C3%B3n_Atl%C3%A9tica_Argentinos_Juniors_logo.svg"
+    },
+    {
+      "code": "ARMINIA-BIELEFELD",
+      "name": "Arminia Bielefeld",
+      "source": "https://en.wikipedia.org/wiki/File:Arminia_Bielefeld_crest.svg"
+    },
+    {
+      "code": "AROUCA",
+      "name": "Arouca",
+      "source": "https://en.wikipedia.org/wiki/File:F.C._Arouca_logo.svg"
     },
     {
       "code": "ARS",
@@ -1876,9 +2111,34 @@
       "source": "https://en.wikipedia.org/wiki/File:LogoASMonacoFC2021.svg"
     },
     {
+      "code": "AS-NANCY-LORRAINE",
+      "name": "AS Nancy Lorraine",
+      "source": "https://en.wikipedia.org/wiki/File:AS_Nancy_logo.svg"
+    },
+    {
+      "code": "ROM",
+      "name": "AS Rome",
+      "source": "https://en.wikipedia.org/wiki/File:AS_Roma_logo_(2017).svg"
+    },
+    {
       "code": "ASSE",
       "name": "AS Saint-Étienne",
       "source": "https://en.wikipedia.org/wiki/File:AS_Saint-%C3%89tienne_logo.svg"
+    },
+    {
+      "code": "ASCOLI",
+      "name": "Ascoli",
+      "source": "https://en.wikipedia.org/wiki/File:Ascoli_Calcio_1898_logo.svg"
+    },
+    {
+      "code": "ASOCIACION-ATLETICA-ESTU",
+      "name": "Asociación Atlética Estudiantes",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_Asociacion_Atl%C3%A9tica_Estudiantes_de_R%C3%ADo_Cuarto.svg"
+    },
+    {
+      "code": "ASTON-VILLA",
+      "name": "Aston Villa",
+      "source": "https://en.wikipedia.org/wiki/File:Aston_Villa_FC_new_crest.svg"
     },
     {
       "code": "ATA",
@@ -1891,59 +2151,89 @@
       "source": "https://en.wikipedia.org/wiki/File:Club_Athletic_Bilbao_logo.svg"
     },
     {
-      "code": "ATM",
-      "name": "Club Atlético de Madrid",
-      "source": "https://en.wikipedia.org/wiki/File:Atletico_Madrid_Logo_2024.svg"
+      "code": "ATL-NACIONAL",
+      "name": "Atl. Nacional",
+      "source": "https://commons.wikimedia.org/wiki/File:Atletico_Nacional_Logo.svg"
     },
     {
-      "code": "BHA",
-      "name": "Brighton & Hove",
-      "source": "https://en.wikipedia.org/wiki/File:Brighton_and_Hove_Albion_FC_crest.svg"
+      "code": "ATLANTA-UNITED",
+      "name": "Atlanta United",
+      "source": "https://en.wikipedia.org/wiki/File:Atlanta_MLS.svg"
     },
     {
-      "code": "BJK",
-      "name": "Beşiktaş JK",
-      "source": "https://commons.wikimedia.org/wiki/File:BesiktasJK-Logo.svg"
+      "code": "ATLANTE-FC",
+      "name": "Atlante FC",
+      "source": "https://commons.wikimedia.org/wiki/File:Atlante_FC_2022_Logo.svg"
     },
     {
-      "code": "BOC",
-      "name": "Boca Juniors",
-      "source": "https://commons.wikimedia.org/wiki/File:Boca_Juniors_logo18.svg"
+      "code": "ATLAS-FC",
+      "name": "Atlas FC",
+      "source": "https://commons.wikimedia.org/wiki/File:F%C3%BAtbol_Club_Atlas.svg"
     },
     {
-      "code": "BOR",
-      "name": "Girondins de Bordeaux",
-      "source": "https://commons.wikimedia.org/wiki/File:FC_Girondins_de_Bordeaux_logo.svg"
+      "code": "ATLETICO-TUCUMAN",
+      "name": "Atlético Tucumán",
+      "source": "https://commons.wikimedia.org/wiki/File:Atletico_tucuman_nuevo2.svg"
     },
     {
-      "code": "BVB",
-      "name": "BV 09 Borussia Dortmund",
-      "source": "https://commons.wikimedia.org/wiki/File:Borussia_Dortmund_logo.svg"
+      "code": "AUCKLAND-FC",
+      "name": "Auckland FC",
+      "source": "https://commons.wikimedia.org/wiki/File:Auckland_FC_logo.svg"
     },
     {
-      "code": "CHE",
-      "name": "Chelsea FC",
-      "source": "https://en.wikipedia.org/wiki/File:Chelsea_FC.svg"
+      "code": "AUDAX-ITALIANO",
+      "name": "Audax Italiano",
+      "source": "https://en.wikipedia.org/wiki/File:Audax_Italiano_logo.svg"
     },
     {
-      "code": "CHI",
-      "name": "Fire de Chicago",
-      "source": "https://commons.wikimedia.org/wiki/File:Chicago_Fire_logo,_2021.svg"
+      "code": "AUSTIN-FC",
+      "name": "Austin FC",
+      "source": "https://en.wikipedia.org/wiki/File:Austin_FC_logo.svg"
     },
     {
-      "code": "CRY",
-      "name": "Crystal Palace FC",
-      "source": "https://en.wikipedia.org/wiki/File:Crystal_Palace_FC_logo_(2022).svg"
+      "code": "AVELLINO",
+      "name": "Avellino",
+      "source": "https://en.wikipedia.org/wiki/File:US_Avellino.svg"
     },
     {
-      "code": "DEP",
-      "name": "Deportivo LC",
-      "source": "https://en.wikipedia.org/wiki/File:RC_Deportivo_A_Coru%C3%B1a_logo_2026.svg"
+      "code": "AZ",
+      "name": "AZ",
+      "source": "https://commons.wikimedia.org/wiki/File:AZ_Alkmaar.svg"
     },
     {
-      "code": "FCB",
-      "name": "FC Barcelone",
-      "source": "https://en.wikipedia.org/wiki/File:FC_Barcelona_(crest).svg"
+      "code": "BAHIA",
+      "name": "Bahia",
+      "source": "https://commons.wikimedia.org/wiki/File:Esporte_Clube_Bahia_logo.svg"
+    },
+    {
+      "code": "BANFIELD",
+      "name": "Banfield",
+      "source": "https://commons.wikimedia.org/wiki/File:CA_Banfield_(2014).svg"
+    },
+    {
+      "code": "BARCELONA-SC",
+      "name": "Barcelona SC",
+      "source": "https://commons.wikimedia.org/wiki/File:Barcelona_Sporting_Club_(Guayaquil,_Ecuador)_logo.svg"
+    },
+    {
+      "code": "BARNET",
+      "name": "Barnet",
+      "source": "https://en.wikipedia.org/wiki/File:Barnet_FC.svg"
+    },
+    {
+      "code": "BARNSLEY",
+      "name": "Barnsley",
+      "source": "https://en.wikipedia.org/wiki/File:Barnsley_FC.svg"
+    },
+    {
+      "code": "BARRACAS-CENTRAL",
+      "name": "Barracas Central",
+      "source": "https://commons.wikimedia.org/wiki/File:Barracas_central_logo.svg"
+    },
+    {
+      "code": "BASAKSEHIR",
+      "name": "Başakşehir",
+      "source": "https://en.wikipedia.org/wiki/File:%C4%B0stanbul_Ba%C5%9Fak%C5%9Fehir_logo.svg"
     },
     {
       "code": "FCBY",
@@ -1951,19 +2241,714 @@
       "source": "https://commons.wikimedia.org/wiki/File:FC_Bayern_M%C3%BCnchen_logo_(2024).svg"
     },
     {
-      "code": "FEN",
-      "name": "Fenerbahçe Istanbul",
-      "source": "https://en.wikipedia.org/wiki/File:Fenerbah%C3%A7e.svg"
+      "code": "BELGRANO",
+      "name": "Belgrano",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Atl%C3%A9tico_Belgrano_2026.svg"
     },
     {
-      "code": "GAL",
-      "name": "Galatasaray SK",
-      "source": "https://commons.wikimedia.org/wiki/File:Galatasaray_S.K._Logo_2026_5-stars.svg"
+      "code": "BENEVENTO",
+      "name": "Benevento",
+      "source": "https://en.wikipedia.org/wiki/File:Benevento_Calcio_logo.svg"
     },
     {
-      "code": "HIL",
-      "name": "Al-Hilal SFC",
-      "source": "https://commons.wikimedia.org/wiki/File:Al_Hilal_SFC_Logo.svg"
+      "code": "BENGALURU-FC",
+      "name": "Bengaluru FC",
+      "source": "https://en.wikipedia.org/wiki/File:Bengaluru_FC_logo.svg"
+    },
+    {
+      "code": "BJK",
+      "name": "Beşiktaş JK",
+      "source": "https://commons.wikimedia.org/wiki/File:BesiktasJK-Logo.svg"
+    },
+    {
+      "code": "BIRMINGHAM-CITY",
+      "name": "Birmingham City",
+      "source": "https://en.wikipedia.org/wiki/File:Birmingham_City_FC_logo.svg"
+    },
+    {
+      "code": "BK-HACKEN",
+      "name": "BK Häcken",
+      "source": "https://en.wikipedia.org/wiki/File:BK_Hacken_logo.svg"
+    },
+    {
+      "code": "BLACKBURN-ROVERS",
+      "name": "Blackburn Rovers",
+      "source": "https://en.wikipedia.org/wiki/File:Blackburn_Rovers.svg"
+    },
+    {
+      "code": "BLACKPOOL",
+      "name": "Blackpool",
+      "source": "https://en.wikipedia.org/wiki/File:Blackpool_FC_logo.svg"
+    },
+    {
+      "code": "BLOOMING",
+      "name": "Blooming",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Blooming.svg"
+    },
+    {
+      "code": "BOC",
+      "name": "Boca Juniors",
+      "source": "https://commons.wikimedia.org/wiki/File:Boca_Juniors_logo18.svg"
+    },
+    {
+      "code": "BOHEMIANS",
+      "name": "Bohemians",
+      "source": "https://en.wikipedia.org/wiki/File:Bohemian_F.C._crest.svg"
+    },
+    {
+      "code": "BOLIVAR",
+      "name": "Bolívar",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Bol%C3%ADvar_logo.svg"
+    },
+    {
+      "code": "BOLOGNA",
+      "name": "Bologna",
+      "source": "https://commons.wikimedia.org/wiki/File:Bologna_F.C._1909_logo.svg"
+    },
+    {
+      "code": "BOLTON",
+      "name": "Bolton",
+      "source": "https://en.wikipedia.org/wiki/File:Bolton_Wanderers_FC_logo.svg"
+    },
+    {
+      "code": "BOSTON-RIVER",
+      "name": "Boston River",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_Boston_River_2019.png"
+    },
+    {
+      "code": "BOTAFOGO",
+      "name": "Botafogo",
+      "source": "https://commons.wikimedia.org/wiki/File:Botafogo_de_Futebol_e_Regatas_logo.svg"
+    },
+    {
+      "code": "BRADFORD-CITY",
+      "name": "Bradford City",
+      "source": "https://en.wikipedia.org/wiki/File:Bradford_City_AFC_crest.svg"
+    },
+    {
+      "code": "BRAUNSCHWEIG",
+      "name": "Braunschweig",
+      "source": "https://en.wikipedia.org/wiki/File:Eintracht_Braunschweig_logo.svg"
+    },
+    {
+      "code": "BRENTFORD",
+      "name": "Brentford",
+      "source": "https://en.wikipedia.org/wiki/File:Brentford_FC_crest.svg"
+    },
+    {
+      "code": "BHA",
+      "name": "Brighton & Hove",
+      "source": "https://en.wikipedia.org/wiki/File:Brighton_and_Hove_Albion_FC_crest.svg"
+    },
+    {
+      "code": "BRISBANE-ROAR",
+      "name": "Brisbane Roar",
+      "source": "https://en.wikipedia.org/wiki/File:Brisbane_Roar_FC_logo.svg"
+    },
+    {
+      "code": "BRISTOL-CITY",
+      "name": "Bristol City",
+      "source": "https://en.wikipedia.org/wiki/File:Bristol_City_crest.svg"
+    },
+    {
+      "code": "BRISTOL-ROVERS",
+      "name": "Bristol Rovers",
+      "source": "https://en.wikipedia.org/wiki/File:Bristol_Rovers_F.C._logo.svg"
+    },
+    {
+      "code": "BROMLEY-FC",
+      "name": "Bromley FC",
+      "source": "https://en.wikipedia.org/wiki/File:Bromley_FC_crest.svg"
+    },
+    {
+      "code": "BROMMAPOJKARNA",
+      "name": "Brommapojkarna",
+      "source": "https://en.wikipedia.org/wiki/File:IF_Brommapojkarna_logo.svg"
+    },
+    {
+      "code": "BRONDBY-IF",
+      "name": "Brøndby IF",
+      "source": "https://en.wikipedia.org/wiki/File:Brondby_IF_logo.svg"
+    },
+    {
+      "code": "BSC-YOUNG-BOYS",
+      "name": "BSC Young Boys",
+      "source": "https://commons.wikimedia.org/wiki/File:BSC_Young_Boys.svg"
+    },
+    {
+      "code": "BURGOS-CF",
+      "name": "Burgos CF",
+      "source": "https://en.wikipedia.org/wiki/File:Burgos_CF_logo.svg"
+    },
+    {
+      "code": "BURIRAM-UNITED",
+      "name": "Buriram United",
+      "source": "https://en.wikipedia.org/wiki/File:Buriram_United_logo.svg"
+    },
+    {
+      "code": "BURNLEY",
+      "name": "Burnley",
+      "source": "https://en.wikipedia.org/wiki/File:Burnley_FC_Logo.svg"
+    },
+    {
+      "code": "BURTON-ALBION",
+      "name": "Burton Albion",
+      "source": "https://en.wikipedia.org/wiki/File:Burton_Albion_FC_crest.svg"
+    },
+    {
+      "code": "BVB",
+      "name": "BV 09 Borussia Dortmund",
+      "source": "https://commons.wikimedia.org/wiki/File:Borussia_Dortmund_logo.svg"
+    },
+    {
+      "code": "CA-OSASUNA",
+      "name": "CA Osasuna",
+      "source": "https://en.wikipedia.org/wiki/File:CA_Osasuna_2024_crest.svg"
+    },
+    {
+      "code": "CADIZ-CF",
+      "name": "Cádiz CF",
+      "source": "https://en.wikipedia.org/wiki/File:C%C3%A1diz_CF_logo.svg"
+    },
+    {
+      "code": "CAGLIARI",
+      "name": "Cagliari",
+      "source": "https://en.wikipedia.org/wiki/File:Cagliari_Calcio_1920.svg"
+    },
+    {
+      "code": "CAMBRIDGE-UTD",
+      "name": "Cambridge Utd",
+      "source": "https://en.wikipedia.org/wiki/File:Cambridge_United_FC_crest.svg"
+    },
+    {
+      "code": "CARABOBO-FC",
+      "name": "Carabobo FC",
+      "source": "https://en.wikipedia.org/wiki/File:Carabobo_F.C.svg"
+    },
+    {
+      "code": "CARACAS-FC",
+      "name": "Caracas FC",
+      "source": "https://en.wikipedia.org/wiki/File:Caracas_F.C.svg"
+    },
+    {
+      "code": "CARDIFF-CITY",
+      "name": "Cardiff City",
+      "source": "https://en.wikipedia.org/wiki/File:Cardiff_City_crest.svg"
+    },
+    {
+      "code": "CARRARESE-CALCIO",
+      "name": "Carrarese Calcio",
+      "source": "https://en.wikipedia.org/wiki/File:Carrarese_Calcio_1908_crest.svg"
+    },
+    {
+      "code": "CASA-PIA-AC",
+      "name": "Casa Pia AC",
+      "source": "https://en.wikipedia.org/wiki/File:Casa_Pia_A.C._logo.svg"
+    },
+    {
+      "code": "CATANZARO",
+      "name": "Catanzaro",
+      "source": "https://en.wikipedia.org/wiki/File:US_Catanzaro_1929_crest.svg"
+    },
+    {
+      "code": "CAYKUR-RIZESPOR",
+      "name": "Çaykur Rizespor",
+      "source": "https://en.wikipedia.org/wiki/File:%C3%87aykur_Rizespor_logo.svg"
+    },
+    {
+      "code": "CD-CASTELLON",
+      "name": "CD Castellón",
+      "source": "https://en.wikipedia.org/wiki/File:Logo_of_CD_Castell%C3%B3n.svg"
+    },
+    {
+      "code": "CD-ELDENSE",
+      "name": "CD Eldense",
+      "source": "https://en.wikipedia.org/wiki/File:CD_Eldense_logo.svg"
+    },
+    {
+      "code": "CD-LEGANES",
+      "name": "CD Leganés",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Deportivo_Legan%C3%A9s_logo.svg"
+    },
+    {
+      "code": "CD-TENERIFE",
+      "name": "CD Tenerife",
+      "source": "https://en.wikipedia.org/wiki/File:CD_Tenerife_emblem.svg"
+    },
+    {
+      "code": "CE-SABADELL-FC",
+      "name": "CE Sabadell FC",
+      "source": "https://en.wikipedia.org/wiki/File:CE_Sabadell_FC_logo.svg"
+    },
+    {
+      "code": "CELTA",
+      "name": "Celta",
+      "source": "https://en.wikipedia.org/wiki/File:RC_Celta_de_Vigo_logo.svg"
+    },
+    {
+      "code": "CELTA-FORTUNA",
+      "name": "Celta Fortuna",
+      "source": "https://en.wikipedia.org/wiki/File:RC_Celta_de_Vigo_logo.svg"
+    },
+    {
+      "code": "CELTIC",
+      "name": "Celtic",
+      "source": "https://en.wikipedia.org/wiki/File:Celtic_FC_crest.svg"
+    },
+    {
+      "code": "CENTRAL-COAST",
+      "name": "Central Coast",
+      "source": "https://en.wikipedia.org/wiki/File:Central_Coast_Mariners_Football_Club_logo.svg"
+    },
+    {
+      "code": "CENTRAL-CORDOBA",
+      "name": "Central Córdoba",
+      "source": "https://commons.wikimedia.org/wiki/File:Central_Cordoba_SdE_crest_(2025).svg"
+    },
+    {
+      "code": "CERCLE-BRUGGE",
+      "name": "Cercle Brugge",
+      "source": "https://en.wikipedia.org/wiki/File:Cercle_Brugge_KSV_logo.svg"
+    },
+    {
+      "code": "CERRO-PORTENO",
+      "name": "Cerro Porteño",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_Club_Cerro_Porte%C3%B1o_2023-Actual.svg"
+    },
+    {
+      "code": "CESENA",
+      "name": "Cesena",
+      "source": "https://en.wikipedia.org/wiki/File:Cesena_FC_crest.svg"
+    },
+    {
+      "code": "CF-CRUZ-AZUL",
+      "name": "CF Cruz Azul",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_de_F%C3%BAtbol_Cruz_Azul_logo.svg"
+    },
+    {
+      "code": "CF-MONTREAL",
+      "name": "CF Montréal",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_of_CF_Montreal_2023.svg"
+    },
+    {
+      "code": "CFR-1907-CLUJ",
+      "name": "CFR 1907 Cluj",
+      "source": "https://en.wikipedia.org/wiki/File:CFR_Cluj_badge.svg"
+    },
+    {
+      "code": "CHARLOTTE-FC",
+      "name": "Charlotte FC",
+      "source": "https://en.wikipedia.org/wiki/File:Charlotte_FC_logo.svg"
+    },
+    {
+      "code": "CHE",
+      "name": "Chelsea FC",
+      "source": "https://en.wikipedia.org/wiki/File:Chelsea_FC.svg"
+    },
+    {
+      "code": "CHELTENHAM-TOWN",
+      "name": "Cheltenham Town",
+      "source": "https://en.wikipedia.org/wiki/File:Cheltenham_Town_F.C._logo.svg"
+    },
+    {
+      "code": "CHENGDU-FC",
+      "name": "Chengdu FC",
+      "source": "https://en.wikipedia.org/wiki/File:Jiangsu_Suning_F.C._logo.svg"
+    },
+    {
+      "code": "CHENNAIYIN-FC",
+      "name": "Chennaiyin FC",
+      "source": "https://en.wikipedia.org/wiki/File:Chennaiyin_FC_logo.svg"
+    },
+    {
+      "code": "CHESTERFIELD",
+      "name": "Chesterfield",
+      "source": "https://en.wikipedia.org/wiki/File:Chesterfield_FC_crest.svg"
+    },
+    {
+      "code": "CIENCIANO",
+      "name": "Cienciano",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_Cienciano.png"
+    },
+    {
+      "code": "CITY-TORQUE",
+      "name": "City Torque",
+      "source": "https://en.wikipedia.org/wiki/File:Montevideo_City_Torque_logo.svg"
+    },
+    {
+      "code": "CLERMONT-FOOT-63",
+      "name": "Clermont Foot 63",
+      "source": "https://en.wikipedia.org/wiki/File:Clermont_Foot_logo.svg"
+    },
+    {
+      "code": "CLUB-AMERICA",
+      "name": "Club América",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Am%C3%A9rica_crest.svg"
+    },
+    {
+      "code": "ATM",
+      "name": "Club Atlético de Madrid",
+      "source": "https://en.wikipedia.org/wiki/File:Atletico_Madrid_Logo_2024.svg"
+    },
+    {
+      "code": "CLUB-ATLETICO-GIMNASIA-Y",
+      "name": "Club Atlético Gimnasia y Esgrima",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_Club_Atl%C3%A9tico_Gimnasia_y_Esgrima_Mendoza.png"
+    },
+    {
+      "code": "CLUB-BRUGGE",
+      "name": "Club Brugge",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Brugge_KV_logo.svg"
+    },
+    {
+      "code": "CLUB-GUADALAJARA",
+      "name": "Club Guadalajara",
+      "source": "https://en.wikipedia.org/wiki/File:Guadalajara_CD.svg"
+    },
+    {
+      "code": "CLUB-NECAXA",
+      "name": "Club Necaxa",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Necaxa_Logo.svg"
+    },
+    {
+      "code": "CLUB-PACHUCA",
+      "name": "Club Pachuca",
+      "source": "https://en.wikipedia.org/wiki/File:Pachuca_Tuzos_logo.svg"
+    },
+    {
+      "code": "CLUB-PUEBLA",
+      "name": "Club Puebla",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Puebla_logo.svg"
+    },
+    {
+      "code": "CLUB-TIGRES",
+      "name": "Club Tigres",
+      "source": "https://en.wikipedia.org/wiki/File:Tigres_UANL_logo_(crest).svg"
+    },
+    {
+      "code": "CLUB-TIJUANA",
+      "name": "Club Tijuana",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Tijuana_logo.svg"
+    },
+    {
+      "code": "COLCHESTER",
+      "name": "Colchester",
+      "source": "https://en.wikipedia.org/wiki/File:Colchester_United_FC_crest.svg"
+    },
+    {
+      "code": "COLORADO-RAPIDS",
+      "name": "Colorado Rapids",
+      "source": "https://en.wikipedia.org/wiki/File:Colorado_Rapids_logo.svg"
+    },
+    {
+      "code": "COLUMBUS-CREW",
+      "name": "Columbus Crew",
+      "source": "https://commons.wikimedia.org/wiki/File:Columbus_Crew_logo_2021.svg"
+    },
+    {
+      "code": "COMO",
+      "name": "Como",
+      "source": "https://commons.wikimedia.org/wiki/File:Calcio_Como_-_logo_(Italy,_2019-).svg"
+    },
+    {
+      "code": "COQUIMBO-UNIDO",
+      "name": "Coquimbo Unido",
+      "source": "https://en.wikipedia.org/wiki/File:Coquimbo_Unido.svg"
+    },
+    {
+      "code": "CORDOBA-CF",
+      "name": "Córdoba CF",
+      "source": "https://en.wikipedia.org/wiki/File:C%C3%B3rdoba_CF_logo.svg"
+    },
+    {
+      "code": "COVENTRY-CITY",
+      "name": "Coventry City",
+      "source": "https://en.wikipedia.org/wiki/File:Coventry_City_FC_crest.svg"
+    },
+    {
+      "code": "CRACOVIA",
+      "name": "Cracovia",
+      "source": "https://en.wikipedia.org/wiki/File:Cracovia_(football_club)_logo.svg"
+    },
+    {
+      "code": "CRAWLEY-TOWN",
+      "name": "Crawley Town",
+      "source": "https://en.wikipedia.org/wiki/File:Crawley_Town_FC_crest.svg"
+    },
+    {
+      "code": "CREMONESE",
+      "name": "Cremonese",
+      "source": "https://en.wikipedia.org/wiki/File:US_Cremonese_logo.svg"
+    },
+    {
+      "code": "CREWE-ALEXANDRA",
+      "name": "Crewe Alexandra",
+      "source": "https://en.wikipedia.org/wiki/File:Crewe_Alexandra.svg"
+    },
+    {
+      "code": "CRY",
+      "name": "Crystal Palace FC",
+      "source": "https://en.wikipedia.org/wiki/File:Crystal_Palace_FC_logo_(2022).svg"
+    },
+    {
+      "code": "CUSCO-FC",
+      "name": "Cusco FC",
+      "source": "https://en.wikipedia.org/wiki/File:Cusco_FC_logo.svg"
+    },
+    {
+      "code": "D-ALAVES",
+      "name": "D. Alavés",
+      "source": "https://en.wikipedia.org/wiki/File:Deportivo_Alaves_logo_(2020).svg"
+    },
+    {
+      "code": "D-C-UNITED",
+      "name": "D.C. United",
+      "source": "https://en.wikipedia.org/wiki/File:D.C._United_logo_(2016).svg"
+    },
+    {
+      "code": "DEFENSA",
+      "name": "Defensa",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Social_y_Deportivo_Defensa_y_Justicia.svg"
+    },
+    {
+      "code": "DEGERFORS-IF",
+      "name": "Degerfors IF",
+      "source": "https://en.wikipedia.org/wiki/File:Degerfors_IF_logo.svg"
+    },
+    {
+      "code": "DEPORTES-TOLIMA",
+      "name": "Deportes Tolima",
+      "source": "https://commons.wikimedia.org/wiki/File:Tolima_Campe%C3%B3n_2018.png"
+    },
+    {
+      "code": "DEP",
+      "name": "Deportivo LC",
+      "source": "https://en.wikipedia.org/wiki/File:RC_Deportivo_A_Coru%C3%B1a_logo_2026.svg"
+    },
+    {
+      "code": "DERBY-COUNTY",
+      "name": "Derby County",
+      "source": "https://en.wikipedia.org/wiki/File:Derby_County_crest.svg"
+    },
+    {
+      "code": "DERRY-CITY",
+      "name": "Derry City",
+      "source": "https://en.wikipedia.org/wiki/File:Derry_City_F.C._crest.svg"
+    },
+    {
+      "code": "DIJON-FOOTBALL-COTE-D-OR",
+      "name": "Dijon Football Côte d’Or",
+      "source": "https://en.wikipedia.org/wiki/File:Dijon_FCO_logo.svg"
+    },
+    {
+      "code": "DINAMO-ZAGREB",
+      "name": "Dinamo Zagreb",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_GNK_Dinamo_Zagreb_(2019).svg"
+    },
+    {
+      "code": "DJURGARDENS-IF",
+      "name": "Djurgårdens IF",
+      "source": "https://commons.wikimedia.org/wiki/File:Djurgardens_IF_logo.svg"
+    },
+    {
+      "code": "DONCASTER",
+      "name": "Doncaster",
+      "source": "https://en.wikipedia.org/wiki/File:Doncaster_Rovers_F.C._logo.svg"
+    },
+    {
+      "code": "DROGHEDA-UNITED",
+      "name": "Drogheda United",
+      "source": "https://en.wikipedia.org/wiki/File:Drogheda_United_FC.svg"
+    },
+    {
+      "code": "DUNDEE-FC",
+      "name": "Dundee FC",
+      "source": "https://en.wikipedia.org/wiki/File:Dundee_FC_2025_Crest.svg"
+    },
+    {
+      "code": "DUSSELDORF",
+      "name": "Düsseldorf",
+      "source": "https://commons.wikimedia.org/wiki/File:Fortuna_D%C3%BCsseldorf.svg"
+    },
+    {
+      "code": "DYNAMO-DRESDEN",
+      "name": "Dynamo Dresden",
+      "source": "https://en.wikipedia.org/wiki/File:Dynamo_Dresden_crest.svg"
+    },
+    {
+      "code": "DYNAMO-KYIV",
+      "name": "Dynamo Kyiv",
+      "source": "https://commons.wikimedia.org/wiki/File:Futbolny_Klub_Dynamo_Kyiv_logo.svg"
+    },
+    {
+      "code": "ELCHE-CF",
+      "name": "Elche CF",
+      "source": "https://en.wikipedia.org/wiki/File:Elche_CF_logo.svg"
+    },
+    {
+      "code": "EMPOLI",
+      "name": "Empoli",
+      "source": "https://en.wikipedia.org/wiki/File:Empoli_FC_crest.svg"
+    },
+    {
+      "code": "EN-AVANT-GUINGAMP",
+      "name": "En Avant Guingamp",
+      "source": "https://en.wikipedia.org/wiki/File:En_Avant_Guingamp_logo.svg"
+    },
+    {
+      "code": "ENERGIE-COTTBUS",
+      "name": "Energie Cottbus",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_Energie_Cottbus.svg"
+    },
+    {
+      "code": "ENTELLA",
+      "name": "Entella",
+      "source": "https://en.wikipedia.org/wiki/File:Virtus_Entella_logo.svg"
+    },
+    {
+      "code": "ERZURUMSPOR-FUTBOL-KULUB",
+      "name": "Erzurumspor Futbol Kulübü",
+      "source": "https://en.wikipedia.org/wiki/File:Erzurumspor_F.K._logo.svg"
+    },
+    {
+      "code": "ESTAC-TROYES",
+      "name": "ESTAC Troyes",
+      "source": "https://commons.wikimedia.org/wiki/File:ESTAC_Troyes_Logo.svg"
+    },
+    {
+      "code": "ESTORIL-PRAIA",
+      "name": "Estoril Praia",
+      "source": "https://en.wikipedia.org/wiki/File:GD_Estoril_Praia_logo.svg"
+    },
+    {
+      "code": "ESTRELA-AMADORA",
+      "name": "Estrela Amadora",
+      "source": "https://commons.wikimedia.org/wiki/File:S%C3%ADmbolo_Estrela_da_Amadora.svg"
+    },
+    {
+      "code": "ESTUDIANTES",
+      "name": "Estudiantes",
+      "source": "https://commons.wikimedia.org/wiki/File:Estudiantes_de_la_Plata_crest_(2025)_cropped.svg"
+    },
+    {
+      "code": "EVERTON",
+      "name": "Everton",
+      "source": "https://en.wikipedia.org/wiki/File:Everton_FC_logo.svg"
+    },
+    {
+      "code": "EXCELSIOR",
+      "name": "Excelsior",
+      "source": "https://commons.wikimedia.org/wiki/File:Excelsior_Rotterdam_logo_2021.svg"
+    },
+    {
+      "code": "EXETER-CITY",
+      "name": "Exeter City",
+      "source": "https://en.wikipedia.org/wiki/File:Exeter_City_FC.svg"
+    },
+    {
+      "code": "EYUPSPOR",
+      "name": "Eyüpspor",
+      "source": "https://commons.wikimedia.org/wiki/File:Ey%C3%BCpspor_Logosu.png"
+    },
+    {
+      "code": "F-C-KOBENHAVN",
+      "name": "F.C. København",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Copenhagen_logo.svg"
+    },
+    {
+      "code": "FALKIRK",
+      "name": "Falkirk",
+      "source": "https://en.wikipedia.org/wiki/File:Falkirk_FC_logo.svg"
+    },
+    {
+      "code": "FARUL-CONSTANTA",
+      "name": "Farul Constanța",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Farul_Constanta.svg"
+    },
+    {
+      "code": "FC-ALVERCA",
+      "name": "FC Alverca",
+      "source": "https://en.wikipedia.org/wiki/File:F.C._Alverca_logo.svg"
+    },
+    {
+      "code": "FC-ANDORRA",
+      "name": "FC Andorra",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Andorra_logo.svg"
+    },
+    {
+      "code": "FC-ANNECY",
+      "name": "FC Annecy",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Annecy_logo.svg"
+    },
+    {
+      "code": "FC-ARGES",
+      "name": "FC Argeș",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Arge%C8%99_Pite%C8%99ti_logo.svg"
+    },
+    {
+      "code": "FC-AUGSBURG",
+      "name": "FC Augsburg",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Augsburg_logo.svg"
+    },
+    {
+      "code": "FCB",
+      "name": "FC Barcelone",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Barcelona_(crest).svg"
+    },
+    {
+      "code": "FC-BASEL-1893",
+      "name": "FC Basel 1893",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Basel_crest.svg"
+    },
+    {
+      "code": "FC-BOTOSANI",
+      "name": "FC Botoșani",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Botosani_2022_logo.svg"
+    },
+    {
+      "code": "FC-CINCINNATI",
+      "name": "FC Cincinnati",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Cincinnati_primary_logo_2018.svg"
+    },
+    {
+      "code": "FC-CORVINUL-1921-HUNEDOA",
+      "name": "FC Corvinul 1921 Hunedoara",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Corvinul_Hunedoara.svg"
+    },
+    {
+      "code": "FC-DALLAS",
+      "name": "FC Dallas",
+      "source": "https://en.wikipedia.org/wiki/File:Atl%C3%A9tico_Dallas.png"
+    },
+    {
+      "code": "FC-DINAMO-1948",
+      "name": "FC Dinamo 1948",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Dinamo_Bucure%C8%99ti_-_logo_2026.svg"
+    },
+    {
+      "code": "FC-FAMALICAO",
+      "name": "FC Famalicão",
+      "source": "https://en.wikipedia.org/wiki/File:F.C._Famalic%C3%A3o_logo.svg"
+    },
+    {
+      "code": "FC-GOA",
+      "name": "FC Goa",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Goa_logo.svg"
+    },
+    {
+      "code": "FC-GRONINGEN",
+      "name": "FC Groningen",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Groningen_logo.svg"
+    },
+    {
+      "code": "FC-HANSA-ROSTOCK",
+      "name": "FC Hansa Rostock",
+      "source": "https://commons.wikimedia.org/wiki/File:F.C._Hansa_Rostock_Logo.svg"
+    },
+    {
+      "code": "FC-INGOLSTADT-04",
+      "name": "FC Ingolstadt 04",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Ingolstadt_04_logo.svg"
     },
     {
       "code": "INT",
@@ -1971,29 +2956,444 @@
       "source": "https://commons.wikimedia.org/wiki/File:FC_Internazionale_Milano_2021.svg"
     },
     {
-      "code": "ITT",
-      "name": "Ittihad FC",
-      "source": "https://en.wikipedia.org/wiki/File:Al-Ittihad_Club_(Jeddah)_logo.svg"
+      "code": "FC-LORIENT",
+      "name": "FC Lorient",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Lorient_logo.svg"
     },
     {
-      "code": "JUV",
-      "name": "Juventus FC",
-      "source": "https://commons.wikimedia.org/wiki/File:Juventus_FC_-_logo_black_(Italy,_2020).svg"
+      "code": "FC-LUGANO",
+      "name": "FC Lugano",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_FC_Lugano_2025.svg"
     },
     {
-      "code": "LAFC",
-      "name": "Los Angeles Football Club",
-      "source": "https://commons.wikimedia.org/wiki/File:Los_Angeles_Football_Club.svg"
+      "code": "FC-LUZERN",
+      "name": "FC Luzern",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Luzern_crest.svg"
     },
     {
-      "code": "LIV",
-      "name": "Liverpool FC",
-      "source": "https://en.wikipedia.org/wiki/File:Liverpool_FC.svg"
+      "code": "FC-METZ",
+      "name": "FC Metz",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Metz_2021_Logo.svg"
     },
     {
-      "code": "MCI",
-      "name": "Manchester City FC",
-      "source": "https://en.wikipedia.org/wiki/File:Manchester_City_FC_badge.svg"
+      "code": "FC-MIDTJYLLAND",
+      "name": "FC Midtjylland",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Midtjylland_logo.svg"
+    },
+    {
+      "code": "FC-NANTES",
+      "name": "FC Nantes",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_FC_Nantes_(avec_fond)_-_2019.svg"
+    },
+    {
+      "code": "FC-NORDSJAELLAND",
+      "name": "FC Nordsjælland",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Nordsj%C3%A6lland_logo.svg"
+    },
+    {
+      "code": "FC-PETROLUL",
+      "name": "FC Petrolul",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Petrolul_Ploie%C8%99ti_logo.svg"
+    },
+    {
+      "code": "FC-PORTO",
+      "name": "FC Porto",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Porto.svg"
+    },
+    {
+      "code": "FC-RAPID-1923",
+      "name": "FC Rapid 1923",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Rapid_Bucuresti_logo.svg"
+    },
+    {
+      "code": "FC-SCHALKE-04",
+      "name": "FC Schalke 04",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Schalke_04_Logo.svg"
+    },
+    {
+      "code": "FC-SEOUL",
+      "name": "FC Seoul",
+      "source": "https://en.wikipedia.org/wiki/File:Gimcheon_Sangmu_FC.svg"
+    },
+    {
+      "code": "FC-SION",
+      "name": "FC Sion",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Sion.svg"
+    },
+    {
+      "code": "FC-SOCHAUX-MONTBELIARD",
+      "name": "FC Sochaux-Montbéliard",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Sochaux-Montbeliard_logo.svg"
+    },
+    {
+      "code": "FC-ST-GALLEN",
+      "name": "FC St. Gallen",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_St._Gallen_logo.svg"
+    },
+    {
+      "code": "FC-ST-PAULI",
+      "name": "FC St. Pauli",
+      "source": "https://en.wikipedia.org/wiki/File:FC_St._Pauli_logo_(2018).svg"
+    },
+    {
+      "code": "FC-THUN",
+      "name": "FC Thun",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Thun_Logo_2011.svg"
+    },
+    {
+      "code": "FC-TWENTE",
+      "name": "FC Twente",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Twente.svg"
+    },
+    {
+      "code": "FC-UNIV-CLUJ",
+      "name": "FC Univ. Cluj",
+      "source": "https://en.wikipedia.org/wiki/File:U_Cluj_Logo.svg"
+    },
+    {
+      "code": "FC-UTRECHT",
+      "name": "FC Utrecht",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_FC_Utrecht.svg"
+    },
+    {
+      "code": "FC-VADUZ",
+      "name": "FC Vaduz",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Vaduz_logo.svg"
+    },
+    {
+      "code": "FC-VOLUNTARI",
+      "name": "FC Voluntari",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Voluntari.svg"
+    },
+    {
+      "code": "FC-WURZBURGER-KICKERS",
+      "name": "FC Würzburger Kickers",
+      "source": "https://commons.wikimedia.org/wiki/File:W%C3%BCrzburger_Kickers_Logo.svg"
+    },
+    {
+      "code": "FC-ZURICH",
+      "name": "FC Zürich",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Zurich_Logo_2022.svg"
+    },
+    {
+      "code": "FCSB",
+      "name": "FCSB",
+      "source": "https://commons.wikimedia.org/wiki/File:Fcsb-logo.svg"
+    },
+    {
+      "code": "FEN",
+      "name": "Fenerbahçe Istanbul",
+      "source": "https://en.wikipedia.org/wiki/File:Fenerbah%C3%A7e.svg"
+    },
+    {
+      "code": "FERENCVAROSI-TC",
+      "name": "Ferencvárosi TC",
+      "source": "https://commons.wikimedia.org/wiki/File:Ferencvarosi_TC.svg"
+    },
+    {
+      "code": "FEYENOORD",
+      "name": "Feyenoord",
+      "source": "https://commons.wikimedia.org/wiki/File:Feyenoord_logo_since_2024.svg"
+    },
+    {
+      "code": "FIORENTINA",
+      "name": "Fiorentina",
+      "source": "https://commons.wikimedia.org/wiki/File:ACF_Fiorentina_-_logo_(Italy,_2022).svg"
+    },
+    {
+      "code": "CHI",
+      "name": "Fire de Chicago",
+      "source": "https://commons.wikimedia.org/wiki/File:Chicago_Fire_logo,_2021.svg"
+    },
+    {
+      "code": "FK-AUSTRIA-WIEN",
+      "name": "FK Austria Wien",
+      "source": "https://commons.wikimedia.org/wiki/File:FK_Austria_Wien_Logo.png"
+    },
+    {
+      "code": "FK-BODO-GLIMT",
+      "name": "FK Bodø/Glimt",
+      "source": "https://en.wikipedia.org/wiki/File:FK_Bodo_Glimt_logo.svg"
+    },
+    {
+      "code": "FK-CSIKSZEREDA",
+      "name": "FK Csíkszereda",
+      "source": "https://en.wikipedia.org/wiki/File:FK_Cs%C3%ADkszereda_Miercurea_Ciuc_logo.svg"
+    },
+    {
+      "code": "FLEETWOOD-TOWN",
+      "name": "Fleetwood Town",
+      "source": "https://en.wikipedia.org/wiki/File:Fleetwood_Town_F.C._logo.svg"
+    },
+    {
+      "code": "FORTUNA-SITTARD",
+      "name": "Fortuna Sittard",
+      "source": "https://en.wikipedia.org/wiki/File:Fortuna_Sittard_Logo.svg"
+    },
+    {
+      "code": "FRANKFURT",
+      "name": "Frankfurt",
+      "source": "https://en.wikipedia.org/wiki/File:Eintracht_Frankfurt_crest.svg"
+    },
+    {
+      "code": "FREDRIKSTAD-FK",
+      "name": "Fredrikstad FK",
+      "source": "https://en.wikipedia.org/wiki/File:Fredrikstad_FK_logo.svg"
+    },
+    {
+      "code": "FROSINONE",
+      "name": "Frosinone",
+      "source": "https://en.wikipedia.org/wiki/File:Frosinone_Calcio_logo.svg"
+    },
+    {
+      "code": "FULHAM",
+      "name": "Fulham",
+      "source": "https://en.wikipedia.org/wiki/File:Fulham_FC_(shield).svg"
+    },
+    {
+      "code": "FURTH",
+      "name": "Fürth",
+      "source": "https://en.wikipedia.org/wiki/File:SpVgg_Greuther_F%C3%BCrth_logo_(2017).svg"
+    },
+    {
+      "code": "GAIS",
+      "name": "GAIS",
+      "source": "https://en.wikipedia.org/wiki/File:GAIS_logo.svg"
+    },
+    {
+      "code": "GAL",
+      "name": "Galatasaray SK",
+      "source": "https://commons.wikimedia.org/wiki/File:Galatasaray_S.K._Logo_2026_5-stars.svg"
+    },
+    {
+      "code": "GALWAY-UNITED",
+      "name": "Galway United",
+      "source": "https://en.wikipedia.org/wiki/File:Galway_United_F.C._crest.svg"
+    },
+    {
+      "code": "GAZIANTEP",
+      "name": "Gaziantep",
+      "source": "https://en.wikipedia.org/wiki/File:Gazi%C5%9Fehir_Gaziantep_logo.svg"
+    },
+    {
+      "code": "GC-ZURICH",
+      "name": "GC Zürich",
+      "source": "https://commons.wikimedia.org/wiki/File:GC_Z%C3%BCrich_Logo.svg"
+    },
+    {
+      "code": "GENCLERBIRLIGI",
+      "name": "Gençlerbirliği",
+      "source": "https://en.wikipedia.org/wiki/File:Gen%C3%A7lerbirli%C4%9Fi_S.K._crest.svg"
+    },
+    {
+      "code": "GENOA",
+      "name": "Genoa",
+      "source": "https://en.wikipedia.org/wiki/File:Genoa_CFC_crest.svg"
+    },
+    {
+      "code": "GETAFE-CF",
+      "name": "Getafe CF",
+      "source": "https://en.wikipedia.org/wiki/File:Getafe_logo.svg"
+    },
+    {
+      "code": "GIL-VICENTE",
+      "name": "Gil Vicente",
+      "source": "https://en.wikipedia.org/wiki/File:Gil_Vicente_F.C._logo.svg"
+    },
+    {
+      "code": "GILLINGHAM",
+      "name": "Gillingham",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Gillingham_Logo.svg"
+    },
+    {
+      "code": "GIMCHEON-SANGMU",
+      "name": "Gimcheon Sangmu",
+      "source": "https://en.wikipedia.org/wiki/File:Gimcheon_Sangmu_FC.svg"
+    },
+    {
+      "code": "GIRONA-FC",
+      "name": "Girona FC",
+      "source": "https://en.wikipedia.org/wiki/File:Girona_FC_Logo.svg"
+    },
+    {
+      "code": "BOR",
+      "name": "Girondins de Bordeaux",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Girondins_de_Bordeaux_logo.svg"
+    },
+    {
+      "code": "GKS-KATOWICE",
+      "name": "GKS Katowice",
+      "source": "https://en.wikipedia.org/wiki/File:GKS_Katowice_crest.svg"
+    },
+    {
+      "code": "GO-AHEAD-EAGLES",
+      "name": "Go Ahead Eagles",
+      "source": "https://commons.wikimedia.org/wiki/File:Go_Ahead_Eagles_logo.svg"
+    },
+    {
+      "code": "GORNIK-ZABRZE",
+      "name": "Górnik Zabrze",
+      "source": "https://en.wikipedia.org/wiki/File:G%C3%B3rnik_Zabrze_crest.svg"
+    },
+    {
+      "code": "GOZTEPE",
+      "name": "Göztepe",
+      "source": "https://en.wikipedia.org/wiki/File:G%C3%B6ztepe_S.K._logo.svg"
+    },
+    {
+      "code": "GRANADA-CF",
+      "name": "Granada CF",
+      "source": "https://en.wikipedia.org/wiki/File:Logo_of_Granada_Club_de_F%C3%BAtbol.svg"
+    },
+    {
+      "code": "GRAZER-AK",
+      "name": "Grazer AK",
+      "source": "https://commons.wikimedia.org/wiki/File:GAK_1902_Logo_Rund.svg"
+    },
+    {
+      "code": "GRENOBLE-FOOT-38",
+      "name": "Grenoble Foot 38",
+      "source": "https://en.wikipedia.org/wiki/File:Grenoble_Foot_38_logo.svg"
+    },
+    {
+      "code": "GRIMSBY-TOWN",
+      "name": "Grimsby Town",
+      "source": "https://en.wikipedia.org/wiki/File:Grimsby_Town_F.C._logo.svg"
+    },
+    {
+      "code": "HAJDUK-SPLIT",
+      "name": "Hajduk Split",
+      "source": "https://commons.wikimedia.org/wiki/File:HNK_Hajduk_Split_logo.svg"
+    },
+    {
+      "code": "HALMSTADS-BK",
+      "name": "Halmstads BK",
+      "source": "https://en.wikipedia.org/wiki/File:Halmstad_BK_logo.svg"
+    },
+    {
+      "code": "HAMBURGER-SV",
+      "name": "Hamburger SV",
+      "source": "https://commons.wikimedia.org/wiki/File:Hamburger_SV_logo.svg"
+    },
+    {
+      "code": "HAMKAM-FOTBALL",
+      "name": "HamKam Fotball",
+      "source": "https://en.wikipedia.org/wiki/File:Sogndal_IL_logo.svg"
+    },
+    {
+      "code": "HAMMARBY-IF",
+      "name": "Hammarby IF",
+      "source": "https://en.wikipedia.org/wiki/File:Hammarby_IF_logo.svg"
+    },
+    {
+      "code": "HANNOVER-96",
+      "name": "Hannover 96",
+      "source": "https://commons.wikimedia.org/wiki/File:Hannover_96_Logo.svg"
+    },
+    {
+      "code": "HAVRE-AC",
+      "name": "Havre AC",
+      "source": "https://en.wikipedia.org/wiki/File:Le_Havre_AC_logo.svg"
+    },
+    {
+      "code": "HEARTS",
+      "name": "Hearts",
+      "source": "https://en.wikipedia.org/wiki/File:Heart_of_Midlothian_FC_logo.svg"
+    },
+    {
+      "code": "HEIDENHEIM",
+      "name": "Heidenheim",
+      "source": "https://commons.wikimedia.org/wiki/File:1._FC_Heidenheim_1846.svg"
+    },
+    {
+      "code": "HELLAS-VERONA",
+      "name": "Hellas Verona",
+      "source": "https://en.wikipedia.org/wiki/File:Hellas_Verona_FC_logo_(2020).svg"
+    },
+    {
+      "code": "HERTHA-BSC",
+      "name": "Hertha BSC",
+      "source": "https://commons.wikimedia.org/wiki/File:Hertha_BSC_Logo_2012.svg"
+    },
+    {
+      "code": "HIBERNIAN",
+      "name": "Hibernian",
+      "source": "https://en.wikipedia.org/wiki/File:Hibernian_FC_2026_crest.svg"
+    },
+    {
+      "code": "HJK-HELSINKI",
+      "name": "HJK Helsinki",
+      "source": "https://en.wikipedia.org/wiki/File:HJK_Helsinki_Logo.svg"
+    },
+    {
+      "code": "HOLSTEIN-KIEL",
+      "name": "Holstein Kiel",
+      "source": "https://commons.wikimedia.org/wiki/File:Holstein_Kiel_Logo.svg"
+    },
+    {
+      "code": "HOUSTON-DYNAMO",
+      "name": "Houston Dynamo",
+      "source": "https://commons.wikimedia.org/wiki/File:Houston_Dynamo_FC_logo.svg"
+    },
+    {
+      "code": "HUDDERSFIELD",
+      "name": "Huddersfield",
+      "source": "https://en.wikipedia.org/wiki/File:Huddersfield_Town_AFC_crest.svg"
+    },
+    {
+      "code": "HULL-CITY",
+      "name": "Hull City",
+      "source": "https://en.wikipedia.org/wiki/File:Hull_City_A.F.C._logo.svg"
+    },
+    {
+      "code": "HURACAN",
+      "name": "Huracán",
+      "source": "https://commons.wikimedia.org/wiki/File:Emblema_oficial_del_Club_Atl%C3%A9tico_Hurac%C3%A1n.svg"
+    },
+    {
+      "code": "HYDERABAD-FC",
+      "name": "Hyderabad FC",
+      "source": "https://en.wikipedia.org/wiki/File:Sreenidi_Deccan_FC.svg"
+    },
+    {
+      "code": "IDV",
+      "name": "IDV",
+      "source": "https://en.wikipedia.org/wiki/File:2024_Dragonas_IDV_logo.png"
+    },
+    {
+      "code": "IF-ELFSBORG",
+      "name": "IF Elfsborg",
+      "source": "https://en.wikipedia.org/wiki/File:IF_Elfsborg_logo.svg"
+    },
+    {
+      "code": "IFK-GOTEBORG",
+      "name": "IFK Göteborg",
+      "source": "https://en.wikipedia.org/wiki/File:IFK_Goteborg_logo.svg"
+    },
+    {
+      "code": "IK-SIRIUS",
+      "name": "IK Sirius",
+      "source": "https://en.wikipedia.org/wiki/File:IK_Sirius_logo.svg"
+    },
+    {
+      "code": "IK-START",
+      "name": "IK Start",
+      "source": "https://commons.wikimedia.org/wiki/File:Start_Kristiansand_Logo.svg"
+    },
+    {
+      "code": "INDEPENDIENTE",
+      "name": "Independiente",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Independiente_Rivadavia.svg"
+    },
+    {
+      "code": "INSTITUTO",
+      "name": "Instituto",
+      "source": "https://commons.wikimedia.org/wiki/File:Instituto_acc_cordoba_logo.svg"
+    },
+    {
+      "code": "INTER-KASHI",
+      "name": "Inter Kashi",
+      "source": "https://en.wikipedia.org/wiki/File:Inter_Kashi_logo.svg"
     },
     {
       "code": "MIA",
@@ -2001,19 +3401,424 @@
       "source": "https://en.wikipedia.org/wiki/File:Inter_Miami_CF_logo.svg"
     },
     {
+      "code": "IPSWICH",
+      "name": "Ipswich",
+      "source": "https://en.wikipedia.org/wiki/File:Ipswich_Town.svg"
+    },
+    {
+      "code": "ITT",
+      "name": "Ittihad FC",
+      "source": "https://en.wikipedia.org/wiki/File:Al-Ittihad_Club_(Jeddah)_logo.svg"
+    },
+    {
+      "code": "JAGIELLONIA",
+      "name": "Jagiellonia",
+      "source": "https://en.wikipedia.org/wiki/File:Jagiellonia_Bia%C5%82ystok_logo.svg"
+    },
+    {
+      "code": "JAHN-REGENSBURG",
+      "name": "Jahn Regensburg",
+      "source": "https://commons.wikimedia.org/wiki/File:Jahn_Regensburg_logo2014.svg"
+    },
+    {
+      "code": "JUNIOR",
+      "name": "Junior",
+      "source": "https://commons.wikimedia.org/wiki/File:Junior_Barranquilla_logo.svg"
+    },
+    {
+      "code": "JUVENTUD",
+      "name": "Juventud",
+      "source": "https://en.wikipedia.org/wiki/File:Juventud_de_Las_Piedras.svg"
+    },
+    {
+      "code": "JUV",
+      "name": "Juventus FC",
+      "source": "https://commons.wikimedia.org/wiki/File:Juventus_FC_-_logo_black_(Italy,_2020).svg"
+    },
+    {
+      "code": "KAA-GENT",
+      "name": "KAA Gent",
+      "source": "https://en.wikipedia.org/wiki/File:KAA_Gent_logo.svg"
+    },
+    {
+      "code": "KAISERSLAUTERN",
+      "name": "Kaiserslautern",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_1_FC_Kaiserslautern.svg"
+    },
+    {
+      "code": "KALMAR-FF",
+      "name": "Kalmar FF",
+      "source": "https://en.wikipedia.org/wiki/File:Kalmar_FF_logo.svg"
+    },
+    {
+      "code": "KARLSRUHER-SC",
+      "name": "Karlsruher SC",
+      "source": "https://commons.wikimedia.org/wiki/File:Karlsruher_SC_Logo_2.svg"
+    },
+    {
+      "code": "KASIMPASA",
+      "name": "Kasımpaşa",
+      "source": "https://en.wikipedia.org/wiki/File:Kasimpasa_logo.svg"
+    },
+    {
+      "code": "KERALA-BLASTERS",
+      "name": "Kerala Blasters",
+      "source": "https://en.wikipedia.org/wiki/File:Kerala_Blasters_FC_logo.svg"
+    },
+    {
+      "code": "KFUM-KAMERATENE",
+      "name": "KFUM-Kameratene",
+      "source": "https://en.wikipedia.org/wiki/File:KFUM-Kameratene_logo.svg"
+    },
+    {
+      "code": "KILMARNOCK",
+      "name": "Kilmarnock",
+      "source": "https://en.wikipedia.org/wiki/File:Kilmarnock_FC_crest.svg"
+    },
+    {
+      "code": "KOCAELISPOR",
+      "name": "Kocaelispor",
+      "source": "https://en.wikipedia.org/wiki/File:Kocaelispor_logo.svg"
+    },
+    {
+      "code": "KONYASPOR",
+      "name": "Konyaspor",
+      "source": "https://en.wikipedia.org/wiki/File:Konyaspor_logo.svg"
+    },
+    {
+      "code": "KORONA-KIELCE",
+      "name": "Korona Kielce",
+      "source": "https://en.wikipedia.org/wiki/File:Korona_Kielce_crest.png"
+    },
+    {
+      "code": "KRC-GENK",
+      "name": "KRC Genk",
+      "source": "https://en.wikipedia.org/wiki/File:KRC_Genk_logo.svg"
+    },
+    {
+      "code": "KS-WIECZYSTA-KRAKOW",
+      "name": "KS Wieczysta Kraków",
+      "source": "https://en.wikipedia.org/wiki/File:Wieczysta_Krak%C3%B3w_logo.svg"
+    },
+    {
+      "code": "KV-KORTRIJK",
+      "name": "KV Kortrijk",
+      "source": "https://en.wikipedia.org/wiki/File:KV_Kortrijk_logo_2016.svg"
+    },
+    {
+      "code": "KV-MECHELEN",
+      "name": "KV Mechelen",
+      "source": "https://en.wikipedia.org/wiki/File:KV_Mechelen_logo.svg"
+    },
+    {
+      "code": "KVC-WESTERLO",
+      "name": "KVC Westerlo",
+      "source": "https://en.wikipedia.org/wiki/File:KVC_Westerlo_logo.svg"
+    },
+    {
+      "code": "L-R-VICENZA",
+      "name": "L. R. Vicenza",
+      "source": "https://commons.wikimedia.org/wiki/File:LR_Vicenza_Virtus_(logo).svg"
+    },
+    {
+      "code": "LA-GALAXY",
+      "name": "LA Galaxy",
+      "source": "https://commons.wikimedia.org/wiki/File:Los_Angeles_Galaxy_logo.svg"
+    },
+    {
+      "code": "LANUS",
+      "name": "Lanús",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_de_Lan%C3%BAs_(sin_estrellas).svg"
+    },
+    {
+      "code": "LASK",
+      "name": "LASK",
+      "source": "https://commons.wikimedia.org/wiki/File:LASK-Logo_2023.svg"
+    },
+    {
+      "code": "LAUSANNE-SPORT",
+      "name": "Lausanne-Sport",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Lausanne-Sport_logo.svg"
+    },
+    {
+      "code": "LATIUM",
+      "name": "Lazio",
+      "source": "https://en.wikipedia.org/wiki/File:S.S._Lazio_badge.svg"
+    },
+    {
+      "code": "LDU-QUITO",
+      "name": "LDU Quito",
+      "source": "https://commons.wikimedia.org/wiki/File:Liga_Deportiva_Universitaria_(Ecuador)_logo_(5_stars).svg"
+    },
+    {
+      "code": "LE-MANS-FC",
+      "name": "Le Mans FC",
+      "source": "https://en.wikipedia.org/wiki/File:Le_Mans_FC_logo.svg"
+    },
+    {
+      "code": "LECCE",
+      "name": "Lecce",
+      "source": "https://en.wikipedia.org/wiki/File:US_Lecce_crest.svg"
+    },
+    {
+      "code": "LECH-POZNAN",
+      "name": "Lech Poznań",
+      "source": "https://en.wikipedia.org/wiki/File:KKS_Lech_Pozna%C5%84.svg"
+    },
+    {
+      "code": "LEEDS-UNITED",
+      "name": "Leeds United",
+      "source": "https://en.wikipedia.org/wiki/File:Leeds_United_F.C._logo.svg"
+    },
+    {
+      "code": "LEGIA-WARSZAWA",
+      "name": "Legia Warszawa",
+      "source": "https://en.wikipedia.org/wiki/File:Legia_Warsaw_logo.svg"
+    },
+    {
+      "code": "LEICESTER-CITY",
+      "name": "Leicester City",
+      "source": "https://en.wikipedia.org/wiki/File:Leicester_City_crest.svg"
+    },
+    {
+      "code": "LEVANTE-UD",
+      "name": "Levante UD",
+      "source": "https://en.wikipedia.org/wiki/File:Levante_Uni%C3%B3n_Deportiva,_S.A.D._logo.svg"
+    },
+    {
+      "code": "LEVERKUSEN",
+      "name": "Leverkusen",
+      "source": "https://en.wikipedia.org/wiki/File:Bayer_04_Leverkusen_logo.svg"
+    },
+    {
+      "code": "LEYTON-ORIENT",
+      "name": "Leyton Orient",
+      "source": "https://en.wikipedia.org/wiki/File:Leyton_Orient_F.C._logo.svg"
+    },
+    {
+      "code": "LIAONING-FC",
+      "name": "Liaoning FC",
+      "source": "https://en.wikipedia.org/wiki/File:Guangzhou_City_F.C.svg"
+    },
+    {
+      "code": "LIBERTAD",
+      "name": "Libertad",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Libertad.png"
+    },
+    {
+      "code": "LILLESTROM-SK",
+      "name": "Lillestrøm SK",
+      "source": "https://commons.wikimedia.org/wiki/File:Lillestrom_SK_logo.svg"
+    },
+    {
+      "code": "LINCOLN-CITY",
+      "name": "Lincoln City",
+      "source": "https://en.wikipedia.org/wiki/File:Lincoln_City_FC_2024_crest.svg"
+    },
+    {
+      "code": "LIV",
+      "name": "Liverpool FC",
+      "source": "https://en.wikipedia.org/wiki/File:Liverpool_FC.svg"
+    },
+    {
+      "code": "LOMMEL-SK",
+      "name": "Lommel SK",
+      "source": "https://en.wikipedia.org/wiki/File:Lommel_SK_logo.svg"
+    },
+    {
+      "code": "LAFC",
+      "name": "Los Angeles Football Club",
+      "source": "https://commons.wikimedia.org/wiki/File:Los_Angeles_Football_Club.svg"
+    },
+    {
+      "code": "LOSC-LILLE",
+      "name": "LOSC Lille",
+      "source": "https://en.wikipedia.org/wiki/File:Lille_OSC_2018_logo.svg"
+    },
+    {
+      "code": "LUTON-TOWN",
+      "name": "Luton Town",
+      "source": "https://en.wikipedia.org/wiki/File:Luton_Town_logo.svg"
+    },
+    {
+      "code": "LYNGBY-BK",
+      "name": "Lyngby BK",
+      "source": "https://en.wikipedia.org/wiki/File:Lyngby_Boldklub_logo_2024.svg"
+    },
+    {
+      "code": "M-GLADBACH",
+      "name": "M'gladbach",
+      "source": "https://commons.wikimedia.org/wiki/File:Borussia_M%C3%B6nchengladbach_logo.svg"
+    },
+    {
+      "code": "MACARTHUR-FC",
+      "name": "Macarthur FC",
+      "source": "https://en.wikipedia.org/wiki/File:Macarthur_Football_Club_logo.svg"
+    },
+    {
+      "code": "MALAGA-CF",
+      "name": "Málaga CF",
+      "source": "https://en.wikipedia.org/wiki/File:M%C3%A1laga_CF.svg"
+    },
+    {
+      "code": "MALMO-FF",
+      "name": "Malmö FF",
+      "source": "https://commons.wikimedia.org/wiki/File:Malmo_FF_logo.svg"
+    },
+    {
+      "code": "MCI",
+      "name": "Manchester City FC",
+      "source": "https://en.wikipedia.org/wiki/File:Manchester_City_FC_badge.svg"
+    },
+    {
       "code": "MUN",
       "name": "Manchester United FC",
       "source": "https://en.wikipedia.org/wiki/File:Manchester_United_FC_crest.svg"
     },
     {
-      "code": "NAP",
-      "name": "Società Sportiva Calcio Napoli",
-      "source": "https://commons.wikimedia.org/wiki/File:SSC_Napoli_2025_(white_and_azure).svg"
+      "code": "MANSFIELD-TOWN",
+      "name": "Mansfield Town",
+      "source": "https://en.wikipedia.org/wiki/File:Mansfield_Town_FC.svg"
     },
     {
-      "code": "NAS",
-      "name": "Al Nasr Riyad",
-      "source": "https://commons.wikimedia.org/wiki/File:Nassr_FC_Logo.svg"
+      "code": "MANTOVA",
+      "name": "Mantova",
+      "source": "https://en.wikipedia.org/wiki/File:Mantova_1911_crest.svg"
+    },
+    {
+      "code": "MARITIMO-DA-MADEIRA",
+      "name": "Marítimo da Madeira",
+      "source": "https://en.wikipedia.org/wiki/File:C.S._Mar%C3%ADtimo_logo.svg"
+    },
+    {
+      "code": "MELB-VICTORY",
+      "name": "Melb. Victory",
+      "source": "https://en.wikipedia.org/wiki/File:Melbourne_Victory.svg"
+    },
+    {
+      "code": "MELBOURNE-CITY",
+      "name": "Melbourne City",
+      "source": "https://en.wikipedia.org/wiki/File:Melbourne_City_FC.svg"
+    },
+    {
+      "code": "MIDDLESBROUGH",
+      "name": "Middlesbrough",
+      "source": "https://en.wikipedia.org/wiki/File:Middlesbrough_FC_crest.svg"
+    },
+    {
+      "code": "MILLONARIOS",
+      "name": "Millonarios",
+      "source": "https://commons.wikimedia.org/wiki/File:Millonarios_F%C3%BAtbol_Club_logo.svg"
+    },
+    {
+      "code": "MILLWALL",
+      "name": "Millwall",
+      "source": "https://en.wikipedia.org/wiki/File:Millwall_FC_crest.svg"
+    },
+    {
+      "code": "MINNESOTA-UNITED",
+      "name": "Minnesota United",
+      "source": "https://en.wikipedia.org/wiki/File:Minnesota_United_FC_(MLS)_Primary_logo.svg"
+    },
+    {
+      "code": "MJALLBY-AIF",
+      "name": "Mjällby AIF",
+      "source": "https://en.wikipedia.org/wiki/File:Mjallby_AIF_logo.svg"
+    },
+    {
+      "code": "MK-DONS",
+      "name": "MK Dons",
+      "source": "https://en.wikipedia.org/wiki/File:Milton_Keynes_Dons_FC_2025_crest.svg"
+    },
+    {
+      "code": "MODENA",
+      "name": "Modena",
+      "source": "https://en.wikipedia.org/wiki/File:Modena_FC_2018_crest.svg"
+    },
+    {
+      "code": "MOHUN-BAGAN-SG",
+      "name": "Mohun Bagan SG",
+      "source": "https://en.wikipedia.org/wiki/File:Mohun_Bagan_Super_Giant.svg"
+    },
+    {
+      "code": "MOLDE-FK",
+      "name": "Molde FK",
+      "source": "https://commons.wikimedia.org/wiki/File:Molde_Fotball_Logo.svg"
+    },
+    {
+      "code": "MONTERREY",
+      "name": "Monterrey",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_de_F%C3%BAtbol_Monterrey_logo.svg"
+    },
+    {
+      "code": "MONTPELLIER",
+      "name": "Montpellier",
+      "source": "https://en.wikipedia.org/wiki/File:Montpellier_HSC_logo.svg"
+    },
+    {
+      "code": "MONZA",
+      "name": "Monza",
+      "source": "https://en.wikipedia.org/wiki/File:AC_Monza_logo_(2021).svg"
+    },
+    {
+      "code": "MOREIRENSE-FC",
+      "name": "Moreirense FC",
+      "source": "https://en.wikipedia.org/wiki/File:Moreirense_Futebol_Clube_logo.svg"
+    },
+    {
+      "code": "MOTHERWELL",
+      "name": "Motherwell",
+      "source": "https://commons.wikimedia.org/wiki/File:Motherwell_FC_crest.svg"
+    },
+    {
+      "code": "MOTOR-LUBLIN",
+      "name": "Motor Lublin",
+      "source": "https://en.wikipedia.org/wiki/File:Motor_Lublin.svg"
+    },
+    {
+      "code": "MSV-DUISBURG",
+      "name": "MSV Duisburg",
+      "source": "https://en.wikipedia.org/wiki/File:Msv_duisburg(new).svg"
+    },
+    {
+      "code": "MUMBAI-CITY-FC",
+      "name": "Mumbai City FC",
+      "source": "https://en.wikipedia.org/wiki/File:Mumbai_City_FC_logo.svg"
+    },
+    {
+      "code": "N-E-C-NIJMEGEN",
+      "name": "N.E.C. Nijmegen",
+      "source": "https://en.wikipedia.org/wiki/File:NEC_Nijmegen_logo.svg"
+    },
+    {
+      "code": "NACIONAL",
+      "name": "Nacional",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Nacional_de_Football_logo.svg"
+    },
+    {
+      "code": "NACIONAL-2",
+      "name": "Nacional",
+      "source": "https://en.wikipedia.org/wiki/File:C.D._Nacional_logo.svg"
+    },
+    {
+      "code": "NASHVILLE-SC",
+      "name": "Nashville SC",
+      "source": "https://commons.wikimedia.org/wiki/File:Nashville_SC_logo,_2020.svg"
+    },
+    {
+      "code": "NEOM",
+      "name": "Neom",
+      "source": "https://en.wikipedia.org/wiki/File:Neom_SC_logo.svg"
+    },
+    {
+      "code": "NEW-YORK-CITY-FC",
+      "name": "New York City FC",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_New_York_City_FC_2025.svg"
+    },
+    {
+      "code": "NEWCASTLE-JETS",
+      "name": "Newcastle Jets",
+      "source": "https://en.wikipedia.org/wiki/File:Newcastle_United_Jets_Logo.svg"
     },
     {
       "code": "NEW",
@@ -2021,9 +3826,79 @@
       "source": "https://en.wikipedia.org/wiki/File:Newcastle_United_FC_2026_crest.svg"
     },
     {
-      "code": "OL",
-      "name": "Olympique lyonnais",
-      "source": "https://en.wikipedia.org/wiki/File:Olympique_Lyonnais_logo.svg"
+      "code": "NEWELL-S",
+      "name": "Newell's",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Atl%C3%A9tico_Newell%27s_Old_Boys_de_Rosario.svg"
+    },
+    {
+      "code": "NEWPORT-COUNTY",
+      "name": "Newport County",
+      "source": "https://en.wikipedia.org/wiki/File:Newport_County_AFC_crest.svg"
+    },
+    {
+      "code": "NORTHAMPTON",
+      "name": "Northampton",
+      "source": "https://en.wikipedia.org/wiki/File:Northampton_Town_F.C._logo.svg"
+    },
+    {
+      "code": "NORTHEAST-UNITED",
+      "name": "NorthEast United",
+      "source": "https://en.wikipedia.org/wiki/File:NorthEast_United_FC_logo.svg"
+    },
+    {
+      "code": "NORWICH",
+      "name": "Norwich",
+      "source": "https://en.wikipedia.org/wiki/File:Norwich_City_FC_logo.svg"
+    },
+    {
+      "code": "NOTT-M-FOREST",
+      "name": "Nott'm Forest",
+      "source": "https://en.wikipedia.org/wiki/File:Nottingham_Forest_F.C._logo.svg"
+    },
+    {
+      "code": "NOTTS-COUNTY",
+      "name": "Notts County",
+      "source": "https://en.wikipedia.org/wiki/File:Notts_County_Logo.svg"
+    },
+    {
+      "code": "O-HIGGINS",
+      "name": "O'Higgins",
+      "source": "https://en.wikipedia.org/wiki/File:O%27Higgins_F.C.svg"
+    },
+    {
+      "code": "ODENSE-BK",
+      "name": "Odense BK",
+      "source": "https://commons.wikimedia.org/wiki/File:Odense_Boldklub.svg"
+    },
+    {
+      "code": "ODISHA-FC",
+      "name": "Odisha FC",
+      "source": "https://en.wikipedia.org/wiki/File:Odisha_FC_logo.svg"
+    },
+    {
+      "code": "OGC-NICE",
+      "name": "OGC Nice",
+      "source": "https://en.wikipedia.org/wiki/File:OGC_Nice_logo.svg"
+    },
+    {
+      "code": "OH-LEUVEN",
+      "name": "OH Leuven",
+      "source": "https://commons.wikimedia.org/wiki/File:OH_LEUVEN.png"
+    },
+    {
+      "code": "OLDHAM-ATHLETIC",
+      "name": "Oldham Athletic",
+      "source": "https://en.wikipedia.org/wiki/File:Oldham_Athletic_AFC_(emblem).svg"
+    },
+    {
+      "code": "OLIMPIA",
+      "name": "Olimpia",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Olimpia_logo.svg"
+    },
+    {
+      "code": "OLYMPIACOS-FC",
+      "name": "Olympiacos FC",
+      "source": "https://en.wikipedia.org/wiki/File:Olympiacos_FC_crest.svg"
     },
     {
       "code": "OM",
@@ -2031,9 +3906,59 @@
       "source": "https://commons.wikimedia.org/wiki/File:Olympique_de_Marseille_2026_logo.svg"
     },
     {
+      "code": "OL",
+      "name": "Olympique lyonnais",
+      "source": "https://en.wikipedia.org/wiki/File:Olympique_Lyonnais_logo.svg"
+    },
+    {
+      "code": "OMONIA-FC",
+      "name": "Omonia FC",
+      "source": "https://en.wikipedia.org/wiki/File:AC_Omonia_logo.svg"
+    },
+    {
+      "code": "ORGRYTE-IS",
+      "name": "Örgryte IS",
+      "source": "https://en.wikipedia.org/wiki/File:Orgryte_IS_logo.svg"
+    },
+    {
       "code": "ORL",
       "name": "Orlando City Soccer Club",
       "source": "https://en.wikipedia.org/wiki/File:Orlando_City_2014.svg"
+    },
+    {
+      "code": "OXFORD-UNITED",
+      "name": "Oxford United",
+      "source": "https://en.wikipedia.org/wiki/File:Oxford_United_FC_logo.svg"
+    },
+    {
+      "code": "PADOVA",
+      "name": "Padova",
+      "source": "https://commons.wikimedia.org/wiki/File:Calcio_Padova_logo.svg"
+    },
+    {
+      "code": "PALERMO",
+      "name": "Palermo",
+      "source": "https://en.wikipedia.org/wiki/File:Palermo_Calcio_logo_(2019).svg"
+    },
+    {
+      "code": "PALESTINO",
+      "name": "Palestino",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_Oficial_Palestino.png"
+    },
+    {
+      "code": "PANATHINAIKOS",
+      "name": "Panathinaikos",
+      "source": "https://en.wikipedia.org/wiki/File:Panathinaikos_F.C._logo.svg"
+    },
+    {
+      "code": "PAOK-FC",
+      "name": "PAOK FC",
+      "source": "https://en.wikipedia.org/wiki/File:PAOK_FC_logo.svg"
+    },
+    {
+      "code": "PARIS-FC",
+      "name": "Paris FC",
+      "source": "https://en.wikipedia.org/wiki/File:Paris_Football_Club_logo_(2024).svg"
     },
     {
       "code": "PSG",
@@ -2041,9 +3966,179 @@
       "source": "https://en.wikipedia.org/wiki/File:Paris_Saint-Germain_F.C..svg"
     },
     {
+      "code": "PARMA",
+      "name": "Parma",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_Parma_Calcio_1913_(adozione_2016).svg"
+    },
+    {
+      "code": "PAU-FC",
+      "name": "Pau FC",
+      "source": "https://en.wikipedia.org/wiki/File:Pau_FC_logo.svg"
+    },
+    {
+      "code": "PEC-ZWOLLE",
+      "name": "PEC Zwolle",
+      "source": "https://en.wikipedia.org/wiki/File:PEC_Zwolle_logo.svg"
+    },
+    {
+      "code": "PENAROL",
+      "name": "Peñarol",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Atl%C3%A9tico_Pe%C3%B1arol.svg"
+    },
+    {
+      "code": "PERTH-GLORY",
+      "name": "Perth Glory",
+      "source": "https://en.wikipedia.org/wiki/File:Perth_Glory_FC_logo.svg"
+    },
+    {
+      "code": "PETERBOROUGH",
+      "name": "Peterborough",
+      "source": "https://en.wikipedia.org/wiki/File:Peterborough_United_FC_crest.svg"
+    },
+    {
+      "code": "PFC-LUDOGORETS",
+      "name": "PFC Ludogorets",
+      "source": "https://en.wikipedia.org/wiki/File:PFC_Ludogorets.svg"
+    },
+    {
+      "code": "PHILADELPHIA",
+      "name": "Philadelphia",
+      "source": "https://en.wikipedia.org/wiki/File:Philadelphia_Union_2018_logo.svg"
+    },
+    {
+      "code": "PIAST-GLIWICE",
+      "name": "Piast Gliwice",
+      "source": "https://en.wikipedia.org/wiki/File:GKS_Piast_Gliwice.svg"
+    },
+    {
+      "code": "PISA",
+      "name": "Pisa",
+      "source": "https://en.wikipedia.org/wiki/File:Pisa_SC_crest.svg"
+    },
+    {
+      "code": "PLATENSE",
+      "name": "Platense",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Alt%C3%A9tico_Platense_crest_(2025).svg"
+    },
+    {
+      "code": "PLYMOUTH-ARGYLE",
+      "name": "Plymouth Argyle",
+      "source": "https://en.wikipedia.org/wiki/File:Plymouth_Argyle_F.C._logo.svg"
+    },
+    {
+      "code": "POGON-SZCZECIN",
+      "name": "Pogoń Szczecin",
+      "source": "https://en.wikipedia.org/wiki/File:Pogon_Szczecin_logo.svg"
+    },
+    {
+      "code": "PORT-VALE",
+      "name": "Port Vale",
+      "source": "https://en.wikipedia.org/wiki/File:Port_Vale_logo.svg"
+    },
+    {
+      "code": "PORTLAND-TIMBERS",
+      "name": "Portland Timbers",
+      "source": "https://commons.wikimedia.org/wiki/File:Portland_Timbers_logo.svg"
+    },
+    {
+      "code": "PORTSMOUTH",
+      "name": "Portsmouth",
+      "source": "https://en.wikipedia.org/wiki/File:Portsmouth_FC_logo.svg"
+    },
+    {
+      "code": "PRESTON",
+      "name": "Preston",
+      "source": "https://en.wikipedia.org/wiki/File:Preston_North_End_FC.svg"
+    },
+    {
+      "code": "PREUSSEN-MUNSTER",
+      "name": "Preußen Münster",
+      "source": "https://en.wikipedia.org/wiki/File:SC_Preu%C3%9Fen_M%C3%BCnster_logo_(2018).svg"
+    },
+    {
       "code": "PSV",
       "name": "PSV Eindhoven",
       "source": "https://en.wikipedia.org/wiki/File:PSV_Eindhoven.svg"
+    },
+    {
+      "code": "PUERTO-CABELLO",
+      "name": "Puerto Cabello",
+      "source": "https://en.wikipedia.org/wiki/File:Academia_Puerto_Cabello.svg"
+    },
+    {
+      "code": "PUMAS",
+      "name": "Pumas",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Universidad_Nacional_logo.svg"
+    },
+    {
+      "code": "PUNJAB-FC",
+      "name": "Punjab FC",
+      "source": "https://en.wikipedia.org/wiki/File:Punjab_FC_2025_logo.svg"
+    },
+    {
+      "code": "QARABAG-FK",
+      "name": "Qarabağ FK",
+      "source": "https://en.wikipedia.org/wiki/File:Qaraba%C4%9F_FK_logo.svg"
+    },
+    {
+      "code": "QPR",
+      "name": "QPR",
+      "source": "https://en.wikipedia.org/wiki/File:Queens_Park_Rangers_crest.svg"
+    },
+    {
+      "code": "R-OVIEDO",
+      "name": "R. Oviedo",
+      "source": "https://en.wikipedia.org/wiki/File:Real_Oviedo_logo.svg"
+    },
+    {
+      "code": "R-RACING-CLUB",
+      "name": "R. Racing Club",
+      "source": "https://en.wikipedia.org/wiki/File:Racing_de_Santander_logo.svg"
+    },
+    {
+      "code": "R-UNION-ST-G",
+      "name": "R. Union St.-G.",
+      "source": "https://en.wikipedia.org/wiki/File:Royale_Union_Saint-Gilloise_logo.svg"
+    },
+    {
+      "code": "R-VALLADOLID-CF",
+      "name": "R. Valladolid CF",
+      "source": "https://en.wikipedia.org/wiki/File:Real_Valladolid_CF_crest.svg"
+    },
+    {
+      "code": "RAAL-LA-LOUVIERE",
+      "name": "RAAL La Louvière",
+      "source": "https://en.wikipedia.org/wiki/File:RAAL_La_Louvi%C3%A8re_logo.svg"
+    },
+    {
+      "code": "RACING-CLUB",
+      "name": "Racing Club",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_de_Racing_Club_(2014).svg"
+    },
+    {
+      "code": "RADOMIAK-RADOM",
+      "name": "Radomiak Radom",
+      "source": "https://commons.wikimedia.org/wiki/File:Herb_radomiaka_300dpi.png"
+    },
+    {
+      "code": "RAKOW",
+      "name": "Raków",
+      "source": "https://commons.wikimedia.org/wiki/File:Rks_rakow_crest_ai.svg"
+    },
+    {
+      "code": "RANDERS-FC",
+      "name": "Randers FC",
+      "source": "https://en.wikipedia.org/wiki/File:Randers_FC_logo.svg"
+    },
+    {
+      "code": "RANGERS",
+      "name": "Rangers",
+      "source": "https://en.wikipedia.org/wiki/File:Rangers_FC.svg"
+    },
+    {
+      "code": "RAYO-VALLECANO",
+      "name": "Rayo Vallecano",
+      "source": "https://en.wikipedia.org/wiki/File:Rayo_Vallecano_logo.svg"
     },
     {
       "code": "RBL",
@@ -2051,14 +4146,39 @@
       "source": "https://en.wikipedia.org/wiki/File:RB_Leipzig_2014_logo.svg"
     },
     {
+      "code": "RC-LENS",
+      "name": "RC Lens",
+      "source": "https://en.wikipedia.org/wiki/File:RC_Lens_logo.svg"
+    },
+    {
+      "code": "RCD-ESPANYOL",
+      "name": "RCD Espanyol",
+      "source": "https://en.wikipedia.org/wiki/File:RCD_Espanyol_crest.svg"
+    },
+    {
+      "code": "RCD-MALLORCA",
+      "name": "RCD Mallorca",
+      "source": "https://en.wikipedia.org/wiki/File:Rcd_mallorca.svg"
+    },
+    {
+      "code": "READING",
+      "name": "Reading",
+      "source": "https://en.wikipedia.org/wiki/File:Reading_FC.svg"
+    },
+    {
+      "code": "REAL-BETIS",
+      "name": "Real Betis",
+      "source": "https://en.wikipedia.org/wiki/File:Real_Betis_2022_logo.svg"
+    },
+    {
       "code": "RMA",
       "name": "Real Madrid CF",
       "source": "https://en.wikipedia.org/wiki/File:Real_Madrid_CF.svg"
     },
     {
-      "code": "ROM",
-      "name": "AS Rome",
-      "source": "https://en.wikipedia.org/wiki/File:AS_Roma_logo_(2017).svg"
+      "code": "REAL-SALT-LAKE",
+      "name": "Real Salt Lake",
+      "source": "https://en.wikipedia.org/wiki/File:Real_Salt_Lake_2010.svg"
     },
     {
       "code": "RSO",
@@ -2066,9 +4186,114 @@
       "source": "https://en.wikipedia.org/wiki/File:Real_Sociedad_logo.svg"
     },
     {
+      "code": "REAL-SOCIEDAD-B",
+      "name": "Real Sociedad B",
+      "source": "https://en.wikipedia.org/wiki/File:Real_Sociedad_logo.svg"
+    },
+    {
+      "code": "RECOLETA",
+      "name": "Recoleta",
+      "source": "https://en.wikipedia.org/wiki/File:Recoleta_FC.svg"
+    },
+    {
       "code": "SAL",
       "name": "Red Bull Salzbourg",
       "source": "https://en.wikipedia.org/wiki/File:FC_Red_Bull_Salzburg_logo.svg"
+    },
+    {
+      "code": "RED-STAR-FC",
+      "name": "Red Star FC",
+      "source": "https://commons.wikimedia.org/wiki/File:Red_Star_FC_logo.svg"
+    },
+    {
+      "code": "RIO-AVE-FC",
+      "name": "Rio Ave FC",
+      "source": "https://en.wikipedia.org/wiki/File:Rio_Ave_FC_logo.svg"
+    },
+    {
+      "code": "RIVER-PLATE",
+      "name": "River Plate",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Atl%C3%A9tico_River_Plate_logo.svg"
+    },
+    {
+      "code": "ROCHDALE",
+      "name": "Rochdale",
+      "source": "https://en.wikipedia.org/wiki/File:Rochdale_AFC_crest.svg"
+    },
+    {
+      "code": "RODEZ-AF",
+      "name": "Rodez AF",
+      "source": "https://en.wikipedia.org/wiki/File:Rodez_AF_logo.svg"
+    },
+    {
+      "code": "ROSARIO-CENTRAL",
+      "name": "Rosario Central",
+      "source": "https://en.wikipedia.org/wiki/File:Rosario_Central_logo.svg"
+    },
+    {
+      "code": "ROSENBORG-BK",
+      "name": "Rosenborg BK",
+      "source": "https://commons.wikimedia.org/wiki/File:Rosenborg_logo_RGB.svg"
+    },
+    {
+      "code": "ROT-WEISS-ESSEN",
+      "name": "Rot-Weiss Essen",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_of_Rot-Weiss_Essen.svg"
+    },
+    {
+      "code": "ROTHERHAM-UTD",
+      "name": "Rotherham Utd",
+      "source": "https://en.wikipedia.org/wiki/File:Rotherham_United_F.C._svg.svg"
+    },
+    {
+      "code": "ROYAL-ANTWERP-FC",
+      "name": "Royal Antwerp FC",
+      "source": "https://en.wikipedia.org/wiki/File:Royal_Antwerp_Football_Club_logo.svg"
+    },
+    {
+      "code": "RSC-ANDERLECHT",
+      "name": "RSC Anderlecht",
+      "source": "https://en.wikipedia.org/wiki/File:R.S.C._Anderlecht.svg"
+    },
+    {
+      "code": "SAARBRUCKEN",
+      "name": "Saarbrücken",
+      "source": "https://en.wikipedia.org/wiki/File:1_FC_Saarbrucken_crest.svg"
+    },
+    {
+      "code": "SALFORD-CITY",
+      "name": "Salford City",
+      "source": "https://en.wikipedia.org/wiki/File:Salford_City_F.C._new_logo.svg"
+    },
+    {
+      "code": "SAMPDORIA",
+      "name": "Sampdoria",
+      "source": "https://en.wikipedia.org/wiki/File:U.C._Sampdoria_logo.svg"
+    },
+    {
+      "code": "SAMSUNSPOR",
+      "name": "Samsunspor",
+      "source": "https://en.wikipedia.org/wiki/File:Samsunspor_crest.svg"
+    },
+    {
+      "code": "SAN-DIEGO-FC",
+      "name": "San Diego FC",
+      "source": "https://en.wikipedia.org/wiki/File:San_Diego_FC_logo.svg"
+    },
+    {
+      "code": "SAN-LORENZO",
+      "name": "San Lorenzo",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Atl%C3%A9tico_San_Lorenzo_de_Almagro.svg"
+    },
+    {
+      "code": "SANDEFJORD",
+      "name": "Sandefjord",
+      "source": "https://en.wikipedia.org/wiki/File:Sandefjord_Fotball_logo.svg"
+    },
+    {
+      "code": "SANTA-CLARA",
+      "name": "Santa Clara",
+      "source": "https://en.wikipedia.org/wiki/File:C.D._Santa_Clara_logo.svg"
     },
     {
       "code": "SAN",
@@ -2076,9 +4301,379 @@
       "source": "https://commons.wikimedia.org/wiki/File:Santos_Futebol_Clube_logo_(with_two_stars_and_a_golden_crown).svg"
     },
     {
-      "code": "SHA",
-      "name": "Al Shamal",
-      "source": "https://en.wikipedia.org/wiki/File:Al-Shamal_SC_logo.svg"
+      "code": "SANTOS-LAGUNA",
+      "name": "Santos Laguna",
+      "source": "https://en.wikipedia.org/wiki/File:Santos_Laguna_logo.svg"
+    },
+    {
+      "code": "SARMIENTO",
+      "name": "Sarmiento",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Atl%C3%A9tico_Sarmiento_de_Jun%C3%ADn.svg"
+    },
+    {
+      "code": "SARPSBORG-08",
+      "name": "Sarpsborg 08",
+      "source": "https://en.wikipedia.org/wiki/File:Sarpsborg_08_FF_logo.svg"
+    },
+    {
+      "code": "SASSUOLO",
+      "name": "Sassuolo",
+      "source": "https://en.wikipedia.org/wiki/File:US_Sassuolo_Calcio_logo.svg"
+    },
+    {
+      "code": "SC-AUSTRIA",
+      "name": "SC Austria",
+      "source": "https://commons.wikimedia.org/wiki/File:SC_Austria_Lustenau.svg"
+    },
+    {
+      "code": "SC-BRAGA",
+      "name": "SC Braga",
+      "source": "https://en.wikipedia.org/wiki/File:S.C._Braga_logo.svg"
+    },
+    {
+      "code": "SC-CAMBUUR",
+      "name": "SC Cambuur",
+      "source": "https://en.wikipedia.org/wiki/File:SC_Cambuur_logo.svg"
+    },
+    {
+      "code": "SC-FORTUNA-KOLN",
+      "name": "SC Fortuna Köln",
+      "source": "https://commons.wikimedia.org/wiki/File:SC_Fortuna_Koeln_Logo_2019%E2%80%9306-2026.svg"
+    },
+    {
+      "code": "SC-FREIBURG",
+      "name": "SC Freiburg",
+      "source": "https://en.wikipedia.org/wiki/File:SC_Freiburg_logo.svg"
+    },
+    {
+      "code": "SC-HEERENVEEN",
+      "name": "sc Heerenveen",
+      "source": "https://en.wikipedia.org/wiki/File:SC_Heerenveen_logo.svg"
+    },
+    {
+      "code": "SC-OTELUL-GALATI",
+      "name": "SC Oțelul Galați",
+      "source": "https://en.wikipedia.org/wiki/File:ASC_Otelul_Galati_logo.svg"
+    },
+    {
+      "code": "SC-PADERBORN-07",
+      "name": "SC Paderborn 07",
+      "source": "https://commons.wikimedia.org/wiki/File:SC_Paderborn_07_Logo_new.svg"
+    },
+    {
+      "code": "SC-TELSTAR",
+      "name": "SC Telstar",
+      "source": "https://en.wikipedia.org/wiki/File:SC_Telstar_logo.svg"
+    },
+    {
+      "code": "SC-VERL",
+      "name": "SC Verl",
+      "source": "https://commons.wikimedia.org/wiki/File:SC_Verl_Logo.svg"
+    },
+    {
+      "code": "SCR-ALTACH",
+      "name": "SCR Altach",
+      "source": "https://en.wikipedia.org/wiki/File:SC_Rheindorf_Altach_logo.svg"
+    },
+    {
+      "code": "SD-EIBAR",
+      "name": "SD Eibar",
+      "source": "https://en.wikipedia.org/wiki/File:SD_Eibar_logo_2016.svg"
+    },
+    {
+      "code": "SEPSI-OSK",
+      "name": "Sepsi OSK",
+      "source": "https://en.wikipedia.org/wiki/File:ACS_Sepsi_OSK_Sfantu_Gheorghe_logo.svg"
+    },
+    {
+      "code": "SERVETTE-FC",
+      "name": "Servette FC",
+      "source": "https://en.wikipedia.org/wiki/File:Servette_FC_crest.svg"
+    },
+    {
+      "code": "SEVILLA-FC",
+      "name": "Sevilla FC",
+      "source": "https://en.wikipedia.org/wiki/File:Sevilla_FC_logo.svg"
+    },
+    {
+      "code": "SG-SONNENHOF-GROSSASPACH",
+      "name": "SG Sonnenhof Großaspach",
+      "source": "https://en.wikipedia.org/wiki/File:SG_Sonnenhof_Gro%C3%9Faspach_logo.svg"
+    },
+    {
+      "code": "SHAKHTAR-DONETSK",
+      "name": "Shakhtar Donetsk",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Shakhtar_Donetsk.svg"
+    },
+    {
+      "code": "SHAMROCK-ROVERS",
+      "name": "Shamrock Rovers",
+      "source": "https://en.wikipedia.org/wiki/File:Shamrock_Rovers_F.C._crest.svg"
+    },
+    {
+      "code": "SHANDONG-TAISHAN",
+      "name": "Shandong Taishan",
+      "source": "https://en.wikipedia.org/wiki/File:Shandong_Taishan_Football_Club.svg"
+    },
+    {
+      "code": "SHANGHAI-PORT-FC",
+      "name": "Shanghai Port FC",
+      "source": "https://en.wikipedia.org/wiki/File:Port_FC_logo.svg"
+    },
+    {
+      "code": "SHEFFIELD-UTD",
+      "name": "Sheffield Utd",
+      "source": "https://en.wikipedia.org/wiki/File:Sheffield_United_FC_logo.svg"
+    },
+    {
+      "code": "SHEFFIELD-WED",
+      "name": "Sheffield Wed",
+      "source": "https://en.wikipedia.org/wiki/File:Sheffield_Wednesday_FC_2026_crest.svg"
+    },
+    {
+      "code": "SHELBOURNE",
+      "name": "Shelbourne",
+      "source": "https://en.wikipedia.org/wiki/File:Shelbourne_F.C._crest.svg"
+    },
+    {
+      "code": "SHREWSBURY",
+      "name": "Shrewsbury",
+      "source": "https://en.wikipedia.org/wiki/File:Shrewsbury_Town_F.C._logo.svg"
+    },
+    {
+      "code": "SILKEBORG-IF",
+      "name": "Silkeborg IF",
+      "source": "https://en.wikipedia.org/wiki/File:Silkeborg_IF_logo.svg"
+    },
+    {
+      "code": "SJ-EARTHQUAKES",
+      "name": "SJ Earthquakes",
+      "source": "https://en.wikipedia.org/wiki/File:San_Jose_Earthquakes_2014.svg"
+    },
+    {
+      "code": "SK-BRANN",
+      "name": "SK Brann",
+      "source": "https://commons.wikimedia.org/wiki/File:Brann_logo.svg"
+    },
+    {
+      "code": "SK-RAPID",
+      "name": "SK Rapid",
+      "source": "https://commons.wikimedia.org/wiki/File:SK_Rapid_Wien_Logo.svg"
+    },
+    {
+      "code": "SK-STURM-GRAZ",
+      "name": "SK Sturm Graz",
+      "source": "https://en.wikipedia.org/wiki/File:SK_Sturm_Graz_logo.svg"
+    },
+    {
+      "code": "SL-BENFICA",
+      "name": "SL Benfica",
+      "source": "https://en.wikipedia.org/wiki/File:SL_Benfica_logo.svg"
+    },
+    {
+      "code": "SLASK-WROCLAW",
+      "name": "Śląsk Wrocław",
+      "source": "https://en.wikipedia.org/wiki/File:%C5%9Al%C4%85sk_Wroc%C5%82aw_logo.svg"
+    },
+    {
+      "code": "SLAVIA-PRAHA",
+      "name": "Slavia Praha",
+      "source": "https://commons.wikimedia.org/wiki/File:SK_Slavia_Praha_full_logo.svg"
+    },
+    {
+      "code": "SLIGO-ROVERS",
+      "name": "Sligo Rovers",
+      "source": "https://en.wikipedia.org/wiki/File:Sligo_Rovers_F.C._crest.svg"
+    },
+    {
+      "code": "NAP",
+      "name": "Società Sportiva Calcio Napoli",
+      "source": "https://commons.wikimedia.org/wiki/File:SSC_Napoli_2025_(white_and_azure).svg"
+    },
+    {
+      "code": "SONDERJYSKE",
+      "name": "Sønderjyske",
+      "source": "https://en.wikipedia.org/wiki/File:SonderjyskE_logo.svg"
+    },
+    {
+      "code": "SOUNDERS-FC",
+      "name": "Sounders FC",
+      "source": "https://en.wikipedia.org/wiki/File:Seattle_Sounders_logo.svg"
+    },
+    {
+      "code": "SOUTHAMPTON",
+      "name": "Southampton",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Southampton.svg"
+    },
+    {
+      "code": "SPARTA-PRAHA",
+      "name": "Sparta Praha",
+      "source": "https://commons.wikimedia.org/wiki/File:AC-Sparta-LOGO2021.svg"
+    },
+    {
+      "code": "SPARTA-ROTTERDAM",
+      "name": "Sparta Rotterdam",
+      "source": "https://en.wikipedia.org/wiki/File:Sparta_Rotterdam_logo.svg"
+    },
+    {
+      "code": "SPORTING-CP",
+      "name": "Sporting CP",
+      "source": "https://en.wikipedia.org/wiki/File:Sporting_Clube_de_Portugal_logo_(2026).svg"
+    },
+    {
+      "code": "SPORTING-CRISTAL",
+      "name": "Sporting Cristal",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_de_Sporting_Cristal_2025.svg"
+    },
+    {
+      "code": "SPORTING-KC",
+      "name": "Sporting KC",
+      "source": "https://commons.wikimedia.org/wiki/File:Sporting_Kansas_City_logo.svg"
+    },
+    {
+      "code": "SS-JUVE-STABIA",
+      "name": "SS Juve Stabia",
+      "source": "https://en.wikipedia.org/wiki/File:SS_Juve_Stabia_crest.svg"
+    },
+    {
+      "code": "ST-JOHNSTONE",
+      "name": "St. Johnstone",
+      "source": "https://en.wikipedia.org/wiki/File:St_Johnstone_FC_crest.svg"
+    },
+    {
+      "code": "ST-LOUIS-CITY-SC",
+      "name": "St. Louis CITY SC",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_of_St._Louis_City_SC.svg"
+    },
+    {
+      "code": "ST-MIRREN",
+      "name": "St. Mirren",
+      "source": "https://en.wikipedia.org/wiki/File:St_Mirren_FC_crest.svg"
+    },
+    {
+      "code": "ST-PATS",
+      "name": "St. Pats",
+      "source": "https://en.wikipedia.org/wiki/File:St._Patrick%27s_Athletic_F.C._crest.svg"
+    },
+    {
+      "code": "STADE-BRESTOIS-29",
+      "name": "Stade Brestois 29",
+      "source": "https://en.wikipedia.org/wiki/File:Stade_Brestois_29_logo.svg"
+    },
+    {
+      "code": "STADE-DE-REIMS",
+      "name": "Stade de Reims",
+      "source": "https://commons.wikimedia.org/wiki/File:Stade_de_Reims_logo.svg"
+    },
+    {
+      "code": "STADE-RENNAIS-FC",
+      "name": "Stade Rennais FC",
+      "source": "https://en.wikipedia.org/wiki/File:Stade_Rennais_FC.svg"
+    },
+    {
+      "code": "STANDARD-LIEGE",
+      "name": "Standard Liège",
+      "source": "https://en.wikipedia.org/wiki/File:Standard_Li%C3%A8ge_logo.svg"
+    },
+    {
+      "code": "STEVENAGE",
+      "name": "Stevenage",
+      "source": "https://en.wikipedia.org/wiki/File:Stevenage_FC_crest.svg"
+    },
+    {
+      "code": "STOCKPORT",
+      "name": "Stockport",
+      "source": "https://en.wikipedia.org/wiki/File:Stockport_County_FC_logo_2020.svg"
+    },
+    {
+      "code": "STOKE-CITY",
+      "name": "Stoke City",
+      "source": "https://en.wikipedia.org/wiki/File:Stoke_City_FC_crest_2026.svg"
+    },
+    {
+      "code": "STRASBOURG",
+      "name": "Strasbourg",
+      "source": "https://en.wikipedia.org/wiki/File:Racing_Club_de_Strasbourg_logo.svg"
+    },
+    {
+      "code": "STVV",
+      "name": "STVV",
+      "source": "https://en.wikipedia.org/wiki/File:Sint-Truidense_VV_logo.svg"
+    },
+    {
+      "code": "SUDTIROL",
+      "name": "Südtirol",
+      "source": "https://en.wikipedia.org/wiki/File:FC_Sudtirol_crest.svg"
+    },
+    {
+      "code": "SUNDERLAND",
+      "name": "Sunderland",
+      "source": "https://en.wikipedia.org/wiki/File:Logo_Sunderland.svg"
+    },
+    {
+      "code": "SV-DARMSTADT-98",
+      "name": "SV Darmstadt 98",
+      "source": "https://en.wikipedia.org/wiki/File:SV_Darmstadt_98_logo.svg"
+    },
+    {
+      "code": "SV-MEPPEN",
+      "name": "SV Meppen",
+      "source": "https://commons.wikimedia.org/wiki/File:SV_Meppen_Logo_2022.svg"
+    },
+    {
+      "code": "SV-OBERBANK-RIED",
+      "name": "SV Oberbank Ried",
+      "source": "https://en.wikipedia.org/wiki/File:SV_Ried_logo.svg"
+    },
+    {
+      "code": "SV-WALDHOF",
+      "name": "SV Waldhof",
+      "source": "https://commons.wikimedia.org/wiki/File:Svwaldhof.svg"
+    },
+    {
+      "code": "SV-WERDER-BREMEN",
+      "name": "SV Werder Bremen",
+      "source": "https://commons.wikimedia.org/wiki/File:SV-Werder-Bremen-Logo.svg"
+    },
+    {
+      "code": "SWANSEA-CITY",
+      "name": "Swansea City",
+      "source": "https://en.wikipedia.org/wiki/File:Swansea_City_AFC_logo.svg"
+    },
+    {
+      "code": "SWINDON-TOWN",
+      "name": "Swindon Town",
+      "source": "https://en.wikipedia.org/wiki/File:Swindon_Town_FC.svg"
+    },
+    {
+      "code": "SYDNEY-FC",
+      "name": "Sydney FC",
+      "source": "https://en.wikipedia.org/wiki/File:Sydney_FC_Logo.svg"
+    },
+    {
+      "code": "TALLERES",
+      "name": "Talleres",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_Talleres_2015.svg"
+    },
+    {
+      "code": "TIGRE",
+      "name": "Tigre",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Atl%C3%A9tico_Tigre_-_2019.svg"
+    },
+    {
+      "code": "TOLUCA-FC",
+      "name": "Toluca FC",
+      "source": "https://commons.wikimedia.org/wiki/File:Club_Toluca_Logo.svg"
+    },
+    {
+      "code": "TORINO",
+      "name": "Torino",
+      "source": "https://en.wikipedia.org/wiki/File:Torino_FC_Logo.svg"
+    },
+    {
+      "code": "TORONTO-FC",
+      "name": "Toronto FC",
+      "source": "https://en.wikipedia.org/wiki/File:Toronto_FC_Logo.svg"
     },
     {
       "code": "TOT",
@@ -2086,9 +4681,299 @@
       "source": "https://en.wikipedia.org/wiki/File:Tottenham_Hotspur.svg"
     },
     {
+      "code": "TOULOUSE-FC",
+      "name": "Toulouse FC",
+      "source": "https://en.wikipedia.org/wiki/File:Toulouse_FC_2018_logo.svg"
+    },
+    {
       "code": "TRA",
       "name": "Trabzonspor",
       "source": "https://en.wikipedia.org/wiki/File:Trabzonspor_Amblem.svg"
+    },
+    {
+      "code": "TRANMERE-ROVERS",
+      "name": "Tranmere Rovers",
+      "source": "https://en.wikipedia.org/wiki/File:Tranmere_Rovers_FC_crest.svg"
+    },
+    {
+      "code": "TROMSO-IL",
+      "name": "Tromsø IL",
+      "source": "https://en.wikipedia.org/wiki/File:Troms%C3%B8_IL_logo.svg"
+    },
+    {
+      "code": "TSG-HOFFENHEIM",
+      "name": "TSG Hoffenheim",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_TSG_Hoffenheim.svg"
+    },
+    {
+      "code": "TSG-HOFFENHEIM-II",
+      "name": "TSG Hoffenheim II",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_TSG_Hoffenheim.svg"
+    },
+    {
+      "code": "TSV-HARTBERG",
+      "name": "TSV Hartberg",
+      "source": "https://en.wikipedia.org/wiki/File:TSV_Hartberg_logo.svg"
+    },
+    {
+      "code": "TSV-HAVELSE",
+      "name": "TSV Havelse",
+      "source": "https://commons.wikimedia.org/wiki/File:TSV_Havelse_logo.svg"
+    },
+    {
+      "code": "UCV-FC",
+      "name": "UCV FC",
+      "source": "https://en.wikipedia.org/wiki/File:Club_Deportivo_Moquegua.svg"
+    },
+    {
+      "code": "UD-ALMERIA",
+      "name": "UD Almería",
+      "source": "https://en.wikipedia.org/wiki/File:UD_Almeria_logo.svg"
+    },
+    {
+      "code": "UD-LAS-PALMAS",
+      "name": "UD Las Palmas",
+      "source": "https://en.wikipedia.org/wiki/File:UD_Las_Palmas_logo.svg"
+    },
+    {
+      "code": "UDINESE",
+      "name": "Udinese",
+      "source": "https://en.wikipedia.org/wiki/File:Udinese_Calcio_logo.svg"
+    },
+    {
+      "code": "ULSAN-HD-FC",
+      "name": "Ulsan HD FC",
+      "source": "https://en.wikipedia.org/wiki/File:Ulsan_Hyundai_Mipo_Dockyard_FC.svg"
+    },
+    {
+      "code": "UNI-CATOLICA",
+      "name": "Uni. Católica",
+      "source": "https://en.wikipedia.org/wiki/File:Uni%C3%B3n_San_Felipe_logo.png"
+    },
+    {
+      "code": "UNION",
+      "name": "Unión",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_club_Atl%C3%A9tico_Uni%C3%B3n_de_santa_fe.svg"
+    },
+    {
+      "code": "UNION-BERLIN",
+      "name": "Union Berlin",
+      "source": "https://commons.wikimedia.org/wiki/File:1._FC_Union_Berlin_Logo.svg"
+    },
+    {
+      "code": "UNIV-CRAIOVA",
+      "name": "Univ. Craiova",
+      "source": "https://en.wikipedia.org/wiki/File:CS_Universitatea_Craiova_logo.svg"
+    },
+    {
+      "code": "UNIVERSITARIO",
+      "name": "Universitario",
+      "source": "https://commons.wikimedia.org/wiki/File:Logo_oficial_de_Universitario.svg"
+    },
+    {
+      "code": "US-BOULOGNE",
+      "name": "US Boulogne",
+      "source": "https://en.wikipedia.org/wiki/File:US_Boulogne_crest.svg"
+    },
+    {
+      "code": "USL-DUNKERQUE",
+      "name": "USL Dunkerque",
+      "source": "https://en.wikipedia.org/wiki/File:USL_Dunkerque_crest.svg"
+    },
+    {
+      "code": "UTA-ARAD",
+      "name": "UTA Arad",
+      "source": "https://commons.wikimedia.org/wiki/File:UTA_Arad_logo.svg"
+    },
+    {
+      "code": "VALENCIA-CF",
+      "name": "Valencia CF",
+      "source": "https://en.wikipedia.org/wiki/File:Valenciacf.svg"
+    },
+    {
+      "code": "VALERENGA-FOTBALL",
+      "name": "Vålerenga Fotball",
+      "source": "https://commons.wikimedia.org/wiki/File:V%C3%A5lerenga_Oslo_logo.svg"
+    },
+    {
+      "code": "VASTERAS-SK",
+      "name": "Västerås SK",
+      "source": "https://en.wikipedia.org/wiki/File:Vasteras_SK_logo.svg"
+    },
+    {
+      "code": "VELEZ-SARSFIELD",
+      "name": "Vélez Sarsfield",
+      "source": "https://commons.wikimedia.org/wiki/File:Escudo_del_Club_Atl%C3%A9tico_V%C3%A9lez_Sarsfield.svg"
+    },
+    {
+      "code": "VENEZIA",
+      "name": "Venezia",
+      "source": "https://en.wikipedia.org/wiki/File:Venezia_FC_crest.svg"
+    },
+    {
+      "code": "VFB-STUTTGART",
+      "name": "VfB Stuttgart",
+      "source": "https://commons.wikimedia.org/wiki/File:VfB_Stuttgart_1893_Logo.svg"
+    },
+    {
+      "code": "VFB-STUTTGART-II",
+      "name": "VfB Stuttgart II",
+      "source": "https://commons.wikimedia.org/wiki/File:VfB_Stuttgart_1893_Logo.svg"
+    },
+    {
+      "code": "VFL-BOCHUM-1848",
+      "name": "VfL Bochum 1848",
+      "source": "https://commons.wikimedia.org/wiki/File:VfL_Bochum_logo.svg"
+    },
+    {
+      "code": "VFL-OSNABRUCK",
+      "name": "VfL Osnabrück",
+      "source": "https://commons.wikimedia.org/wiki/File:VfL_Osnabrueck_Logo_2021%E2%80%93.svg"
+    },
+    {
+      "code": "VFL-WOLFSBURG",
+      "name": "VfL Wolfsburg",
+      "source": "https://commons.wikimedia.org/wiki/File:VfL_Wolfsburg_logo_2026.svg"
+    },
+    {
+      "code": "VIBORG-FF",
+      "name": "Viborg FF",
+      "source": "https://en.wikipedia.org/wiki/File:Viborg_FF_logo.svg"
+    },
+    {
+      "code": "VIKING-FK",
+      "name": "Viking FK",
+      "source": "https://en.wikipedia.org/wiki/File:Viking_FK_logo_2020.svg"
+    },
+    {
+      "code": "VIKTORIA-KOLN",
+      "name": "Viktoria Köln",
+      "source": "https://commons.wikimedia.org/wiki/File:FC_Viktoria_K%C3%B6ln_1904_Logo.svg"
+    },
+    {
+      "code": "VIKTORIA-PLZEN",
+      "name": "Viktoria Plzeň",
+      "source": "https://en.wikipedia.org/wiki/File:Viktoria_Plzen_logo.svg"
+    },
+    {
+      "code": "VILLARREAL-CF",
+      "name": "Villarreal CF",
+      "source": "https://en.wikipedia.org/wiki/File:Villarreal_CF_logo-en.svg"
+    },
+    {
+      "code": "VITORIA-SC",
+      "name": "Vitória SC",
+      "source": "https://en.wikipedia.org/wiki/File:Vit%C3%B3ria_Guimar%C3%A3es.svg"
+    },
+    {
+      "code": "WAASLAND-BEVEREN",
+      "name": "Waasland-Beveren",
+      "source": "https://en.wikipedia.org/wiki/File:SK_Beveren_logo.svg"
+    },
+    {
+      "code": "WALSALL",
+      "name": "Walsall",
+      "source": "https://en.wikipedia.org/wiki/File:Walsall_FC.svg"
+    },
+    {
+      "code": "WATERFORD",
+      "name": "Waterford",
+      "source": "https://en.wikipedia.org/wiki/File:Waterford_F.C._2026_crest.svg"
+    },
+    {
+      "code": "WATFORD",
+      "name": "Watford",
+      "source": "https://en.wikipedia.org/wiki/File:Watford.svg"
+    },
+    {
+      "code": "WELL-PHOENIX",
+      "name": "Well. Phoenix",
+      "source": "https://en.wikipedia.org/wiki/File:Wellington_Phoenix_FC_logo.svg"
+    },
+    {
+      "code": "WEST-BROM",
+      "name": "West Brom",
+      "source": "https://en.wikipedia.org/wiki/File:West_Bromwich_Albion.svg"
+    },
+    {
+      "code": "WEST-HAM",
+      "name": "West Ham",
+      "source": "https://en.wikipedia.org/wiki/File:West_Ham_United_FC_logo.svg"
+    },
+    {
+      "code": "WHITECAPS-FC",
+      "name": "Whitecaps FC",
+      "source": "https://commons.wikimedia.org/wiki/File:Vancouver_Whitecaps_logo.svg"
+    },
+    {
+      "code": "WIDZEW-LODZ",
+      "name": "Widzew Łódź",
+      "source": "https://en.wikipedia.org/wiki/File:Widzew_Lodz.svg"
+    },
+    {
+      "code": "WIGAN-ATHLETIC",
+      "name": "Wigan Athletic",
+      "source": "https://en.wikipedia.org/wiki/File:Wigan_Athletic.svg"
+    },
+    {
+      "code": "WILLEM-II",
+      "name": "Willem II",
+      "source": "https://en.wikipedia.org/wiki/File:Willem_II_logo.svg"
+    },
+    {
+      "code": "WISLA-KRAKOW",
+      "name": "Wisła Kraków",
+      "source": "https://en.wikipedia.org/wiki/File:Wis%C5%82a_Krak%C3%B3w_logo.svg"
+    },
+    {
+      "code": "WISLA-PLOCK",
+      "name": "Wisła Płock",
+      "source": "https://en.wikipedia.org/wiki/File:Wis%C5%82a_P%C5%82ock_logo.svg"
+    },
+    {
+      "code": "WOLFSBERGER-AC",
+      "name": "Wolfsberger AC",
+      "source": "https://en.wikipedia.org/wiki/File:Wolfsberger_AC_logo.svg"
+    },
+    {
+      "code": "WOLVES",
+      "name": "Wolves",
+      "source": "https://en.wikipedia.org/wiki/File:Wolverhampton_Wanderers_FC_crest.svg"
+    },
+    {
+      "code": "WREXHAM",
+      "name": "Wrexham",
+      "source": "https://en.wikipedia.org/wiki/File:Wrexham_A.F.C._Logo.svg"
+    },
+    {
+      "code": "WS-WANDERERS",
+      "name": "WS Wanderers",
+      "source": "https://en.wikipedia.org/wiki/File:Western_Sydney_Wanderers_Football_Club_logo.svg"
+    },
+    {
+      "code": "WSG-TIROL",
+      "name": "WSG Tirol",
+      "source": "https://en.wikipedia.org/wiki/File:WSG_Tirol_logo.svg"
+    },
+    {
+      "code": "WYCOMBE",
+      "name": "Wycombe",
+      "source": "https://en.wikipedia.org/wiki/File:Wycombe_Wanderers_FC_logo.svg"
+    },
+    {
+      "code": "YORK-CITY",
+      "name": "York City",
+      "source": "https://en.wikipedia.org/wiki/File:York_City_FC.svg"
+    },
+    {
+      "code": "ZAGLEBIE-LUBIN",
+      "name": "Zagłębie Lubin",
+      "source": "https://en.wikipedia.org/wiki/File:Zag%C5%82%C4%99bie_Lubin_crest.svg"
+    },
+    {
+      "code": "ZULTE-WAREGEM",
+      "name": "Zulte Waregem",
+      "source": "https://en.wikipedia.org/wiki/File:Zulte-Waregem_logo.svg"
     }
   ]
 }
