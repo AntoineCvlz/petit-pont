@@ -55,3 +55,9 @@ scripts/media/raw/
 # Catalogue externe (données sous droits, dépôt public) : jamais versionné
 archive/
 scripts/fc27/out/
+
+# Photos hors Git servies localement (copie de scripts/fc27/out/media-ext)
+public/media-ext/
+
+# Outil local du porteur du projet (non versionné)
+futwiz_local_importer/

@@ -26,6 +26,13 @@
 		}
 	}
 
+	# Médias hors Git (photos du catalogue importé), déposés sur le VPS dans deploy/media-ext
+	handle_path /media-ext/* {
+		root * /srv/media-ext
+		header Cache-Control "public, max-age=604800"
+		file_server
+	}
+
 	# Site Next.js
 	handle {
 		reverse_proxy app:3000

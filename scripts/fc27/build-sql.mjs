@@ -37,6 +37,8 @@ for (const r of players) {
 }
 const photos = existsSync(`${dir}out/photo-sources.json`) ? JSON.parse(readFileSync(`${dir}out/photo-sources.json`, "utf8")) : {};
 const hasPhoto = (id) => photos[id] && existsSync(`${root}public/media/players/fc${id}.webp`);
+// Repli : photo API-Football hors Git (servie par Caddy sous /media-ext, cf. apifootball.mjs)
+const extPhoto = (id) => existsSync(`${dir}out/media-ext/players/${id}.webp`);
 
 const statKeys = (gk) => (gk ? ["div", "han", "kic", "ref", "spd", "pos"] : ["pac", "sho", "pas", "dri", "def", "phy"]);
 const rows = players.map((r) => {
@@ -66,7 +68,11 @@ const rows = players.map((r) => {
     rating,
     q(rarityFor(rating)),
     q(clubs.get(`${r.league}|${r.club}`).code),
-    hasPhoto(r.player_id) ? q(`/media/players/fc${r.player_id}.webp`) : "null",
+    hasPhoto(r.player_id)
+      ? q(`/media/players/fc${r.player_id}.webp`)
+      : extPhoto(r.player_id)
+        ? q(`/media-ext/players/${r.player_id}.webp`)
+        : "null",
   ].join(",");
 });
 
@@ -156,7 +162,8 @@ update public.players p set
   birthdate = f.birthdate, birth_year = extract(year from f.birthdate)::smallint, position = f.position,
   position_detail = f.position_detail, alt_positions = f.alt_positions, preferred_foot = f.preferred_foot,
   weak_foot = f.weak_foot, skill_moves = f.skill_moves, stats = f.stats,
-  image_url = coalesce(p.image_url, f.image_url)
+  -- Photo libre existante conservée ; une photo de repli (/media-ext) cède la place à une photo libre
+  image_url = case when p.image_url is null or p.image_url like '/media-ext/%' then coalesce(f.image_url, p.image_url) else p.image_url end
 from fc_players f where p.ext_id = f.ext_id;
 
 -- Nouveaux joueurs

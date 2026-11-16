@@ -65,7 +65,18 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
           ["--pp-glow" as string]: `radial-gradient(circle at 68% 38%, color-mix(in srgb, ${accent} 38%, transparent), transparent 62%)`,
         }}
       >
-        {t.imageUrl ? (
+        {t.imageUrl?.startsWith("/media-ext/") ? (
+          // Portrait carré non détouré (source externe) : médaillon aux couleurs du club
+          // eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable
+          <img
+            src={t.imageUrl}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="absolute top-[12%] right-[8%] aspect-square w-[60%] rounded-2xl border-2 object-cover shadow-lg"
+            style={{ borderColor: `color-mix(in srgb, ${accent} 70%, transparent)` }}
+          />
+        ) : t.imageUrl ? (
           <>
             {/* eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable (fichier statique ou domaine libre) */}
             <img
