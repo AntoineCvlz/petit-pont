@@ -52,6 +52,11 @@ export default function CreditsPage() {
             Les écussons sont des marques appartenant à leurs clubs respectifs, reproduits ici à titre d&apos;illustration
             dans un jeu gratuit, sans lien avec les clubs. Fichiers issus de Wikipédia.
           </p>
+          <p className="mb-3 text-sm text-chalk-muted">
+            Les logos de la Ligue 1, de la Premier League, de LaLiga, de la Serie A, de la Bundesliga et de la Saudi Pro
+            League (boosters par championnat, en silhouette) sont des marques de leurs organisateurs, issues de Wikipédia.
+            Drapeaux : paquet flag-icons (licence MIT).
+          </p>
           <ul className="divide-y divide-line text-sm">
             {credits.clubs.map((c) => (
               <li key={c.code} className="flex items-center gap-2 py-1.5">

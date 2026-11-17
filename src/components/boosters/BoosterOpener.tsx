@@ -22,6 +22,7 @@ export type OpenerBooster = {
   id: number;
   name: string;
   kind: BoosterKind;
+  slug: string;
   price: number;
   cardsCount: number;
   imageUrl: string | null;
@@ -148,6 +149,7 @@ export function BoosterOpener({
           <BoosterPack
             name={booster.name}
             kind={booster.kind}
+            slug={booster.slug}
             cardsCount={booster.cardsCount}
             imageUrl={booster.imageUrl}
             size="lg"
@@ -192,7 +194,7 @@ export function BoosterOpener({
           animate={{ y: -160, rotate: -14, opacity: 0 }}
           transition={{ duration: 0.6, ease: "easeIn" }}
         >
-          <BoosterPack name={booster.name} kind={booster.kind} cardsCount={booster.cardsCount} imageUrl={booster.imageUrl} size="lg" />
+          <BoosterPack name={booster.name} kind={booster.kind} slug={booster.slug} cardsCount={booster.cardsCount} imageUrl={booster.imageUrl} size="lg" />
         </motion.div>
         <motion.div
           className="absolute"
@@ -201,7 +203,7 @@ export function BoosterOpener({
           animate={{ y: 140, opacity: 0 }}
           transition={{ duration: 0.6, ease: "easeIn", delay: 0.05 }}
         >
-          <BoosterPack name={booster.name} kind={booster.kind} cardsCount={booster.cardsCount} imageUrl={booster.imageUrl} size="lg" />
+          <BoosterPack name={booster.name} kind={booster.kind} slug={booster.slug} cardsCount={booster.cardsCount} imageUrl={booster.imageUrl} size="lg" />
         </motion.div>
         <motion.div
           className="absolute h-1 w-56 rounded-full bg-chalk"

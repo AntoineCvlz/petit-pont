@@ -25,7 +25,7 @@ function BoosterTile({ b }: { b: BoosterView }) {
           "flex h-full gap-4 rounded-xl border border-line bg-night-850 p-4 transition-colors duration-150 hover:border-line-strong hover:bg-night-800",
         )}
       >
-        <BoosterPack name={b.name} kind={b.kind} cardsCount={b.cardsCount} imageUrl={b.imageUrl} size="sm" />
+        <BoosterPack name={b.name} kind={b.kind} slug={b.slug} cardsCount={b.cardsCount} imageUrl={b.imageUrl} size="sm" />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div>
             <p className="font-display text-lg leading-tight font-extrabold tracking-wide uppercase">{b.name}</p>
@@ -73,7 +73,7 @@ export default async function BoostersPage() {
                   href={`/boosters/${g.slug}?cadeau`}
                   className="flex items-center gap-3 rounded-xl border border-line bg-night-850 p-3 pr-4 transition-colors duration-150 hover:border-line-strong hover:bg-night-800"
                 >
-                  <BoosterPack name={g.name} kind={g.kind} cardsCount={g.cardsCount} imageUrl={g.imageUrl} size="sm" />
+                  <BoosterPack name={g.name} kind={g.kind} slug={g.slug} cardsCount={g.cardsCount} imageUrl={g.imageUrl} size="sm" />
                   <div>
                     <p className="font-display font-extrabold tracking-wide uppercase">{g.name}</p>
                     <p className="text-sm text-chalk-muted">

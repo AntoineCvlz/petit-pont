@@ -68,6 +68,7 @@ export default async function BoosterPage({ params, searchParams }: PageProps<"/
               id: booster.id,
               name: booster.name,
               kind: booster.kind,
+              slug: booster.slug,
               price: booster.price,
               cardsCount: booster.cardsCount,
               imageUrl: booster.imageUrl,

@@ -501,3 +501,9 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
   (appelée par la migration et à chaque import du catalogue). Un booster à règle ne pioche que dans sa réserve ;
   si une rareté y manque, le tirage descend puis remonte d'une rareté au lieu d'échouer.
 - Tests : pgTAP `16_theme_boosters` (réserve, absence de Communes, réserve vide = indisponible), `02_boosters` (10 min).
+
+### Habillage des boosters à thème
+- Paquets aux couleurs du thème (`src/lib/booster-themes.ts`, repéré par le slug) : silhouette du logo du championnat
+  (`public/media/leagues/<code>.png`, générées par `scripts/media/league-logos.mjs`, mentions de sponsors recadrées),
+  médaillon du drapeau pour les nations, pictogramme dessiné pour les styles de jeu (`StyleIcon`).
+- Un nouveau booster à thème sans entrée dans `booster-themes.ts` garde l'habillage standard.
