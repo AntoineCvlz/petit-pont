@@ -2,7 +2,14 @@ import { clsx } from "clsx";
 import { Crest } from "@/components/ui/Crest";
 import { Flag } from "@/components/ui/Flag";
 import type { DraftCard } from "@/lib/data/draft";
-import { draftChemistry, draftLinks, LINK_COLORS, LINK_LABELS, type DraftFormation, type LinkIdentity } from "@/lib/draft";
+import {
+  draftChemistry,
+  draftLinks,
+  LINK_COLORS,
+  LINK_LABELS,
+  type DraftFormation,
+  type LinkIdentity,
+} from "@/lib/draft";
 
 function identity(c: DraftCard): LinkIdentity {
   return {
@@ -20,17 +27,22 @@ function shortName(name: string): string {
 
 /**
  * Terrain du draft : postes de la formation, liens entre voisins (vert / orange / rouge, gris si incomplet)
- * et collectif de chaque joueur. Rendu serveur, sans état.
+ * et collectif de chaque joueur. Sans état ; `onSlotClick` rend les joueurs cliquables (échange, DraftPitchEditor).
  */
 export function DraftPitch({
   formation,
   picks,
   currentSlot = null,
+  selected = null,
+  onSlotClick,
 }: {
   formation: DraftFormation;
   picks: Partial<Record<string, DraftCard>>;
   currentSlot?: string | null;
+  selected?: string | null;
+  onSlotClick?: (slotKey: string) => void;
 }) {
+  const selectedPos = selected ? formation.slots.find((s) => s.key === selected)?.pos : undefined;
   const identities = Object.fromEntries(Object.entries(picks).map(([k, c]) => [k, identity(c!)]));
   const links = draftLinks(formation, identities);
   const { perSlot } = draftChemistry(formation, identities);
@@ -44,7 +56,12 @@ export function DraftPitch({
       }}
     >
       {/* Marquages */}
-      <svg viewBox="0 0 100 125" preserveAspectRatio="none" className="absolute inset-0 h-full w-full" aria-hidden="true">
+      <svg
+        viewBox="0 0 100 125"
+        preserveAspectRatio="none"
+        className="absolute inset-0 h-full w-full"
+        aria-hidden="true"
+      >
         <g fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="0.5">
           <rect x="3" y="3" width="94" height="119" />
           <line x1="3" y1="62.5" x2="97" y2="62.5" />
@@ -82,6 +99,43 @@ export function DraftPitch({
       {formation.slots.map((s) => {
         const c = picks[s.key];
         const active = currentSlot === s.key;
+        const isSelected = selected === s.key;
+        const isTarget = !!selected && !isSelected && !!c && s.pos === selectedPos;
+        const dimmed = !!selected && !isSelected && !isTarget;
+        const cardEl = c ? (
+          <div
+            className={clsx(
+              "relative rounded-lg border bg-night-900/90 p-1 text-center shadow-lg transition-[box-shadow,transform] duration-150",
+              isSelected
+                ? "-translate-y-1 border-turf ring-4 ring-turf/40"
+                : isTarget
+                  ? "border-turf/70 ring-2 ring-turf/30"
+                  : "border-white/15",
+              dimmed && "opacity-45",
+            )}
+          >
+            <div className="flex items-center justify-between px-0.5">
+              <span className="font-display text-sm leading-none font-extrabold text-chalk sm:text-base">
+                {c.rating}
+              </span>
+              <span className="flex items-center gap-0.5">
+                <Flag nation={c.nation} className="h-2.5 w-3.5" />
+                {c.club && <Crest club={c.club} className="h-3.5 w-3.5" />}
+              </span>
+            </div>
+            {c.imageUrl && (
+              // eslint-disable-next-line @next/next/no-img-element -- photo détourée statique
+              <img src={c.imageUrl} alt="" className="mx-auto mt-0.5 h-8 w-8 object-cover object-top sm:h-11 sm:w-11" />
+            )}
+            <p className="truncate text-[10px] leading-tight font-semibold sm:text-[11px]">{shortName(c.playerName)}</p>
+            <span
+              className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full border border-night-950 bg-night-800 font-display text-[10px] font-bold"
+              title={`Collectif : ${perSlot[s.key] ?? 0} / 10`}
+            >
+              {perSlot[s.key] ?? 0}
+            </span>
+          </div>
+        ) : null;
         return (
           <div
             key={s.key}
@@ -89,26 +143,26 @@ export function DraftPitch({
             style={{ left: `${s.x}%`, top: `${s.y}%` }}
           >
             {c ? (
-              <div className="relative rounded-lg border border-white/15 bg-night-900/90 p-1 text-center shadow-lg">
-                <div className="flex items-center justify-between px-0.5">
-                  <span className="font-display text-sm leading-none font-extrabold text-chalk sm:text-base">{c.rating}</span>
-                  <span className="flex items-center gap-0.5">
-                    <Flag nation={c.nation} className="h-2.5 w-3.5" />
-                    {c.club && <Crest club={c.club} className="h-3.5 w-3.5" />}
-                  </span>
-                </div>
-                {c.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element -- photo détourée statique
-                  <img src={c.imageUrl} alt="" className="mx-auto mt-0.5 h-8 w-8 object-cover object-top sm:h-11 sm:w-11" />
-                )}
-                <p className="truncate text-[10px] leading-tight font-semibold sm:text-[11px]">{shortName(c.playerName)}</p>
-                <span
-                  className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full border border-night-950 bg-night-800 font-display text-[10px] font-bold"
-                  title={`Collectif : ${perSlot[s.key] ?? 0} / 10`}
+              onSlotClick ? (
+                <button
+                  type="button"
+                  onClick={() => onSlotClick(s.key)}
+                  disabled={dimmed}
+                  className="block w-full rounded-lg text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turf disabled:cursor-not-allowed"
+                  aria-pressed={isSelected}
+                  aria-label={
+                    isSelected
+                      ? `${c.playerName} sélectionné : choisis un joueur de la même ligne`
+                      : isTarget
+                        ? `Échanger avec ${c.playerName}`
+                        : `Déplacer ${c.playerName}`
+                  }
                 >
-                  {perSlot[s.key] ?? 0}
-                </span>
-              </div>
+                  {cardEl}
+                </button>
+              ) : (
+                cardEl
+              )
             ) : (
               <div
                 className={clsx(

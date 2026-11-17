@@ -11,6 +11,7 @@ import { Modal } from "@/components/ui/Modal";
 import type { CardTemplateView, ClubView } from "@/lib/data/cards";
 import type { PenaltyRewards, PenaltyState } from "@/lib/data/penalty";
 import {
+  beatenKeeper,
   DIRECTION_LABELS,
   DIRECTIONS,
   kickMessage,
@@ -57,10 +58,14 @@ function Goal({
   disabled: boolean;
   onChoose: (d: Direction) => void;
 }) {
+  // Bon côté mais but : le ballon file dans la lucarne, au-dessus des gants du gardien
+  const topCorner = last ? beatenKeeper(last) : false;
   const ball = last
     ? last.result === "missed"
       ? { x: ZONE_X[last.direction] + (last.direction === "droite" ? 18 : -18), y: 4 }
-      : { x: ZONE_X[last.direction], y: 38 }
+      : topCorner
+        ? { x: ZONE_X[last.direction] + (last.direction === "droite" ? 10 : last.direction === "gauche" ? -10 : 0), y: 19 }
+        : { x: ZONE_X[last.direction], y: 38 }
     : { x: 50, y: 92 };
   const keeperX = last ? ZONE_X[last.dive] : 50;
   return (

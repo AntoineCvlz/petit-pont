@@ -2299,6 +2299,9 @@ isOneToOne: false
 "draft_status":
 { Args: Record<PropertyKey, never>; Returns: Json
                            },
+"draft_swap":
+{ Args: { "p_draft_id": string,"p_slot_a": string,"p_slot_b": string }; Returns: Json
+                           },
 "duel_detail":
 { Args: { "p_duel": string }; Returns: Json
                            },

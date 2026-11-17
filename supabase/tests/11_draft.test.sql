@@ -1,7 +1,7 @@
 -- Mode Draft : propositions, choix, collectif (liens vert / orange / rouge), score, limite quotidienne, classement.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(26);
+select plan(31);
 
 insert into auth.users (id, email, raw_user_meta_data) values
   ('dfdfdfdf-0000-4000-8000-00000000000a', 'drafteur@example.test', '{"username":"Drafteur"}'),
@@ -89,6 +89,22 @@ set local request.jwt.claims to '{"sub":"dfdfdfdf-0000-4000-8000-00000000000b","
 select is((select count(*)::int from public.draft_picks where draft_id = (select (state ->> 'id')::uuid from s)), 11,
   'Équipe d''un draft terminé consultable');
 select ok(exists (select 1 from public.draft_leaderboard(50) where username = 'Drafteur'), 'Le drafteur apparaît au classement');
+
+-- --- Échange de deux joueurs (même ligne) ---------------------------------------------
+select throws_ok($$select public.draft_swap((select (state ->> 'id')::uuid from s), 'DG', 'DD')$$, 'P0001', 'Draft introuvable',
+  'Échange refusé sur le draft d''un autre joueur');
+set local request.jwt.claims to '{"sub":"dfdfdfdf-0000-4000-8000-00000000000a","role":"authenticated"}';
+create temporary table before_swap as
+  select slot_key, template_id from public.draft_picks where draft_id = (select (state ->> 'id')::uuid from s);
+select lives_ok($$select public.draft_swap((select (state ->> 'id')::uuid from s), 'DG', 'DD')$$, 'Échange DG ↔ DD');
+select is((select template_id from public.draft_picks where draft_id = (select (state ->> 'id')::uuid from s) and slot_key = 'DG'),
+  (select template_id from before_swap where slot_key = 'DD'), 'Les deux défenseurs ont changé de poste');
+reset role;
+select ok((select score = round(rating + chemistry / 20.0, 2) and chemistry = public._draft_chemistry(id)
+  from public.drafts where id = (select (state ->> 'id')::uuid from s)), 'Collectif et score recalculés après l''échange');
+set local role authenticated;
+select throws_ok($$select public.draft_swap((select (state ->> 'id')::uuid from s), 'DG', 'BU')$$, 'P0001',
+  'Échange possible uniquement entre joueurs de la même ligne', 'Échange défenseur ↔ attaquant refusé');
 
 -- --- Collectif maximal : 11 joueurs du même club --------------------------------------
 reset role;

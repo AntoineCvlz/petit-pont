@@ -128,7 +128,8 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
           {t.playerName}
         </p>
         <p className="truncate text-[11px] text-chalk-muted">
-          {t.club?.name ?? "Sans club"} · {t.edition === "Base" ? t.season : t.edition}
+          {t.club?.name ?? "Sans club"}
+          {t.edition !== "Base" && ` · ${t.edition}`}
         </p>
         {size === "lg" && stats.length > 0 && (
           <dl className="mt-1 grid grid-cols-3 gap-x-2 font-display text-[12px] leading-tight">

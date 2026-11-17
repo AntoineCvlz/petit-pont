@@ -35,7 +35,15 @@ export function nextShooterIndex(kicks: Kick[], side: Kick["side"]): number {
   return kicks.filter((k) => k.side === side).length % 5;
 }
 
-export function kickMessage(k: Pick<Kick, "side" | "result">): string {
+/** Le gardien avait choisi le bon côté mais le tir est rentré (frappe en pleine lucarne). */
+export function beatenKeeper(k: Partial<Pick<Kick, "direction" | "dive">> & Pick<Kick, "result">): boolean {
+  return k.result === "goal" && k.direction !== undefined && k.direction === k.dive;
+}
+
+export function kickMessage(k: Pick<Kick, "side" | "result"> & Partial<Pick<Kick, "direction" | "dive">>): string {
+  if (beatenKeeper(k)) {
+    return k.side === "player" ? "BUT ! En pleine lucarne, imparable" : "Bon côté… mais en pleine lucarne";
+  }
   if (k.side === "player") {
     return k.result === "goal" ? "BUT !" : k.result === "saved" ? "Arrêté par le gardien…" : "À côté !";
   }

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DraftOffer, DraftStart } from "@/components/draft/DraftControls";
 import { DraftLeaderboard, DraftScoreline, LinkLegend } from "@/components/draft/DraftLeaderboard";
-import { DraftPitch } from "@/components/draft/DraftPitch";
+import { DraftPitchEditor } from "@/components/draft/DraftPitchEditor";
 import { PageHeader, Panel } from "@/components/ui/Panel";
 import { getCollectionTotal } from "@/lib/data/cards";
 import {
@@ -34,7 +34,7 @@ async function DraftBoard({ draft, formation, total }: { draft: DraftState; form
     <div className="grid gap-5 xl:grid-cols-[minmax(0,560px)_1fr]">
       <div className="space-y-3">
         <DraftScoreline rating={rating} chemistry={chem} score={rating === null ? null : draftScore(rating, chem)} provisional />
-        <DraftPitch formation={formation} picks={picks} currentSlot={slot.key} />
+        <DraftPitchEditor draftId={draft.id} formation={formation} picks={picks} currentSlot={slot.key} />
       </div>
       {/* Sur mobile, les choix d'abord (action principale), le terrain ensuite */}
       <Panel className="order-first xl:order-none">

@@ -39,3 +39,16 @@ export async function abandonDraft(draftId: string): Promise<DraftActionResult> 
   revalidatePath("/draft");
   return { ok: true, draftId, completed: false };
 }
+
+/** Échange deux joueurs déjà choisis sur la même ligne ; collectif et score recalculés par la base. */
+export async function swapDraft(draftId: string, slotA: string, slotB: string): Promise<DraftActionResult> {
+  if (!/^[0-9a-f-]{36}$/.test(draftId) || !/^[A-Z]{2,4}$/.test(slotA) || !/^[A-Z]{2,4}$/.test(slotB)) {
+    return { ok: false, message: "Échange invalide." };
+  }
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("draft_swap", { p_draft_id: draftId, p_slot_a: slotA, p_slot_b: slotB });
+  if (error) return fail(error);
+  revalidatePath("/draft");
+  revalidatePath(`/draft/${draftId}`);
+  return { ok: true, draftId, completed: (data as { status: string }).status === "completed" };
+}

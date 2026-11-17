@@ -35,5 +35,10 @@ describe("séance de tirs au but", () => {
     expect(kickMessage({ side: "player", result: "goal" })).toBe("BUT !");
     expect(kickMessage({ side: "opponent", result: "saved" })).toBe("ARRÊT DE TON GARDIEN !");
     expect(kickMessage({ side: "player", result: "missed" })).toBe("À côté !");
+    // Gardien du bon côté mais but : message explicite (plus d'impression de bug)
+    expect(kickMessage({ side: "opponent", result: "goal", direction: "gauche", dive: "gauche" })).toBe(
+      "Bon côté… mais en pleine lucarne",
+    );
+    expect(kickMessage({ side: "opponent", result: "goal", direction: "gauche", dive: "droite" })).toBe("Il marque…");
   });
 });

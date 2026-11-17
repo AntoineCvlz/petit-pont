@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DraftScoreline, LinkLegend } from "@/components/draft/DraftLeaderboard";
 import { DraftPitch } from "@/components/draft/DraftPitch";
+import { DraftPitchEditor } from "@/components/draft/DraftPitchEditor";
 import { buttonClasses } from "@/components/ui/Button";
 import { Panel } from "@/components/ui/Panel";
 import { getCompletedDraft, getDraftLeaderboard } from "@/lib/data/draft";
@@ -40,7 +41,11 @@ export default async function DraftResultPage({ params }: PageProps<"/draft/[id]
       <div className="grid gap-5 xl:grid-cols-[minmax(0,560px)_1fr]">
         <div className="space-y-3">
           <DraftScoreline rating={draft.rating} chemistry={draft.chemistry} score={draft.score} />
-          <DraftPitch formation={draft.formation} picks={draft.picks} />
+          {mine ? (
+            <DraftPitchEditor draftId={draft.id} formation={draft.formation} picks={draft.picks} />
+          ) : (
+            <DraftPitch formation={draft.formation} picks={draft.picks} />
+          )}
         </div>
         <div className="space-y-5">
           {mine && (

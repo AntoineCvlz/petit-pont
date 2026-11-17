@@ -527,3 +527,13 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 
 ### Wiki : portrait des joueurs
 - Fiche joueur : grand portrait détouré sur fond de pelouse (silhouette sinon) ; liste : vignette ronde.
+
+### Accueil, cartes, tirs au but, draft (17 nov. 2026)
+- **Cartes** : la saison n'est plus affichée sous le club (seule l'édition spéciale l'est, ex. « Holo »).
+- **Accueil** refait : bandeau avec pièces / cartes / exemplaires / doublons, bonus du jour, réserve de boosters gratuits
+  (jauge 10 cases) ; pastilles « à faire » (échanges, missions, albums à récupérer) ; raccourcis Draft, Tirs au but,
+  Saison, Défis ; dernières cartes, albums, marché, fil d'activité. La progression en % (18 000 cartes) est retirée.
+- **Tirs au but** : plonger du bon côté arrête désormais ~90 % des tirs (80 à 97 % selon les notes), contre 40 à 80 %
+  avant. Un but malgré le bon côté est montré en pleine lucarne avec un message explicite.
+- **Draft** : un clic sur un joueur, puis un autre de la même ligne = échange (`draft_swap`), pendant le draft et
+  sur l'équipe terminée (collectif et score recalculés par la base, classement mis à jour).
