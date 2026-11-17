@@ -17,30 +17,33 @@ describe("open_booster en parallèle", () => {
     limited = await boosterId("coupe-des-etoiles");
     const { data } = await admin.from("boosters").select("stock_remaining").eq("id", limited).single();
     initialStock = data!.stock_remaining!;
+    // Édition limitée retirée de la vente : réactivée le temps du test de concurrence sur le stock
+    await admin.from("boosters").update({ is_active: true }).eq("id", limited);
   });
 
   afterAll(async () => {
-    await admin.from("boosters").update({ stock_remaining: initialStock }).eq("id", limited);
+    await admin.from("boosters").update({ stock_remaining: initialStock, is_active: false }).eq("id", limited);
   });
 
-  it("un seul booster gratuit malgré 8 clics simultanés", async () => {
+  it("réserve de 10 boosters gratuits : 10 ouvertures sur 14 clics simultanés", async () => {
     const p = await createPlayer("Gratuit");
-    const results = await Promise.all(Array.from({ length: 8 }, () => p.client.rpc("open_booster", { p_booster_id: free })));
+    const results = await Promise.all(Array.from({ length: 14 }, () => p.client.rpc("open_booster", { p_booster_id: free })));
     const ok = results.filter((r) => !r.error);
-    expect(ok).toHaveLength(1);
+    expect(results.filter((r) => r.error).map((r) => r.error!.message)).toEqual(Array(4).fill(expect.stringContaining("pas encore prêt")));
+    expect(ok).toHaveLength(10);
     expect(results.filter((r) => r.error).every((r) => r.error!.message.includes("pas encore prêt"))).toBe(true);
-  });
+  }, 30_000);
 
-  it("le solde ne passe jamais sous zéro : 1 000 pièces = 5 boosters à 200, pas un de plus", async () => {
+  it("le solde ne passe jamais sous zéro : 1 000 pièces = 4 boosters Argent à 250, pas un de plus", async () => {
     const p = await createPlayer("Solde");
     const results = await Promise.all(
       Array.from({ length: 10 }, () => p.client.rpc("open_booster", { p_booster_id: standard })),
     );
-    expect(results.filter((r) => !r.error)).toHaveLength(5);
+    expect(results.filter((r) => !r.error)).toHaveLength(4);
     expect(await coins(p.id)).toBe(0);
 
     const { count } = await admin.from("card_instances").select("id", { count: "exact", head: true }).eq("owner_id", p.id);
-    expect(count).toBe(25);
+    expect(count).toBe(20);
   });
 
   it("stock limité : deux joueurs se disputent les 3 derniers boosters", async () => {
@@ -79,8 +82,10 @@ describe("sell_duplicates en parallèle", () => {
     const standard = await boosterId("standard");
     // Ouvre des boosters jusqu'à obtenir un doublon
     let dup: string | null = null;
-    for (let i = 0; i < 5 && !dup; i++) {
-      const { data } = await p.client.rpc("open_booster", { p_booster_id: standard });
+    // 1 000 pièces de départ : 4 boosters Argent au plus
+    for (let i = 0; i < 4 && !dup; i++) {
+      const { data, error } = await p.client.rpc("open_booster", { p_booster_id: standard });
+      if (error) throw error;
       const cards = (data as { cards: { instance_id: string; is_new: boolean }[] }).cards;
       dup = cards.find((c) => !c.is_new)?.instance_id ?? null;
     }

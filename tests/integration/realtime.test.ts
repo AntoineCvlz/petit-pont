@@ -4,6 +4,8 @@ import { admin, boosterId, createPlayer } from "./helpers";
 describe("Realtime : stock des boosters limités", () => {
   it("B voit le stock baisser en direct quand A achète", async () => {
     const limited = await boosterId("coupe-des-etoiles");
+    // Édition limitée retirée de la vente : réactivée le temps du test (avant l'abonnement)
+    await admin.from("boosters").update({ is_active: true }).eq("id", limited);
     const [a, b] = await Promise.all([createPlayer("LiveA"), createPlayer("LiveB")]);
     await admin.rpc("_apply_coins", { p_user: a.id, p_amount: 5000, p_type: "admin_adjustment", p_description: "test" });
 
@@ -34,7 +36,10 @@ describe("Realtime : stock des boosters limités", () => {
       expected = data!.stock_remaining;
       for (let i = 0; i < 30 && events.length === 0; i++) await new Promise((r) => setTimeout(r, 100));
     }
+    // Les événements peuvent arriver en retard : on attend celui du dernier achat
+    for (let i = 0; i < 50 && events.at(-1) !== expected; i++) await new Promise((r) => setTimeout(r, 100));
     await b.client.removeAllChannels();
+    await admin.from("boosters").update({ is_active: false }).eq("id", limited);
 
     expect(events.length).toBeGreaterThan(0);
     expect(events.at(-1)).toBe(expected);
