@@ -104,7 +104,7 @@ export function PenaltyGame({
     timers.current.forEach((t) => window.clearTimeout(t));
     timers.current = [];
     if (reducedMotion()) {
-      setAnim({ kick: k, phase: "rest" });
+      setAnim(null);
       apply(k, next);
       return;
     }
@@ -117,8 +117,9 @@ export function PenaltyGame({
     at(t1, () => setAnim({ kick: k, phase: "runup" }));
     at(t2, () => setAnim({ kick: k, phase: "flight" }));
     at(t3, () => setAnim({ kick: k, phase: "outcome" }));
+    // Fin de l'action : retour au point de penalty avec le tireur et le gardien suivants
     at(t4, () => {
-      setAnim({ kick: k, phase: "rest" });
+      setAnim(null);
       apply(k, next);
     });
   }
@@ -145,7 +146,10 @@ export function PenaltyGame({
   return (
     <div className="space-y-4">
       {/* Tableau */}
-      <ol className="flex items-center justify-center gap-2 text-xs font-semibold uppercase" aria-label="Tableau du tournoi">
+      <ol
+        className="flex items-center justify-center gap-2 text-xs font-semibold uppercase"
+        aria-label="Tableau du tournoi"
+      >
         {[1, 2, 3].map((r) => (
           <li
             key={r}
@@ -183,19 +187,18 @@ export function PenaltyGame({
       </div>
 
       <PenaltyScene
-        mode={animating && anim ? (anim.kick.side === "player" ? "shoot" : "save") : side === "player" ? "shoot" : "save"}
+        mode={side === "player" ? "shoot" : "save"}
         kick={anim && anim.kick.matchRound === match.round ? anim.kick : null}
         phase={anim && anim.kick.matchRound === match.round ? anim.phase : "idle"}
         disabled={pending || animating || matchOver}
         onChoose={choose}
-        shooterColor={
-          (anim && anim.kick.matchRound === match.round ? anim.kick.side : side) === "player"
-            ? "#4ade80"
-            : (opponent?.colorPrimary ?? "#ef4444")
+        shooterName={(anim ? cards[anim.kick.shooter] : shooter)?.playerName ?? ""}
+        keeperName={
+          (anim ? (anim.kick.side === "player" ? cards[match.oppKeeper] : cards[initial.keeper]) : keeper)
+            ?.playerName ?? ""
         }
-        keeperColor={
-          (anim && anim.kick.matchRound === match.round ? anim.kick.side : side) === "player" ? "#38bdf8" : "#f5a524"
-        }
+        shooterColor={(anim ? anim.kick.side : side) === "player" ? "#4ade80" : (opponent?.colorPrimary ?? "#ef4444")}
+        keeperColor={(anim ? anim.kick.side : side) === "player" ? "#38bdf8" : "#f5a524"}
       />
 
       {/* Résultat du dernier tir */}
@@ -243,8 +246,9 @@ export function PenaltyGame({
           <p>
             {side === "player" ? (
               <>
-                <span className="font-semibold text-turf">À toi de tirer</span> avec <strong>{shooter?.playerName}</strong> (
-                {shooter?.rating}) face à {keeper?.playerName} : choisis ton côté.
+                <span className="font-semibold text-turf">À toi de tirer</span> avec{" "}
+                <strong>{shooter?.playerName}</strong> ({shooter?.rating}) face à {keeper?.playerName} : choisis ton
+                côté.
               </>
             ) : (
               <>

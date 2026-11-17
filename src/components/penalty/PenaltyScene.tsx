@@ -4,7 +4,7 @@ import { clsx } from "clsx";
 import { DIRECTION_LABELS, DIRECTIONS, kickPath, SCENE, type Direction, type Kick } from "@/lib/penalty";
 
 /** Durées de la séquence (ms) ; ramenées à zéro si les animations sont réduites. */
-export const KICK_TIMING = { runup: 380, flight: 480, rebound: 300, hold: 450 } as const;
+export const KICK_TIMING = { runup: 380, flight: 480, rebound: 300, hold: 900 } as const;
 
 export type ScenePhase = "idle" | "runup" | "flight" | "outcome" | "rest";
 export type SceneKick = Pick<Kick, "side" | "direction" | "dive" | "result">;
@@ -24,6 +24,8 @@ export function PenaltyScene({
   onChoose,
   shooterColor,
   keeperColor,
+  shooterName,
+  keeperName,
 }: {
   mode: "shoot" | "save";
   kick: SceneKick | null;
@@ -32,6 +34,8 @@ export function PenaltyScene({
   onChoose: (d: Direction) => void;
   shooterColor: string;
   keeperColor: string;
+  shooterName: string;
+  keeperName: string;
 }) {
   const path = kick ? kickPath(kick) : null;
   const moving = phase !== "idle";
@@ -157,9 +161,27 @@ export function PenaltyScene({
           <path d="M0-0.9.85-.25.5.75h-1l-.35-1z" fill="#1f2937" />
         </g>
         {settled && path?.net && (
-          <circle cx={path.ball.x} cy={path.ball.y} r="2" fill="none" stroke="#ffffff" strokeWidth="0.4" className="pp-ripple" />
+          <circle
+            cx={path.ball.x}
+            cy={path.ball.y}
+            r="2"
+            fill="none"
+            stroke="#ffffff"
+            strokeWidth="0.4"
+            className="pp-ripple"
+          />
         )}
       </svg>
+
+      {/* Qui tire, qui garde */}
+      <p className="pointer-events-none absolute bottom-1.5 left-2 max-w-[45%] truncate rounded bg-night-950/70 px-1.5 py-0.5 text-[11px] font-semibold sm:text-xs">
+        <span className="text-chalk-muted">Tireur </span>
+        {shooterName}
+      </p>
+      <p className="pointer-events-none absolute top-1 left-1/2 max-w-[60%] -translate-x-1/2 truncate rounded bg-night-950/70 px-1.5 py-0.5 text-[11px] font-semibold sm:text-xs">
+        <span className="text-chalk-muted">Gardien </span>
+        {keeperName}
+      </p>
 
       {/* Zones de tir / de plongeon */}
       <div className="absolute top-[13.3%] right-[14%] bottom-[43.3%] left-[14%] grid grid-cols-3">
