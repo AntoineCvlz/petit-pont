@@ -542,3 +542,13 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
   message s'affichent à la fin de l'action. Descriptions alignées sur la trajectoire (`kickPath`) : « lucarne »
   seulement sur les côtés, « en force au-dessus du gardien » au centre, « au-dessus de la barre » pour un centre raté.
   Exception assumée à la règle des 400 ms (moment clé du jeu, comme l'ouverture de booster).
+
+### Connexion Discord sans e-mail
+- GoTrue impose le scope `email` pour Discord : l'OAuth est désormais mené par l'application (`/auth/discord` →
+  Discord, scope **`identify`** seul → `/auth/discord/callback`). Le retour échange le code, lit id / nom / avatar,
+  retrouve le compte (`discord_account`, ancienne identité ou `app_metadata.discord_id`) ou le crée avec une adresse
+  technique `discord-<id>@users.petit-pont.invalid`, met l'avatar à jour, puis ouvre la session (lien magique généré
+  et vérifié côté serveur). Clé de service et secret Discord : variables du conteneur `app` uniquement.
+- Migration : e-mails Discord déjà stockés remplacés par l'adresse technique et retirés des métadonnées.
+- Prérequis : l'URL `https://<site>/auth/discord/callback` doit figurer dans les redirections OAuth2 de l'application
+  Discord (portail développeur).

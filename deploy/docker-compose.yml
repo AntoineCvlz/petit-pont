@@ -155,6 +155,11 @@ services:
     environment:
       # Commandes Discord (/carte) : clé publique de l'application Discord (facultatif)
       DISCORD_PUBLIC_KEY: ${DISCORD_PUBLIC_KEY:-}
+      # Connexion Discord menée par l'application (scope « identify », sans e-mail) : échange du code OAuth,
+      # puis création du compte / ouverture de session avec la clé de service (serveur uniquement)
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+      SUPABASE_SECRET_KEY: ${SERVICE_ROLE_KEY}
     mem_limit: 384m
 
   caddy:

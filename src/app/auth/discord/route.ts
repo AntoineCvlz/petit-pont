@@ -1,23 +1,30 @@
+import { randomBytes } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
+import { DISCORD_STATE_COOKIE, discordAuthorizeUrl } from "@/lib/discord-oauth";
 import { publicOrigin } from "@/lib/origin";
-import { createClient } from "@/lib/supabase/server";
 import { safeRedirectPath } from "@/lib/validation";
 
 /**
- * Départ de la connexion Discord (OAuth, PKCE) : simple lien GET plutôt qu'une action serveur,
- * pour fonctionner même depuis une page chargée avant un déploiement (identifiants d'actions périmés).
- * Le vérificateur PKCE est posé en cookie, puis redirection vers Discord ; retour sur /auth/callback.
+ * Départ de la connexion Discord : simple lien GET (fonctionne même depuis une page chargée avant un déploiement).
+ * OAuth mené par l'application avec le seul scope « identify » (pas d'accès à l'e-mail) ; l'état anti-CSRF et la
+ * page de retour sont gardés dans un cookie httpOnly de courte durée. Retour sur /auth/discord/callback.
  */
 export async function GET(request: NextRequest) {
   const origin = publicOrigin(request.headers);
-  const callback = new URL("/auth/callback", origin);
-  callback.searchParams.set("suite", safeRedirectPath(request.nextUrl.searchParams.get("suite")));
+  const clientId = process.env.DISCORD_CLIENT_ID;
+  if (!clientId) return NextResponse.redirect(new URL("/connexion?erreur=discord", origin));
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "discord",
-    options: { redirectTo: callback.toString(), scopes: "identify email", skipBrowserRedirect: true },
+  const state = randomBytes(24).toString("base64url");
+  const suite = safeRedirectPath(request.nextUrl.searchParams.get("suite"));
+  const response = NextResponse.redirect(
+    discordAuthorizeUrl(clientId, new URL("/auth/discord/callback", origin).toString(), state),
+  );
+  response.cookies.set(DISCORD_STATE_COOKIE, JSON.stringify({ state, suite }), {
+    httpOnly: true,
+    secure: origin.startsWith("https://"),
+    sameSite: "lax",
+    path: "/auth/discord",
+    maxAge: 600,
   });
-  if (error || !data.url) return NextResponse.redirect(new URL("/connexion?erreur=discord", origin));
-  return NextResponse.redirect(data.url);
+  return response;
 }

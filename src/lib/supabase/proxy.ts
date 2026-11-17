@@ -5,7 +5,7 @@ import { supabaseEnv } from "@/lib/env";
 
 const PUBLIC_PATHS = ["/connexion", "/inscription"];
 /** Départ et retour OAuth : accessibles connecté ou non. */
-const AUTH_ROUTES = ["/auth/discord", "/auth/callback"];
+const AUTH_ROUTES = ["/auth/discord", "/auth/discord/callback", "/auth/callback"];
 
 /** Rafraîchit la session Supabase et protège les pages du jeu. */
 export async function updateSession(request: NextRequest) {

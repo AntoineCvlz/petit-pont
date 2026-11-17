@@ -2288,6 +2288,14 @@ isOneToOne: false
 "delete_clan_message":
 { Args: { "p_message": number }; Returns: undefined
                            },
+"discord_account":
+{ Args: { "p_discord_id": string }; Returns: {
+              "email": string,"user_id": string
+            }[]
+                           },
+"discord_sync_avatar":
+{ Args: { "p_avatar_url": string,"p_user": string }; Returns: undefined
+                           },
 "draft_leaderboard":
 { Args: { "p_limit"?: number }; Returns: {
               "avatar_url": string,"chemistry": number,"completed_at": string,"draft_id": string,"formation": string,"is_me": boolean,"rank": number,"rating": number,"score": number,"user_id": string,"username": string
