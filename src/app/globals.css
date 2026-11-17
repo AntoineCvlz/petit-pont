@@ -292,3 +292,17 @@ body {
 [data-reduced-motion="true"] .pp-card[data-rarity="speciale"] {
   transform: none;
 }
+
+/* Tirs au but : filet qui tremble et onde à l'impact du ballon */
+@keyframes pp-net-shake {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.025, 1.04); }
+  60% { transform: scale(0.99, 0.985); }
+  100% { transform: scale(1); }
+}
+.pp-net-shake { animation: pp-net-shake 380ms ease-out; }
+@keyframes pp-ripple {
+  from { r: 1.5; opacity: 0.9; }
+  to { r: 7; opacity: 0; }
+}
+.pp-ripple { animation: pp-ripple 450ms ease-out forwards; }

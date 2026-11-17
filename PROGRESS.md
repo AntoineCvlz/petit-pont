@@ -537,3 +537,8 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
   avant. Un but malgré le bon côté est montré en pleine lucarne avec un message explicite.
 - **Draft** : un clic sur un joueur, puis un autre de la même ligne = échange (`draft_swap`), pendant le draft et
   sur l'équipe terminée (collectif et score recalculés par la base, classement mis à jour).
+- **Tirs au but, animation** (`PenaltyScene`) : élan du tireur, frappe, vol du ballon, plongeon du gardien, puis filet
+  qui tremble, ballon repoussé ou tir à côté / au-dessus (~1,3 s, sautée si animations réduites). Le score et le
+  message s'affichent à la fin de l'action. Descriptions alignées sur la trajectoire (`kickPath`) : « lucarne »
+  seulement sur les côtés, « en force au-dessus du gardien » au centre, « au-dessus de la barre » pour un centre raté.
+  Exception assumée à la règle des 400 ms (moment clé du jeu, comme l'ouverture de booster).

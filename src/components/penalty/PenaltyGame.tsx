@@ -1,19 +1,17 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { clsx } from "clsx";
 import { abandonPenalty, kickPenalty, type LastKick } from "@/lib/actions/penalty";
 import { Button } from "@/components/ui/Button";
 import { Crest } from "@/components/ui/Crest";
 import { FormMessage } from "@/components/ui/Field";
 import { Modal } from "@/components/ui/Modal";
+import { KICK_TIMING, PenaltyScene, type ScenePhase } from "./PenaltyScene";
 import type { CardTemplateView, ClubView } from "@/lib/data/cards";
 import type { PenaltyRewards, PenaltyState } from "@/lib/data/penalty";
 import {
-  beatenKeeper,
-  DIRECTION_LABELS,
-  DIRECTIONS,
   kickMessage,
   kickSlots,
   nextShooterIndex,
@@ -25,7 +23,14 @@ import {
   type KickResult,
 } from "@/lib/penalty";
 
-const ZONE_X: Record<Direction, number> = { gauche: 22, centre: 50, droite: 78 };
+/** Animations réduites : préférence système ou réglage du profil (attribut posé sur la zone de jeu). */
+function reducedMotion(): boolean {
+  if (typeof window === "undefined") return true;
+  return (
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+    document.querySelector('[data-reduced-motion="true"]') !== null
+  );
+}
 
 function Dots({ slots, label }: { slots: (KickResult | null)[]; label: string }) {
   return (
@@ -43,89 +48,6 @@ function Dots({ slots, label }: { slots: (KickResult | null)[]; label: string })
         />
       ))}
     </ol>
-  );
-}
-
-/** But vu de face : zones cliquables, ballon et gardien animés (≤ 300 ms). */
-function Goal({
-  mode,
-  last,
-  disabled,
-  onChoose,
-}: {
-  mode: "shoot" | "save";
-  last: LastKick | null;
-  disabled: boolean;
-  onChoose: (d: Direction) => void;
-}) {
-  // Bon côté mais but : le ballon file dans la lucarne, au-dessus des gants du gardien
-  const topCorner = last ? beatenKeeper(last) : false;
-  const ball = last
-    ? last.result === "missed"
-      ? { x: ZONE_X[last.direction] + (last.direction === "droite" ? 18 : -18), y: 4 }
-      : topCorner
-        ? { x: ZONE_X[last.direction] + (last.direction === "droite" ? 10 : last.direction === "gauche" ? -10 : 0), y: 19 }
-        : { x: ZONE_X[last.direction], y: 38 }
-    : { x: 50, y: 92 };
-  const keeperX = last ? ZONE_X[last.dive] : 50;
-  return (
-    <div className="relative mx-auto aspect-[16/9] w-full max-w-[560px] select-none">
-      <svg viewBox="0 0 100 56" className="absolute inset-0 h-full w-full" aria-hidden="true">
-        <rect x="0" y="0" width="100" height="56" fill="#1a5230" />
-        <rect x="0" y="40" width="100" height="16" fill="#1d5a35" />
-        {/* Filet */}
-        <g stroke="rgba(255,255,255,0.12)" strokeWidth="0.3">
-          {Array.from({ length: 19 }, (_, i) => (
-            <line key={`v${i}`} x1={8 + i * 4.67} y1="8" x2={8 + i * 4.67} y2="40" />
-          ))}
-          {Array.from({ length: 7 }, (_, i) => (
-            <line key={`h${i}`} x1="8" y1={8 + i * 4.6} x2="92" y2={8 + i * 4.6} />
-          ))}
-        </g>
-        {/* Cadre */}
-        <path d="M8 40V8h84v32" fill="none" stroke="#f4f7f5" strokeWidth="1.6" />
-        <ellipse cx="50" cy="50" rx="1.6" ry="0.7" fill="rgba(255,255,255,0.6)" />
-      </svg>
-      {/* Gardien */}
-      <svg
-        viewBox="0 0 40 50"
-        className="absolute bottom-[28%] h-[50%] w-[14%] origin-bottom transition-[left,transform] duration-300 ease-out"
-        style={{
-          left: `${keeperX}%`,
-          transform: `translateX(-50%) rotate(${last ? (last.dive === "gauche" ? -62 : last.dive === "droite" ? 62 : 0) : 0}deg)`,
-        }}
-        aria-hidden="true"
-      >
-        {/* Bras levés, gants, tête, maillot, jambes */}
-        <path d="M9 22 3 6M31 22l6-16" stroke="#f5a524" strokeWidth="5" strokeLinecap="round" />
-        <circle cx="3" cy="5" r="3.2" fill="#f4f7f5" />
-        <circle cx="37" cy="5" r="3.2" fill="#f4f7f5" />
-        <circle cx="20" cy="9" r="5.5" fill="#e9c9a6" />
-        <rect x="11" y="15" width="18" height="19" rx="5" fill="#f5a524" />
-        <path d="M15 33v15M25 33v15" stroke="#1f2937" strokeWidth="5" strokeLinecap="round" />
-      </svg>
-      {/* Ballon */}
-      <div
-        className="absolute h-[9%] w-[5%] -translate-x-1/2 -translate-y-1/2 rounded-full border border-night-950/40 bg-white shadow transition-[left,top] duration-300 ease-out"
-        style={{ left: `${ball.x}%`, top: `${ball.y}%` }}
-        aria-hidden="true"
-      />
-      {/* Zones */}
-      <div className="absolute inset-x-[8%] top-[14%] bottom-[28%] grid grid-cols-3">
-        {DIRECTIONS.map((d) => (
-          <button
-            key={d}
-            type="button"
-            disabled={disabled}
-            onClick={() => onChoose(d)}
-            className="m-0.5 rounded-md border border-transparent text-sm font-semibold text-transparent transition-colors duration-150 enabled:hover:border-white/60 enabled:hover:bg-white/10 enabled:hover:text-white focus-visible:border-white focus-visible:text-white focus-visible:outline-none"
-            aria-label={`${mode === "shoot" ? "Tirer" : "Plonger"} ${d === "centre" ? "au centre" : `à ${d}`}`}
-          >
-            {DIRECTION_LABELS[d]}
-          </button>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -163,8 +85,46 @@ export function PenaltyGame({
   const keeper = side === "player" ? cards[match.oppKeeper] : cards[initial.keeper];
   const lastShooter = last ? cards[last.shooter] : null;
 
+  // Séquence animée du dernier tir : le score et le message ne changent qu'une fois l'action terminée
+  const [anim, setAnim] = useState<{ kick: LastKick; phase: ScenePhase } | null>(null);
+  const timers = useRef<number[]>([]);
+  useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
+  const animating = anim !== null && anim.phase !== "rest";
+
+  function apply(k: LastKick, next: PenaltyState) {
+    setLast(k);
+    setState(next);
+    setShownKicks((prev) => [
+      ...prev,
+      { n: prev.length, side: k.side, shooter: k.shooter, direction: k.direction, dive: k.dive, result: k.result },
+    ]);
+  }
+
+  function play(k: LastKick, next: PenaltyState) {
+    timers.current.forEach((t) => window.clearTimeout(t));
+    timers.current = [];
+    if (reducedMotion()) {
+      setAnim({ kick: k, phase: "rest" });
+      apply(k, next);
+      return;
+    }
+    const at = (ms: number, fn: () => void) => timers.current.push(window.setTimeout(fn, ms));
+    const t1 = 30;
+    const t2 = t1 + KICK_TIMING.runup;
+    const t3 = t2 + KICK_TIMING.flight;
+    const t4 = t3 + (k.result === "saved" ? KICK_TIMING.rebound : 0) + KICK_TIMING.hold;
+    setAnim({ kick: k, phase: "idle" });
+    at(t1, () => setAnim({ kick: k, phase: "runup" }));
+    at(t2, () => setAnim({ kick: k, phase: "flight" }));
+    at(t3, () => setAnim({ kick: k, phase: "outcome" }));
+    at(t4, () => {
+      setAnim({ kick: k, phase: "rest" });
+      apply(k, next);
+    });
+  }
+
   function choose(d: Direction) {
-    if (pending || matchOver) return;
+    if (pending || animating || matchOver) return;
     setError(null);
     start(async () => {
       const r = await kickPenalty(state.id, d);
@@ -173,13 +133,7 @@ export function PenaltyGame({
         router.refresh();
         return;
       }
-      const k = r.lastKick!;
-      setLast(k);
-      setState(r.state);
-      setShownKicks((prev) => [
-        ...prev,
-        { n: prev.length, side: k.side, shooter: k.shooter, direction: k.direction, dive: k.dive, result: k.result },
-      ]);
+      play(r.lastKick!, r.state);
     });
   }
 
@@ -228,16 +182,25 @@ export function PenaltyGame({
         </div>
       </div>
 
-      <Goal
-        mode={side === "player" ? "shoot" : "save"}
-        last={last?.matchRound === match.round ? last : null}
-        disabled={pending || matchOver}
+      <PenaltyScene
+        mode={animating && anim ? (anim.kick.side === "player" ? "shoot" : "save") : side === "player" ? "shoot" : "save"}
+        kick={anim && anim.kick.matchRound === match.round ? anim.kick : null}
+        phase={anim && anim.kick.matchRound === match.round ? anim.phase : "idle"}
+        disabled={pending || animating || matchOver}
         onChoose={choose}
+        shooterColor={
+          (anim && anim.kick.matchRound === match.round ? anim.kick.side : side) === "player"
+            ? "#4ade80"
+            : (opponent?.colorPrimary ?? "#ef4444")
+        }
+        keeperColor={
+          (anim && anim.kick.matchRound === match.round ? anim.kick.side : side) === "player" ? "#38bdf8" : "#f5a524"
+        }
       />
 
       {/* Résultat du dernier tir */}
       <div className="min-h-14 text-center" aria-live="polite">
-        {last && last.matchRound === match.round && (
+        {last && last.matchRound === match.round && !animating && (
           <p
             className={clsx(
               "font-display text-2xl font-extrabold uppercase italic",

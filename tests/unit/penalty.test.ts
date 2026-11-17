@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { kickMessage, kickSlots, nextShooterIndex, nextSide, type Kick } from "@/lib/penalty";
+import { kickMessage, kickPath, kickSlots, nextShooterIndex, nextSide, type Kick } from "@/lib/penalty";
 
 const k = (n: number, result: Kick["result"]): Kick => ({
   n,
@@ -39,6 +39,29 @@ describe("séance de tirs au but", () => {
     expect(kickMessage({ side: "opponent", result: "goal", direction: "gauche", dive: "gauche" })).toBe(
       "Bon côté… mais en pleine lucarne",
     );
-    expect(kickMessage({ side: "opponent", result: "goal", direction: "gauche", dive: "droite" })).toBe("Il marque…");
+    expect(kickMessage({ side: "opponent", result: "goal", direction: "gauche", dive: "droite" })).toBe(
+      "Il marque, ton gardien part du mauvais côté…",
+    );
+    // Centre : jamais de « lucarne »
+    expect(kickMessage({ side: "player", result: "goal", direction: "centre", dive: "centre" })).toBe(
+      "BUT ! En force, au-dessus du gardien",
+    );
+    expect(kickMessage({ side: "player", result: "goal", direction: "centre", dive: "gauche" })).toBe(
+      "BUT ! Plein centre, le gardien a plongé",
+    );
+    expect(kickMessage({ side: "player", result: "missed", direction: "centre", dive: "droite" })).toBe("Au-dessus de la barre !");
+  });
+
+  it("trajectoire cohérente avec le résultat", () => {
+    const corner = kickPath({ direction: "droite", dive: "droite", result: "goal" });
+    expect(corner.net).toBe(true);
+    expect(corner.ball.y).toBeLessThan(15); // lucarne
+    expect(corner.ball.x).toBeGreaterThan(73);
+    const over = kickPath({ direction: "centre", dive: "gauche", result: "missed" });
+    expect(over.ball.x).toBe(50);
+    expect(over.ball.y).toBeLessThan(8); // au-dessus de la barre, pas sur le côté
+    const save = kickPath({ direction: "gauche", dive: "gauche", result: "saved" });
+    expect(save.rebound).not.toBeNull();
+    expect(save.keeper.rotate).toBeLessThan(0);
   });
 });
