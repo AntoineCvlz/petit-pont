@@ -238,6 +238,9 @@ join public.nations n on n.id = p.nation_id and n.code = 'FRA'
 where a.slug = '2027-equipe-de-france'
   and not exists (select 1 from public.album_slots s where s.album_id = a.id and s.template_id = t.id);
 
+-- Réserves des boosters à thème (championnat, nation, style) recalculées sur le nouveau catalogue
+select public.refresh_booster_pools() as cartes_boosters_theme;
+
 select
   (select count(*) from public.players where ext_id is not null) as joueurs_importes,
   (select count(*) from public.card_templates where season = '${SEASON}') as cartes_saison,

@@ -489,3 +489,15 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 - Écussons : 625 clubs sur 673 ont leur logo (Wikipédia, vérifiés visuellement ; 12 correspondances fausses écartées) ;
   les 48 autres gardent l'écusson généré.
 - Un transfert lors d'une réimport ne retire pas la carte de l'album de son ancien club.
+
+## Boosters à thème (2026-11-17)
+- Booster gratuit toutes les 10 minutes (`20261117000000_free_booster_10min.sql`).
+- 20 boosters à thème (`20261117010000_theme_boosters.sql`), page Boosters regroupée par catégorie :
+  championnats (Ligue 1, Premier League, LaLiga, Serie A, Bundesliga, Saudi Pro League, 300 pièces),
+  nations (France, Brésil, Argentine, Espagne, Angleterre, Portugal, Allemagne, 300 pièces),
+  styles (Dribbleurs 4★+, Ambidextres mauvais pied 5★, Fusées vitesse 88+, Buteurs, Murailles, Derniers remparts,
+  Pépites ≤ 21 ans) — 5 cartes, au moins une Rare, cotes du Booster Tribune.
+- Chaque booster porte une règle (`boosters.pool_rule`) ; `refresh_booster_pools()` recalcule les réserves
+  (appelée par la migration et à chaque import du catalogue). Un booster à règle ne pioche que dans sa réserve ;
+  si une rareté y manque, le tirage descend puis remonte d'une rareté au lieu d'échouer.
+- Tests : pgTAP `16_theme_boosters` (réserve, absence de Communes, réserve vide = indisponible), `02_boosters` (10 min).

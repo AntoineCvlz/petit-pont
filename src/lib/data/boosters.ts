@@ -4,6 +4,15 @@ import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/da
 import { normalizeOdds, parseAvailability, type Availability, type BoosterKind, type Odds } from "@/lib/boosters";
 import { RARITIES, type Rarity } from "@/lib/rarity";
 
+export type BoosterCategory = "classique" | "championnat" | "nation" | "style";
+
+export const BOOSTER_CATEGORY_LABELS: Record<BoosterCategory, string> = {
+  classique: "Boosters classiques",
+  championnat: "Par championnat",
+  nation: "Par nation",
+  style: "Par style de jeu",
+};
+
 export type BoosterView = {
   id: number;
   slug: string;
@@ -19,12 +28,13 @@ export type BoosterView = {
   stockTotal: number | null;
   stockRemaining: number | null;
   imageUrl: string | null;
+  category: BoosterCategory;
   odds: Odds;
   availability: Availability;
 };
 
 const BOOSTER_SELECT =
-  "id, slug, name, description, kind, price, cards_count, guarantee_rarity, guarantee_count, starts_at, ends_at, stock_total, stock_remaining, image_url, booster_odds ( rarity, probability )";
+  "id, slug, name, description, kind, price, cards_count, guarantee_rarity, guarantee_count, starts_at, ends_at, stock_total, stock_remaining, image_url, category, booster_odds ( rarity, probability )";
 
 type BoosterRow = {
   id: number;
@@ -41,6 +51,7 @@ type BoosterRow = {
   stock_total: number | null;
   stock_remaining: number | null;
   image_url: string | null;
+  category: BoosterCategory;
   booster_odds: { rarity: Rarity; probability: number }[];
 };
 
@@ -64,6 +75,7 @@ async function withAvailability(rows: BoosterRow[]): Promise<BoosterView[]> {
     stockTotal: b.stock_total,
     stockRemaining: b.stock_remaining,
     imageUrl: b.image_url,
+    category: b.category,
     odds: normalizeOdds(b.booster_odds),
     availability: availabilities[i]!,
   }));
@@ -104,28 +116,34 @@ export type BoosterPoolGroup = { rarity: Rarity; count: number; cards: CardTempl
  */
 export async function getBoosterPool(boosterId: number, perRarity = 40): Promise<{ total: number; groups: BoosterPoolGroup[] }> {
   const supabase = await createClient();
-  const { data: pool, error: poolError } = await supabase.from("booster_cards").select("template_id").eq("booster_id", boosterId);
+  const [{ count: poolSize, error: poolError }, { data: booster, error: bError }] = await Promise.all([
+    supabase.from("booster_cards").select("template_id", { count: "exact", head: true }).eq("booster_id", boosterId),
+    supabase.from("boosters").select("pool_rule").eq("id", boosterId).maybeSingle(),
+  ]);
   if (poolError) throw poolError;
-  const ids = pool.map((p) => p.template_id);
+  if (bError) throw bError;
+  // Réserve propre (booster à thème ou tirage limité) : jointure sur booster_cards
+  const restricted = (poolSize ?? 0) > 0 || booster?.pool_rule != null;
+  const select = restricted ? `${TEMPLATE_SELECT}, booster_cards!inner ( booster_id )` : TEMPLATE_SELECT;
 
   const groups = await Promise.all(
     [...RARITIES].reverse().map(async (rarity): Promise<BoosterPoolGroup> => {
       let countQ = supabase
         .from("card_templates")
-        .select("id", { count: "exact", head: true })
+        .select(restricted ? "id, booster_cards!inner ( booster_id )" : "id", { count: "exact", head: true })
         .eq("is_active", true)
         .eq("rarity", rarity);
       let cardsQ = supabase
         .from("card_templates")
-        .select(TEMPLATE_SELECT)
+        .select(select as typeof TEMPLATE_SELECT)
         .eq("is_active", true)
         .eq("rarity", rarity)
         .order("rating", { ascending: false })
         .order("collection_number")
         .limit(perRarity);
-      if (ids.length > 0) {
-        countQ = countQ.in("id", ids);
-        cardsQ = cardsQ.in("id", ids);
+      if (restricted) {
+        countQ = countQ.eq("booster_cards.booster_id", boosterId);
+        cardsQ = cardsQ.eq("booster_cards.booster_id", boosterId);
       }
       const [c, d] = await Promise.all([countQ, cardsQ]);
       if (c.error) throw c.error;
