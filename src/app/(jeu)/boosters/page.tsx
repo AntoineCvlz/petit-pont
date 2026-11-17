@@ -13,7 +13,7 @@ import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Boosters" };
 
-const BOOSTER_CATEGORIES: BoosterCategory[] = ["classique", "championnat", "nation", "style"];
+const BOOSTER_CATEGORIES: BoosterCategory[] = ["classique", "europe", "championnat", "nation", "style"];
 
 function BoosterTile({ b }: { b: BoosterView }) {
   const label = availabilityLabel(b.availability);

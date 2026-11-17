@@ -3,6 +3,8 @@
 //   L1.png  « Logo Ligue 1 McDonald's 2024.svg »   PL.svg  « Premier League Logo.svg »
 //   LL.svg  « LaLiga EA Sports 2023 Vertical Logo.svg »   SA.png  « Serie A ENILIVE logo.svg »
 //   BL.svg  « Bundesliga logo (2017).svg »          SPL.svg « Roshn Saudi League Logo.svg »
+//   UCL.png « UEFA Champions League.svg »  UEL.png « UEFA Europa League logo (2024 version).svg »
+//   UECL.png « UEFA Conference League full logo (2024 version).svg »
 // La forme vient de l'opacité du logo (blanc pur, recoloré en CSS par masque) ; les mentions de sponsors sont recadrées.
 //   node scripts/media/league-logos.mjs
 import sharp from "sharp";
@@ -28,6 +30,9 @@ const RULES = {
     alpha: (r, g, b, a) => (a > 128 && r > 150 && g < 90 && b < 90 ? 255 : 0),
   }, // carré rouge, joueur évidé
   SPL: {},
+  UCL: { crop: [0, 0, 1, 0.5] }, // ballon étoilé seul
+  UEL: { crop: [0, 0, 1, 0.56] }, // trophée seul
+  UECL: { crop: [0, 0, 1, 0.53] }, // trophée seul
 };
 
 for (const file of readdirSync(raw)) {

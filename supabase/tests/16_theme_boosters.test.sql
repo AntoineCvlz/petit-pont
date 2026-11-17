@@ -1,7 +1,7 @@
 -- Boosters à thème : réserve calculée par règle, tirage limité à la réserve, repli si une rareté manque.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(6);
+select plan(7);
 
 insert into auth.users (id, email, raw_user_meta_data) values
   ('abababab-0000-4000-8000-000000000001', 'theme.a@example.test', '{"username":"ThemeA"}');
@@ -37,6 +37,14 @@ select ok((select bool_and(n.code = 'FRA') from res, jsonb_array_elements(r -> '
 
 select throws_ok($$select public.open_booster((select id from public.boosters where slug = 'test-vide'))$$, 'P0001', null,
   'Réserve vide : booster indisponible, jamais tout le catalogue');
+
+insert into res select 200, public.open_booster((select id from public.boosters where slug = 'ligue-des-champions'));
+select ok((select bool_and(cl.code = any (array(select jsonb_array_elements_text(b.pool_rule -> 'clubs'))))
+  from res, jsonb_array_elements(r -> 'cards') c
+  join public.card_templates ct on ct.id = (c ->> 'template_id')::int
+  join public.clubs cl on cl.id = ct.club_id
+  cross join (select pool_rule from public.boosters where slug = 'ligue-des-champions') b where res.n = 200),
+  'Ligue des champions : uniquement des joueurs des clubs participants');
 
 reset role;
 select * from finish();

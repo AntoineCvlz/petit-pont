@@ -54,7 +54,8 @@ export default function CreditsPage() {
           </p>
           <p className="mb-3 text-sm text-chalk-muted">
             Les logos de la Ligue 1, de la Premier League, de LaLiga, de la Serie A, de la Bundesliga et de la Saudi Pro
-            League (boosters par championnat, en silhouette) sont des marques de leurs organisateurs, issues de Wikipédia.
+            League, ainsi que ceux des compétitions de l&apos;UEFA (Ligue des champions, Ligue Europa, Ligue Conférence), affichés
+            en silhouette sur les boosters, sont des marques de leurs organisateurs, issues de Wikipédia.
             Drapeaux : paquet flag-icons (licence MIT).
           </p>
           <ul className="divide-y divide-line text-sm">

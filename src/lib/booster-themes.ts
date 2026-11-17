@@ -32,7 +32,16 @@ const style = (icon: StyleIconName, foil: string, ink: string): BoosterTheme => 
   emblem: { type: "icon", icon },
 });
 
+const cup = (code: string, foil: string, ink: string): BoosterTheme => ({
+  ...league(code, foil, ink),
+  label: "Coupe d'Europe",
+});
+
 const THEMES: Record<string, BoosterTheme> = {
+  "ligue-des-champions": cup("UCL", "linear-gradient(160deg,#16206b,#05082a 50%,#2a3a9e 80%,#0b1250)", "#e8ecff"),
+  "ligue-europa": cup("UEL", "linear-gradient(160deg,#7a3a0a,#241003 55%,#c25f12)", "#ffb066"),
+  "ligue-conference": cup("UECL", "linear-gradient(160deg,#0f6b2a,#03210c 55%,#18a03f)", "#8dff9f"),
+
   "ligue-1": league("L1", "linear-gradient(160deg,#1c2f5c,#0a1430 55%,#2d4580)", "#e2f05a"),
   "premier-league": league("PL", "linear-gradient(160deg,#4d0b5a,#1d0322 55%,#6e1a7d)", "#5cf5a8"),
   laliga: league("LL", "linear-gradient(160deg,#5c1a1f,#22080b 55%,#8a2a2c)", "#ff7a6e"),

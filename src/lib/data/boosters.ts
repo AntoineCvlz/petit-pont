@@ -4,10 +4,11 @@ import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/da
 import { normalizeOdds, parseAvailability, type Availability, type BoosterKind, type Odds } from "@/lib/boosters";
 import { RARITIES, type Rarity } from "@/lib/rarity";
 
-export type BoosterCategory = "classique" | "championnat" | "nation" | "style";
+export type BoosterCategory = "classique" | "europe" | "championnat" | "nation" | "style";
 
 export const BOOSTER_CATEGORY_LABELS: Record<BoosterCategory, string> = {
   classique: "Boosters classiques",
+  europe: "Coupes d'Europe",
   championnat: "Par championnat",
   nation: "Par nation",
   style: "Par style de jeu",

@@ -507,3 +507,9 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
   (`public/media/leagues/<code>.png`, générées par `scripts/media/league-logos.mjs`, mentions de sponsors recadrées),
   médaillon du drapeau pour les nations, pictogramme dessiné pour les styles de jeu (`StyleIcon`).
 - Un nouveau booster à thème sans entrée dans `booster-themes.ts` garde l'habillage standard.
+
+### Boosters « Coupes d'Europe »
+- Ligue des champions (450), Ligue Europa (350), Ligue Conférence (300) : joueurs des clubs de la phase de championnat
+  2026-27 (liste Wikipédia des 36 participants ; 34 / 30 / 23 clubs présents dans le catalogue, les autres ignorés).
+- Nouvelle clé de règle `{"clubs": [codes]}` dans `refresh_booster_pools()` ; catégorie `europe`, section en tête.
+- Saison suivante : nouvelle migration qui remplace la liste `clubs` des trois boosters puis appelle `refresh_booster_pools()`.
