@@ -1,7 +1,7 @@
 -- Tests phase 2 : ouverture de boosters et revente des doublons.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(26);
+select plan(27);
 
 insert into auth.users (id, email, raw_user_meta_data) values
   ('aaaaaaaa-0000-4000-8000-000000000001', 'boost.a@example.test', '{"username":"BoostA"}'),
@@ -61,6 +61,8 @@ select lives_ok($$select public.open_booster((select gratuit from ids))$$, 'Boos
 select throws_ok($$select public.open_booster((select gratuit from ids))$$, 'P0001',
   'Ton booster gratuit n''est pas encore prêt', 'Délai du booster gratuit respecté');
 select is((public.booster_availability((select gratuit from ids)) ->> 'reason'), 'cooldown', 'Disponibilité : en recharge');
+select ok((public.booster_availability((select gratuit from ids)) ->> 'next_at')::timestamptz
+  between now() + interval '9 minutes' and now() + interval '11 minutes', 'Booster gratuit : toutes les 10 minutes');
 
 -- --- Joueur B : solde insuffisant --------------------------------------------
 set local request.jwt.claims to '{"sub":"aaaaaaaa-0000-4000-8000-000000000002","role":"authenticated"}';
