@@ -1,4 +1,5 @@
 import { clsx } from "clsx";
+import { Silhouette } from "@/components/ui/Card";
 import { Crest } from "@/components/ui/Crest";
 import { Flag } from "@/components/ui/Flag";
 import type { DraftCard } from "@/lib/data/draft";
@@ -105,35 +106,40 @@ export function DraftPitch({
         const cardEl = c ? (
           <div
             className={clsx(
-              "relative rounded-lg border bg-night-900/90 p-1 text-center shadow-lg transition-[box-shadow,transform] duration-150",
-              isSelected
-                ? "-translate-y-1 border-turf ring-4 ring-turf/40"
-                : isTarget
-                  ? "border-turf/70 ring-2 ring-turf/30"
-                  : "border-white/15",
+              "relative overflow-hidden rounded-lg border-2 text-center shadow-lg transition-[box-shadow,transform] duration-150",
+              isSelected ? "-translate-y-1 ring-4 ring-turf/50" : isTarget ? "ring-2 ring-turf/40" : "",
               dimmed && "opacity-45",
             )}
+            style={{
+              borderColor: isSelected || isTarget ? "var(--color-turf)" : `var(--color-r-${c.rarity})`,
+              // Fond aux couleurs du club, comme sur les cartes (plus de fond noir derrière le portrait)
+              background: `radial-gradient(circle at 50% 30%, color-mix(in srgb, ${c.club?.colorSecondary ?? "#8fd16a"} 35%, transparent), transparent 70%), color-mix(in srgb, ${c.club?.colorPrimary ?? "#2f4d3e"} 45%, #10201a)`,
+            }}
           >
-            <div className="flex items-center justify-between px-0.5">
-              <span className="font-display text-sm leading-none font-extrabold text-chalk sm:text-base">
+            <div className="relative h-11 sm:h-[60px]">
+              {c.imageUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element -- photo détourée statique
+                <img
+                  src={c.imageUrl}
+                  alt=""
+                  className="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
+                />
+              ) : (
+                <div className="absolute inset-x-[18%] bottom-0 top-[10%]">
+                  <Silhouette color={c.club?.colorPrimary ?? "#2f4d3e"} />
+                </div>
+              )}
+              <span className="absolute top-0.5 left-1 font-display text-sm leading-none font-extrabold text-chalk [text-shadow:0_1px_3px_rgba(0,0,0,0.8)] sm:text-base">
                 {c.rating}
               </span>
-              <span className="flex items-center gap-0.5">
+              <span className="absolute top-0.5 right-1 flex flex-col items-center gap-0.5">
                 <Flag nation={c.nation} className="h-2.5 w-3.5" />
                 {c.club && <Crest club={c.club} className="h-3.5 w-3.5" />}
               </span>
             </div>
-            {c.imageUrl && (
-              // eslint-disable-next-line @next/next/no-img-element -- photo détourée statique
-              <img src={c.imageUrl} alt="" className="mx-auto mt-0.5 h-8 w-8 object-cover object-top sm:h-11 sm:w-11" />
-            )}
-            <p className="truncate text-[10px] leading-tight font-semibold sm:text-[11px]">{shortName(c.playerName)}</p>
-            <span
-              className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full border border-night-950 bg-night-800 font-display text-[10px] font-bold"
-              title={`Collectif : ${perSlot[s.key] ?? 0} / 10`}
-            >
-              {perSlot[s.key] ?? 0}
-            </span>
+            <p className="truncate bg-night-950/75 px-0.5 py-0.5 text-[10px] leading-tight font-semibold sm:text-[11px]">
+              {shortName(c.playerName)}
+            </p>
           </div>
         ) : null;
         return (
@@ -142,6 +148,14 @@ export function DraftPitch({
             className="absolute w-[19%] max-w-[92px] -translate-x-1/2 -translate-y-1/2"
             style={{ left: `${s.x}%`, top: `${s.y}%` }}
           >
+            {c && (
+              <span
+                className="absolute -top-2 -right-2 z-10 flex h-5 w-5 items-center justify-center rounded-full border border-night-950 bg-night-800 font-display text-[10px] font-bold"
+                title={`Collectif : ${perSlot[s.key] ?? 0} / 10`}
+              >
+                {perSlot[s.key] ?? 0}
+              </span>
+            )}
             {c ? (
               onSlotClick ? (
                 <button
