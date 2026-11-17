@@ -16,7 +16,7 @@ const WIDTHS: Record<Size, string> = {
 };
 
 /** Portrait placeholder : silhouette stylisée teintée aux couleurs du club. */
-function Silhouette({ color }: { color: string }) {
+export function Silhouette({ color }: { color: string }) {
   return (
     <svg viewBox="0 0 100 100" className="h-full w-full" aria-hidden="true">
       <defs>

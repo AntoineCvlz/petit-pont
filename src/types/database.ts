@@ -445,14 +445,14 @@ isOneToOne: false
                   ]
                 },"boosters": {
                   Row: {
-                    "cards_count": number,"category": string,"created_at": string,"description": string | null,"ends_at": string | null,"guarantee_count": number,"guarantee_rarity": Database["public"]['Enums']["rarity"] | null,"id": number,"image_url": string | null,"is_active": boolean,"kind": Database["public"]['Enums']["booster_kind"],"name": string,"pool_rule": Json | null,"price": number,"slug": string,"sort_order": number,"starts_at": string | null,"stock_remaining": number | null,"stock_total": number | null
+                    "cards_count": number,"category": string,"created_at": string,"description": string | null,"ends_at": string | null,"guarantee_count": number,"guarantee_rarity": Database["public"]['Enums']["rarity"] | null,"id": number,"image_url": string | null,"is_active": boolean,"kind": Database["public"]['Enums']["booster_kind"],"name": string,"pool_rule": Json | null,"price": number,"slots": Json | null,"slug": string,"sort_order": number,"starts_at": string | null,"stock_remaining": number | null,"stock_total": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "cards_count": number,"category"?: string,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"guarantee_count"?: number,"guarantee_rarity"?: Database["public"]['Enums']["rarity"] | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"kind": Database["public"]['Enums']["booster_kind"],"name": string,"pool_rule"?: Json | null,"price"?: number,"slug": string,"sort_order"?: number,"starts_at"?: string | null,"stock_remaining"?: number | null,"stock_total"?: number | null
+                    "cards_count": number,"category"?: string,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"guarantee_count"?: number,"guarantee_rarity"?: Database["public"]['Enums']["rarity"] | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"kind": Database["public"]['Enums']["booster_kind"],"name": string,"pool_rule"?: Json | null,"price"?: number,"slots"?: Json | null,"slug": string,"sort_order"?: number,"starts_at"?: string | null,"stock_remaining"?: number | null,"stock_total"?: number | null
                   }
                   Update: {
-                    "cards_count"?: number,"category"?: string,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"guarantee_count"?: number,"guarantee_rarity"?: Database["public"]['Enums']["rarity"] | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"kind"?: Database["public"]['Enums']["booster_kind"],"name"?: string,"pool_rule"?: Json | null,"price"?: number,"slug"?: string,"sort_order"?: number,"starts_at"?: string | null,"stock_remaining"?: number | null,"stock_total"?: number | null
+                    "cards_count"?: number,"category"?: string,"created_at"?: string,"description"?: string | null,"ends_at"?: string | null,"guarantee_count"?: number,"guarantee_rarity"?: Database["public"]['Enums']["rarity"] | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"kind"?: Database["public"]['Enums']["booster_kind"],"name"?: string,"pool_rule"?: Json | null,"price"?: number,"slots"?: Json | null,"slug"?: string,"sort_order"?: number,"starts_at"?: string | null,"stock_remaining"?: number | null,"stock_total"?: number | null
                   }
                   Relationships: [
                     
@@ -2081,6 +2081,9 @@ isOneToOne: false
                            },
 "_formation_chemistry":
 { Args: { "p_formation": string,"p_picks": Json }; Returns: number
+                           },
+"_free_booster_stock":
+{ Args: { "p_anchor": string }; Returns: number
                            },
 "_game_timezone":
 { Args: Record<PropertyKey, never>; Returns: string

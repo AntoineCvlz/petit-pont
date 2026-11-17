@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { Card } from "@/components/ui/Card";
 import { Flag } from "@/components/ui/Flag";
 import { Panel } from "@/components/ui/Panel";
+import { PlayerPortrait } from "@/components/ui/PlayerPortrait";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 import { getCollectionTotal } from "@/lib/data/cards";
 import { getPlayer } from "@/lib/data/wiki";
@@ -41,7 +42,9 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
   if (!player) notFound();
 
   const currentClub =
-    player.clubs.find((c) => c.endYear === null && c.startYear !== null) ?? player.clubs.find((c) => c.endYear === null) ?? null;
+    player.clubs.find((c) => c.endYear === null && c.startYear !== null) ??
+    player.clubs.find((c) => c.endYear === null) ??
+    null;
   const detail = player.positionDetail ? DETAIL_POSITIONS[player.positionDetail] : undefined;
   const stats = statRows(player.stats);
   const bio =
@@ -55,14 +58,6 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
       </Link>
 
       <div className="mt-3 mb-5 flex flex-wrap items-center gap-3">
-        {player.imageUrl && (
-          // eslint-disable-next-line @next/next/no-img-element -- image_url remplaçable
-          <img
-            src={player.imageUrl}
-            alt=""
-            className="h-16 w-16 rounded-full border border-line-strong bg-night-800 object-cover object-top"
-          />
-        )}
         <Flag nation={player.nation} className="h-6 w-9" />
         <h1 className="font-display text-3xl font-extrabold tracking-wide uppercase italic">{player.displayName}</h1>
         {player.isLegend && (
@@ -73,95 +68,107 @@ export default async function PlayerPage({ params }: PageProps<"/wiki/[slug]">) 
       </div>
 
       <div className="grid gap-5 lg:grid-cols-[320px_1fr]">
-        <Panel title="Fiche">
-          <p className="text-sm leading-relaxed text-chalk-muted">{bio}</p>
-          <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
-            <dt className="text-chalk-faint">Nation</dt>
-            <dd>{player.nation.name}</dd>
-            <dt className="text-chalk-faint">Poste</dt>
-            <dd>
-              {detail ? `${detail.label} (${detail.short})` : POSITION_LABELS[player.position]}
-              {player.altPositions.length > 0 && (
-                <span className="text-chalk-faint">
-                  {" "}
-                  · aussi {player.altPositions.map((p) => DETAIL_POSITIONS[p]?.short ?? p).join(", ")}
-                </span>
+        <div className="space-y-5">
+          <PlayerPortrait
+            imageUrl={player.imageUrl}
+            name={player.displayName}
+            className="mx-auto aspect-[4/5] w-full max-w-[320px]"
+          />
+          <Panel title="Fiche">
+            <p className="text-sm leading-relaxed text-chalk-muted">{bio}</p>
+            <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+              <dt className="text-chalk-faint">Nation</dt>
+              <dd>{player.nation.name}</dd>
+              <dt className="text-chalk-faint">Poste</dt>
+              <dd>
+                {detail ? `${detail.label} (${detail.short})` : POSITION_LABELS[player.position]}
+                {player.altPositions.length > 0 && (
+                  <span className="text-chalk-faint">
+                    {" "}
+                    · aussi {player.altPositions.map((p) => DETAIL_POSITIONS[p]?.short ?? p).join(", ")}
+                  </span>
+                )}
+              </dd>
+              {(player.birthdate || player.birthYear) && (
+                <>
+                  <dt className="text-chalk-faint">Naissance</dt>
+                  <dd>{player.birthdate ? formatBirthdate(player.birthdate) : player.birthYear}</dd>
+                </>
               )}
-            </dd>
-            {(player.birthdate || player.birthYear) && (
-              <>
-                <dt className="text-chalk-faint">Naissance</dt>
-                <dd>{player.birthdate ? formatBirthdate(player.birthdate) : player.birthYear}</dd>
-              </>
-            )}
-            {player.preferredFoot && (
-              <>
-                <dt className="text-chalk-faint">Pied fort</dt>
-                <dd>{player.preferredFoot}</dd>
-              </>
-            )}
-            {player.weakFoot !== null && (
-              <>
-                <dt className="text-chalk-faint">Mauvais pied</dt>
-                <dd>
-                  <Stars value={player.weakFoot} />
-                </dd>
-              </>
-            )}
-            {player.skillMoves !== null && (
-              <>
-                <dt className="text-chalk-faint">Gestes techniques</dt>
-                <dd>
-                  <Stars value={player.skillMoves} />
-                </dd>
-              </>
-            )}
-            <dt className="text-chalk-faint">Clubs</dt>
-            <dd>
-              <ul>
-                {player.clubs.map((c) => (
-                  <li key={c.name}>
-                    {c.crestUrl && (
-                      // eslint-disable-next-line @next/next/no-img-element -- crest_url remplaçable
-                      <img src={c.crestUrl} alt="" className="mr-1.5 inline h-4 w-4 align-[-3px] object-contain" loading="lazy" />
-                    )}
-                    {c.name}
-                    {c.startYear && (
-                      <span className="text-chalk-faint">
-                        {" "}
-                        ({c.startYear}–{c.endYear ?? "…"})
-                      </span>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </dd>
-          </dl>
-          {stats.length > 0 && (
-            <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-line pt-4 text-sm">
-              {stats.map((s) => (
-                <div key={s.key}>
-                  <div className="flex items-baseline justify-between">
-                    <dt className="text-chalk-muted">{s.label}</dt>
-                    <dd className="font-display font-bold tabular-nums">{s.value}</dd>
-                  </div>
-                  <div className="mt-1 h-1 rounded-full bg-night-700" aria-hidden="true">
-                    <div
-                      className={
-                        s.value >= 80
-                          ? "h-full rounded-full bg-turf"
-                          : s.value >= 60
-                            ? "h-full rounded-full bg-coin"
-                            : "h-full rounded-full bg-danger"
-                      }
-                      style={{ width: `${s.value}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
+              {player.preferredFoot && (
+                <>
+                  <dt className="text-chalk-faint">Pied fort</dt>
+                  <dd>{player.preferredFoot}</dd>
+                </>
+              )}
+              {player.weakFoot !== null && (
+                <>
+                  <dt className="text-chalk-faint">Mauvais pied</dt>
+                  <dd>
+                    <Stars value={player.weakFoot} />
+                  </dd>
+                </>
+              )}
+              {player.skillMoves !== null && (
+                <>
+                  <dt className="text-chalk-faint">Gestes techniques</dt>
+                  <dd>
+                    <Stars value={player.skillMoves} />
+                  </dd>
+                </>
+              )}
+              <dt className="text-chalk-faint">Clubs</dt>
+              <dd>
+                <ul>
+                  {player.clubs.map((c) => (
+                    <li key={c.name}>
+                      {c.crestUrl && (
+                        // eslint-disable-next-line @next/next/no-img-element -- crest_url remplaçable
+                        <img
+                          src={c.crestUrl}
+                          alt=""
+                          className="mr-1.5 inline h-4 w-4 align-[-3px] object-contain"
+                          loading="lazy"
+                        />
+                      )}
+                      {c.name}
+                      {c.startYear && (
+                        <span className="text-chalk-faint">
+                          {" "}
+                          ({c.startYear}–{c.endYear ?? "…"})
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </dd>
             </dl>
-          )}
-        </Panel>
+            {stats.length > 0 && (
+              <dl className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2 border-t border-line pt-4 text-sm">
+                {stats.map((s) => (
+                  <div key={s.key}>
+                    <div className="flex items-baseline justify-between">
+                      <dt className="text-chalk-muted">{s.label}</dt>
+                      <dd className="font-display font-bold tabular-nums">{s.value}</dd>
+                    </div>
+                    <div className="mt-1 h-1 rounded-full bg-night-700" aria-hidden="true">
+                      <div
+                        className={
+                          s.value >= 80
+                            ? "h-full rounded-full bg-turf"
+                            : s.value >= 60
+                              ? "h-full rounded-full bg-coin"
+                              : "h-full rounded-full bg-danger"
+                        }
+                        style={{ width: `${s.value}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </dl>
+            )}
+          </Panel>
+        </div>
 
         <Panel title={`Versions de cartes (${player.versions.length})`}>
           <ul className="grid grid-cols-[repeat(auto-fill,minmax(168px,1fr))] justify-items-center gap-4">

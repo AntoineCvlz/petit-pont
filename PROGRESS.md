@@ -513,3 +513,17 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
   2026-27 (liste Wikipédia des 36 participants ; 34 / 30 / 23 clubs présents dans le catalogue, les autres ignorés).
 - Nouvelle clé de règle `{"clubs": [codes]}` dans `refresh_booster_pools()` ; catégorie `europe`, section en tête.
 - Saison suivante : nouvelle migration qui remplace la liste `clubs` des trois boosters puis appelle `refresh_booster_pools()`.
+
+### Boosters Bronze / Argent / Or et booster gratuit cumulable
+- Boosters classiques remplacés par **Bronze** (100 pièces, notes ≤ 64), **Argent** (250, 65-74, slug `standard`) et
+  **Or** (600, 75+, slug `premium`), 5 cartes chacun. Slugs historiques gardés : récompenses de défis, saison,
+  missions et clans y renvoient. Autres classiques désactivés (y compris ceux créés depuis l'admin) ; leurs packs offerts
+  non ouverts convertis en Booster Or.
+- **Booster du vestiaire** : 8 cartes, 2 Bronze + 2 Argent + 4 Or (colonne `boosters.slots`, chaque emplacement tiré
+  avec les cotes et la réserve du booster cité). Un booster débloqué toutes les 10 minutes, **jusqu'à 10 en réserve**
+  (`free_booster_cap`) ; `profiles.last_free_booster_at` sert d'ancre, `_free_booster_stock()` calcule la réserve.
+  Barre supérieure « Gratuit n/10 », accueil et page du booster : réserve et compte à rebours du suivant.
+- Seed : cartes « Jeunes années » (58-74) pour remplir Bronze/Argent en local ; `refresh_booster_pools()` en fin de seed.
+
+### Wiki : portrait des joueurs
+- Fiche joueur : grand portrait détouré sur fond de pelouse (silhouette sinon) ; liste : vignette ronde.

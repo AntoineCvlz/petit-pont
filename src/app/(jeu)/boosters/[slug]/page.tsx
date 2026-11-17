@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BoosterOpener } from "@/components/boosters/BoosterOpener";
-import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
+import { FreeBoosterCountdown } from "@/components/boosters/FreeBoosterTimer";
 import { LiveStock } from "@/components/boosters/LiveStock";
 import { OddsTable } from "@/components/boosters/OddsTable";
 import { CoinAmount } from "@/components/ui/CoinAmount";
 import { Panel } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
-import { availabilityLabel, BOOSTER_KIND_LABELS } from "@/lib/boosters";
+import { availabilityLabel, BOOSTER_KIND_LABELS, freeStock } from "@/lib/boosters";
 import { getCollectionTotal } from "@/lib/data/cards";
 import { getBooster, getBoosterPool, getDuplicatePrices, listMyGifts } from "@/lib/data/boosters";
 import { requireProfile } from "@/lib/data/profile";
@@ -36,6 +36,7 @@ export default async function BoosterPage({ params, searchParams }: PageProps<"/
   const grantId = cadeau !== undefined && gift ? gift.nextGrantId : null;
   const pool = await getBoosterPool(booster.id);
   const a = booster.availability;
+  const fs = freeStock(a);
 
   return (
     <>
@@ -81,10 +82,16 @@ export default async function BoosterPage({ params, searchParams }: PageProps<"/
             reducedMotion={profile.reducedMotion}
             grantId={grantId}
           />
-          {!a.available && a.reason === "cooldown" && (
-            <div className="mt-2 flex items-center justify-center gap-2 text-sm text-chalk-muted">
-              Prochain booster gratuit dans <FreeBoosterTimer slug={booster.slug} nextAt={a.nextAt} />
-            </div>
+          {fs && !grantId && (
+            <p className="mt-2 text-center text-sm text-chalk-muted">
+              {fs.stock}/{fs.cap} en réserve
+              {fs.nextAt && (
+                <>
+                  {" "}
+                  · prochain dans <FreeBoosterCountdown nextAt={fs.nextAt} />
+                </>
+              )}
+            </p>
           )}
         </Panel>
 

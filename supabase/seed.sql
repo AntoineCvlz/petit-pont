@@ -491,6 +491,18 @@ from tmp_templates t
 join public.players p on p.slug = t.slug
 join public.clubs c on c.code = t.club;
 
+-- Cartes « Jeunes années » (notes 58 à 74) : de quoi remplir les boosters Bronze et Argent en local
+insert into public.card_templates (player_id, club_id, season, edition, rarity, rating, collection_number)
+select x.player_id, x.club_id, 'Débuts', 'Jeunes années',
+       case when x.r < 70 then 'commune' else 'rare' end::public.rarity, x.r,
+       (select max(collection_number) from public.card_templates) + x.rn
+from (
+  select b.player_id, b.club_id, row_number() over (order by b.player_id) as rn,
+         58 + ((row_number() over (order by b.player_id)) % 17)::int as r
+  from (select distinct on (player_id) player_id, club_id from public.card_templates
+        where season = 'Saison 2026' and edition = 'Base' order by player_id, id) b
+) x;
+
 -- Parcours en club : club(s) des cartes + historique des têtes d'affiche / légendes
 insert into public.player_clubs (player_id, club_id)
 select distinct ct.player_id, ct.club_id from public.card_templates ct
@@ -549,29 +561,19 @@ update public.clubs set crest_url = '/media/clubs/' || code || '.webp' where cre
 -- -----------------------------------------------------------------------------
 -- Boosters
 -- -----------------------------------------------------------------------------
+-- Booster gratuit, Bronze, Argent (slug « standard ») et Or (« premium ») : créés par la migration
+-- 20261117030000_bronze_silver_gold. Anciennes éditions retirées de la vente (gardées pour les tests).
 insert into public.boosters (slug, name, description, kind, price, cards_count, guarantee_rarity, guarantee_count,
-                             starts_at, ends_at, stock_total, stock_remaining, sort_order)
+                             starts_at, ends_at, stock_total, stock_remaining, sort_order, is_active)
 values
-  ('gratuit', 'Booster du vestiaire', 'Trois cartes offertes à intervalles réguliers. Repasse au vestiaire !',
-   'free', 0, 3, null, 0, null, null, null, null, 1),
-  ('standard', 'Booster Tribune', 'Cinq cartes, dont au moins une Rare.',
-   'standard', 200, 5, 'rare', 1, null, null, null, null, 2),
-  ('premium', 'Booster Loge', 'Six cartes, dont au moins une Épique. Les grandes affiches.',
-   'premium', 650, 6, 'epique', 1, null, null, null, null, 3),
   ('nuit-des-etoiles', 'Nuit des Étoiles', 'Édition événementielle : cotes renforcées sur les hautes raretés.',
-   'event', 450, 5, 'rare', 2, now() - interval '3 days', now() + interval '18 days', null, null, 4),
+   'event', 450, 5, 'rare', 2, now() - interval '3 days', now() + interval '18 days', null, null, 5, false),
   ('coupe-des-etoiles', 'Coupe des Étoiles', 'Tirage limité : les cartes de la Coupe des Étoiles, tant qu''il en reste.',
-   'limited', 900, 5, 'epique', 1, null, null, 500, 500, 5);
+   'limited', 900, 5, 'epique', 1, null, null, 500, 500, 6, false);
 
 insert into public.booster_odds (booster_id, rarity, probability)
 select b.id, o.rarity::public.rarity, o.p
 from (values
-  ('gratuit', 'commune', 72.00), ('gratuit', 'rare', 21.00), ('gratuit', 'epique', 5.50),
-  ('gratuit', 'legendaire', 1.20), ('gratuit', 'iconique', 0.25), ('gratuit', 'speciale', 0.05),
-  ('standard', 'commune', 62.00), ('standard', 'rare', 26.00), ('standard', 'epique', 9.00),
-  ('standard', 'legendaire', 2.30), ('standard', 'iconique', 0.60), ('standard', 'speciale', 0.10),
-  ('premium', 'commune', 40.00), ('premium', 'rare', 33.00), ('premium', 'epique', 18.00),
-  ('premium', 'legendaire', 6.50), ('premium', 'iconique', 2.00), ('premium', 'speciale', 0.50),
   ('nuit-des-etoiles', 'commune', 45.00), ('nuit-des-etoiles', 'rare', 30.00), ('nuit-des-etoiles', 'epique', 15.00),
   ('nuit-des-etoiles', 'legendaire', 7.00), ('nuit-des-etoiles', 'iconique', 2.50), ('nuit-des-etoiles', 'speciale', 0.50),
   ('coupe-des-etoiles', 'commune', 35.00), ('coupe-des-etoiles', 'rare', 30.00), ('coupe-des-etoiles', 'epique', 20.00),
@@ -705,7 +707,7 @@ begin
         else 'speciale'
       end;
       select id into tpl from public.card_templates
-      where rarity = r and (max_supply is null or minted_count < max_supply)
+      where rarity = r and (max_supply is null or minted_count < max_supply) and season <> 'Débuts'
       order by random() limit 1;
       perform public._mint_card(tpl, u.id, 'seed');
     end loop;
@@ -839,3 +841,6 @@ $$;
 -- Classements : calcul initial (publie aussi les entrées dans les tops 10 du fil)
 -- -----------------------------------------------------------------------------
 select public.refresh_leaderboards();
+
+-- Réserves des boosters à règle (les migrations passent avant le seed)
+select public.refresh_booster_pools();

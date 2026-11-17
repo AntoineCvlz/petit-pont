@@ -25,7 +25,7 @@ select throws_ok($$select public.admin_economy_stats()$$, '42501', null, 'Statis
 select throws_ok($$select public.admin_purge_demo_accounts()$$, '42501', null, 'Purge : réservée aux admins');
 select throws_ok($$select public.admin_set_booster_odds((select booster from ids), '{"commune":100}')$$, '42501', null, 'Probabilités : réservées aux admins');
 update public.boosters set price = 1 where id = (select booster from ids);
-select is((select price from public.boosters where id = (select booster from ids)), 200, 'Un joueur ne modifie pas un booster (RLS)');
+select is((select price from public.boosters where id = (select booster from ids)), 250, 'Un joueur ne modifie pas un booster (RLS)');
 select throws_ok($$insert into public.players (slug, last_name, display_name, nation_id, position) values ('x', 'X', 'X', 1, 'ATT')$$,
   '42501', null, 'Un joueur ne crée pas de footballeur');
 
@@ -70,8 +70,8 @@ select throws_ok($$select public.admin_set_booster_odds((select booster from ids
 select lives_ok($$select public.admin_set_booster_odds((select booster from ids), '{"commune":50,"rare":30,"epique":15,"legendaire":4.5,"iconique":0.4,"speciale":0.1}')$$,
   'Probabilités modifiées (total 100)');
 
-update public.boosters set price = 250 where id = (select booster from ids);
-select is((select price from public.boosters where id = (select booster from ids)), 250, 'L''admin modifie un booster');
+update public.boosters set price = 300 where id = (select booster from ids);
+select is((select price from public.boosters where id = (select booster from ids)), 300, 'L''admin modifie un booster');
 select throws_ok($$update public.card_templates set minted_count = 0 where id = (select tpl from ids)$$, '42501', null,
   'minted_count jamais modifiable (numéros de série)');
 

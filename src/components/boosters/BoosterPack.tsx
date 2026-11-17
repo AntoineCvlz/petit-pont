@@ -33,6 +33,9 @@ const SKINS: Record<BoosterKind, { foil: string; ink: string }> = {
 /** Emblème du thème, posé dans le rond central du paquet. */
 function Emblem({ theme, name }: { theme: BoosterTheme; name: string }) {
   const e = theme.emblem;
+  if (e.type === "logo") {
+    return <LogoMark className="h-full w-full drop-shadow-[0_4px_10px_rgba(0,0,0,0.6)]" title={name} />;
+  }
   if (e.type === "league") {
     return (
       <div
@@ -103,7 +106,7 @@ export function BoosterPack({
               <div
                 className={clsx(
                   "absolute top-[38%] left-1/2 aspect-square -translate-x-1/2 -translate-y-1/2",
-                  theme.emblem.type === "flag" ? "w-[42%]" : "w-[52%]",
+                  theme.emblem.type === "flag" ? "w-[42%]" : theme.emblem.type === "logo" ? "w-[40%]" : "w-[52%]",
                 )}
               >
                 <Emblem theme={theme} name={name} />

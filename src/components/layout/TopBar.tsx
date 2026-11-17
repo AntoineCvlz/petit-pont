@@ -33,7 +33,7 @@ export function TopBar({
   unread,
 }: {
   profile: CurrentProfile;
-  freeBooster: { slug: string; nextAt: string | null } | null;
+  freeBooster: { slug: string; stock: number; cap: number; nextAt: string | null } | null;
   dailyBonus: { available: boolean; amount: number };
   unread: number;
 }) {
@@ -52,7 +52,14 @@ export function TopBar({
               <DailyBonusButton amount={dailyBonus.amount} compact />
             </span>
           )}
-          {freeBooster && <FreeBoosterTimer slug={freeBooster.slug} nextAt={freeBooster.nextAt} />}
+          {freeBooster && (
+            <FreeBoosterTimer
+              slug={freeBooster.slug}
+              stock={freeBooster.stock}
+              cap={freeBooster.cap}
+              nextAt={freeBooster.nextAt}
+            />
+          )}
           <div className="rounded-lg border border-line bg-night-850 px-2 py-1 text-sm whitespace-nowrap sm:px-2.5" title="Ton solde de pièces">
             <CoinAmount amount={profile.coins} />
           </div>

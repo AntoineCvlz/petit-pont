@@ -11,18 +11,29 @@ export const BOOSTER_KIND_LABELS: Record<BoosterKind, string> = {
   limited: "Édition limitée",
 };
 
+/** Réserve du booster gratuit (cumulable) : nombre prêt, plafond, prochain déblocage (null = réserve pleine). */
+export type FreeStock = { stock: number; cap: number; nextAt: string | null };
+
 export type Availability =
-  | { available: true }
+  | ({ available: true } & Partial<FreeStock>)
   | { available: false; reason: "inactive" | "ended" | "sold_out" }
   | { available: false; reason: "not_started"; startsAt: string }
-  | { available: false; reason: "cooldown"; nextAt: string };
+  | { available: false; reason: "cooldown"; nextAt: string; stock?: number; cap?: number };
 
 export function parseAvailability(raw: unknown): Availability {
   const r = (raw ?? {}) as Record<string, unknown>;
-  if (r.available === true) return { available: true };
+  if (r.available === true) {
+    if (typeof r.stock !== "number") return { available: true };
+    return { available: true, stock: r.stock, cap: Number(r.cap), nextAt: r.next_at ? String(r.next_at) : null };
+  }
   switch (r.reason) {
     case "cooldown":
-      return { available: false, reason: "cooldown", nextAt: String(r.next_at) };
+      return {
+        available: false,
+        reason: "cooldown",
+        nextAt: String(r.next_at),
+        ...(typeof r.cap === "number" ? { stock: 0, cap: r.cap } : {}),
+      };
     case "not_started":
       return { available: false, reason: "not_started", startsAt: String(r.starts_at) };
     case "ended":
@@ -78,4 +89,11 @@ export function formatCountdown(ms: number): string {
   if (h > 0) return `${h} h ${String(m).padStart(2, "0")}`;
   if (m > 0) return `${m} min ${String(s).padStart(2, "0")}`;
   return `${s} s`;
+}
+
+/** Réserve du booster gratuit d'après sa disponibilité (null si le booster n'est pas cumulable). */
+export function freeStock(a: Availability): FreeStock | null {
+  if (a.available) return a.cap === undefined ? null : { stock: a.stock ?? 0, cap: a.cap, nextAt: a.nextAt ?? null };
+  if (a.reason === "cooldown" && a.cap !== undefined) return { stock: 0, cap: a.cap, nextAt: a.nextAt };
+  return null;
 }

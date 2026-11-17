@@ -4,6 +4,7 @@ import {
   duplicatesValue,
   formatCountdown,
   formatProbability,
+  freeStock,
   normalizeOdds,
   parseAvailability,
 } from "@/lib/boosters";
@@ -18,6 +19,19 @@ describe("boosters", () => {
     });
     expect(parseAvailability({ available: false, reason: "sold_out" })).toEqual({ available: false, reason: "sold_out" });
     expect(parseAvailability(null)).toEqual({ available: false, reason: "inactive" });
+  });
+
+  it("lit la réserve du booster gratuit cumulable", () => {
+    const ready = parseAvailability({ available: true, stock: 3, cap: 10, next_at: "2026-11-12T10:00:00Z" });
+    expect(freeStock(ready)).toEqual({ stock: 3, cap: 10, nextAt: "2026-11-12T10:00:00Z" });
+    expect(freeStock(parseAvailability({ available: true, stock: 10, cap: 10, next_at: null }))).toEqual({
+      stock: 10,
+      cap: 10,
+      nextAt: null,
+    });
+    const empty = parseAvailability({ available: false, reason: "cooldown", next_at: "2026-11-12T10:00:00Z", stock: 0, cap: 10 });
+    expect(freeStock(empty)).toEqual({ stock: 0, cap: 10, nextAt: "2026-11-12T10:00:00Z" });
+    expect(freeStock(parseAvailability({ available: true }))).toBeNull();
   });
 
   it("donne un libellé à chaque indisponibilité", () => {

@@ -10,7 +10,11 @@ export type BoosterTheme = {
   foil: string;
   ink: string;
   label: string;
-  emblem: { type: "league"; src: string } | { type: "flag"; code: string } | { type: "icon"; icon: StyleIconName };
+  emblem:
+    | { type: "logo" }
+    | { type: "league"; src: string }
+    | { type: "flag"; code: string }
+    | { type: "icon"; icon: StyleIconName };
 };
 
 const league = (code: string, foil: string, ink: string): BoosterTheme => ({
@@ -37,7 +41,15 @@ const cup = (code: string, foil: string, ink: string): BoosterTheme => ({
   label: "Coupe d'Europe",
 });
 
+const tier = (label: string, foil: string, ink: string): BoosterTheme => ({ foil, ink, label, emblem: { type: "logo" } });
+
 const THEMES: Record<string, BoosterTheme> = {
+  // Paliers (slugs historiques : « standard » = Argent, « premium » = Or)
+  gratuit: tier("Gratuit", "linear-gradient(160deg,#2c5a3c,#163023 45%,#8a5a2b 70%,#9aa3ad 85%,#c9952f)", "#d8f5c0"),
+  bronze: tier("Bronze", "linear-gradient(160deg,#8a5a2b,#2e1a0a 50%,#b87333 80%,#5c3613)", "#ffd0a6"),
+  standard: tier("Argent", "linear-gradient(160deg,#9aa3ad,#2a2f36 50%,#d6dce3 80%,#6b737d)", "#f4f7fa"),
+  premium: tier("Or", "linear-gradient(160deg,#a8801f,#2e2108 50%,#f0c75a 80%,#6b4a10)", "#ffe7a3"),
+
   "ligue-des-champions": cup("UCL", "linear-gradient(160deg,#16206b,#05082a 50%,#2a3a9e 80%,#0b1250)", "#e8ecff"),
   "ligue-europa": cup("UEL", "linear-gradient(160deg,#7a3a0a,#241003 55%,#c25f12)", "#ffb066"),
   "ligue-conference": cup("UECL", "linear-gradient(160deg,#0f6b2a,#03210c 55%,#18a03f)", "#8dff9f"),

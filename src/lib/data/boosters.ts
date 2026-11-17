@@ -155,8 +155,18 @@ export async function getBoosterPool(boosterId: number, perRarity = 40): Promise
   return { total: groups.reduce((s, g) => s + g.count, 0), groups: groups.filter((g) => g.count > 0) };
 }
 
-/** Date à laquelle le booster gratuit sera de nouveau disponible (null = disponible). */
-export type FreeBoosterStatus = { slug: string; name: string; cardsCount: number; nextAt: string | null };
+/**
+ * Booster gratuit cumulable : réserve (stock / cap) et prochain déblocage.
+ * nextAt = prochain booster débloqué (null = réserve pleine).
+ */
+export type FreeBoosterStatus = {
+  slug: string;
+  name: string;
+  cardsCount: number;
+  stock: number;
+  cap: number;
+  nextAt: string | null;
+};
 
 export async function getFreeBoosterNextAt(): Promise<FreeBoosterStatus | null> {
   const supabase = await createClient();
@@ -172,8 +182,8 @@ export async function getFreeBoosterNextAt(): Promise<FreeBoosterStatus | null> 
   const { data } = await supabase.rpc("booster_availability", { p_booster: booster.id });
   const a = parseAvailability(data);
   const base = { slug: booster.slug, name: booster.name, cardsCount: booster.cards_count };
-  if (a.available) return { ...base, nextAt: null };
-  if (a.reason === "cooldown") return { ...base, nextAt: a.nextAt };
+  if (a.available) return { ...base, stock: a.stock ?? 1, cap: a.cap ?? 1, nextAt: a.nextAt ?? null };
+  if (a.reason === "cooldown") return { ...base, stock: 0, cap: a.cap ?? 1, nextAt: a.nextAt };
   return null;
 }
 

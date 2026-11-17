@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Flag } from "@/components/ui/Flag";
+import { PlayerPortrait } from "@/components/ui/PlayerPortrait";
 import { EmptyState, PageHeader } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
 import { buttonClasses } from "@/components/ui/Button";
@@ -51,9 +52,12 @@ export default async function WikiPage({ searchParams }: PageProps<"/wiki">) {
                 href={`/wiki/${p.slug}`}
                 className="flex items-center gap-3 rounded-xl border border-line bg-night-850 px-3 py-2.5 transition-colors duration-150 hover:border-line-strong hover:bg-night-800"
               >
-                <Flag nation={p.nation} className="h-4 w-6 shrink-0" />
+                <PlayerPortrait imageUrl={p.imageUrl} name={p.displayName} round className="h-11 w-11" />
                 <div className="min-w-0 flex-1">
-                  <p className="truncate font-semibold">{p.displayName}</p>
+                  <p className="flex items-center gap-1.5 font-semibold">
+                    <Flag nation={p.nation} className="h-3 w-[18px] shrink-0" />
+                    <span className="truncate">{p.displayName}</span>
+                  </p>
                   <p className="text-xs text-chalk-muted">
                     {POSITION_LABELS[p.position]} · {p.versions} version{p.versions > 1 ? "s" : ""}
                     {p.isLegend && " · Légende"}

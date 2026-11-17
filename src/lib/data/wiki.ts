@@ -12,6 +12,7 @@ export type PlayerListItem = {
   nation: NationView;
   bestRarity: Rarity | null;
   versions: number;
+  imageUrl: string | null;
 };
 
 export const WIKI_PAGE_SIZE = 60;
@@ -23,7 +24,7 @@ export async function listPlayers(search?: string, page = 1): Promise<{ players:
   let query = supabase
     .from("players")
     .select(
-      "slug, display_name, position, is_legend, nations!inner ( code, name, flag_colors, flag_layout ), card_templates ( rarity )",
+      "slug, display_name, position, is_legend, image_url, nations!inner ( code, name, flag_colors, flag_layout ), card_templates ( rarity )",
       {
         count: "exact",
       },
@@ -52,6 +53,7 @@ export async function listPlayers(search?: string, page = 1): Promise<{ players:
       },
       bestRarity: rarities[0] ?? null,
       versions: rarities.length,
+      imageUrl: p.image_url,
     };
   });
   return { players, total: count ?? players.length };

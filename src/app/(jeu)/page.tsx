@@ -3,7 +3,7 @@ import { ActivityFeed } from "@/components/ActivityFeed";
 import { WishlistMatches } from "@/components/community/WishlistMatches";
 import { AlbumProgress, albumPercent } from "@/components/albums/AlbumProgress";
 import { BoosterPack } from "@/components/boosters/BoosterPack";
-import { FreeBoosterTimer } from "@/components/boosters/FreeBoosterTimer";
+import { FreeBoosterCountdown } from "@/components/boosters/FreeBoosterTimer";
 import { DailyBonusButton } from "@/components/economy/DailyBonusButton";
 import { SalesTable } from "@/components/market/SalesTable";
 import { buttonClasses } from "@/components/ui/Button";
@@ -70,16 +70,23 @@ export default async function AccueilPage() {
           {freeBooster && (
             <Panel className="pp-net">
               <div className="flex min-w-0 items-center gap-4">
-                <BoosterPack name={freeBooster.name} kind="free" cardsCount={freeBooster.cardsCount} size="sm" />
+                <BoosterPack name={freeBooster.name} kind="free" slug={freeBooster.slug} cardsCount={freeBooster.cardsCount} size="sm" />
                 <div className="min-w-0 space-y-2">
                   <p className="font-display text-xl font-extrabold tracking-wide break-words uppercase italic">
-                    {freeBooster.nextAt ? "Booster gratuit en recharge" : "Ton booster gratuit est prêt !"}
+                    {freeBooster.stock > 0
+                      ? `${freeBooster.stock} booster${freeBooster.stock > 1 ? "s" : ""} gratuit${freeBooster.stock > 1 ? "s" : ""} à ouvrir`
+                      : "Booster gratuit en recharge"}
                   </p>
-                  {freeBooster.nextAt ? (
-                    <div className="flex items-center gap-2 text-sm text-chalk-muted">
-                      Disponible dans <FreeBoosterTimer slug={freeBooster.slug} nextAt={freeBooster.nextAt} />
-                    </div>
-                  ) : (
+                  <p className="text-sm text-chalk-muted">
+                    {freeBooster.stock}/{freeBooster.cap} en réserve
+                    {freeBooster.nextAt && (
+                      <>
+                        {" "}
+                        · prochain dans <FreeBoosterCountdown nextAt={freeBooster.nextAt} />
+                      </>
+                    )}
+                  </p>
+                  {freeBooster.stock > 0 && (
                     <Link href={`/boosters/${freeBooster.slug}`} className={buttonClasses("primary", "md")}>
                       Ouvrir mon booster gratuit
                     </Link>
