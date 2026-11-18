@@ -68,6 +68,7 @@ export function BoosterPack({
   name,
   kind,
   slug,
+  eventColor,
   cardsCount,
   imageUrl,
   size = "md",
@@ -76,12 +77,21 @@ export function BoosterPack({
   name: string;
   kind: BoosterKind;
   slug?: string;
+  /** Booster d'événement : couleur du thème. */
+  eventColor?: string | null;
   cardsCount: number;
   imageUrl?: string | null;
   size?: "sm" | "md" | "lg";
   className?: string;
 }) {
-  const theme = boosterTheme(slug);
+  const theme: BoosterTheme | null = eventColor
+    ? {
+        foil: `linear-gradient(160deg, ${eventColor}, #0d1015 55%, color-mix(in srgb, ${eventColor} 70%, white))`,
+        ink: `color-mix(in srgb, ${eventColor} 35%, white)`,
+        label: "Événement",
+        emblem: { type: "icon", icon: "star" },
+      }
+    : boosterTheme(slug);
   const skin = theme ?? SKINS[kind];
   const width = size === "lg" ? "w-[200px]" : size === "md" ? "w-[150px]" : "w-[110px]";
 

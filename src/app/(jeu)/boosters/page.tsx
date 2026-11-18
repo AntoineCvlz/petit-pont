@@ -13,7 +13,7 @@ import { formatDate } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Boosters" };
 
-const BOOSTER_CATEGORIES: BoosterCategory[] = ["classique", "europe", "championnat", "nation", "style"];
+const BOOSTER_CATEGORIES: BoosterCategory[] = ["evenement", "classique", "europe", "championnat", "nation", "style"];
 
 function BoosterTile({ b }: { b: BoosterView }) {
   const label = availabilityLabel(b.availability);
@@ -25,7 +25,7 @@ function BoosterTile({ b }: { b: BoosterView }) {
           "flex h-full gap-4 rounded-xl border border-line bg-night-850 p-4 transition-colors duration-150 hover:border-line-strong hover:bg-night-800",
         )}
       >
-        <BoosterPack name={b.name} kind={b.kind} slug={b.slug} cardsCount={b.cardsCount} imageUrl={b.imageUrl} size="sm" />
+        <BoosterPack name={b.name} kind={b.kind} slug={b.slug} eventColor={b.eventColor} cardsCount={b.cardsCount} imageUrl={b.imageUrl} size="sm" />
         <div className="flex min-w-0 flex-1 flex-col gap-2">
           <div>
             <p className="font-display text-lg leading-tight font-extrabold tracking-wide uppercase">{b.name}</p>

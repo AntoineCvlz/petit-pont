@@ -559,14 +559,14 @@ isOneToOne: false
                   ]
                 },"card_templates": {
                   Row: {
-                    "club_id": number | null,"collection_number": number | null,"created_at": string,"edition": string,"id": number,"image_url": string | null,"is_active": boolean,"max_supply": number | null,"minted_count": number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string
+                    "club_id": number | null,"collection_number": number | null,"created_at": string,"edition": string,"event_id": number | null,"id": number,"image_url": string | null,"is_active": boolean,"max_supply": number | null,"minted_count": number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string,"stats": Json | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition": string,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string
+                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition": string,"event_id"?: number | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string,"stats"?: Json | null
                   }
                   Update: {
-                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition"?: string,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id"?: number,"rarity"?: Database["public"]['Enums']["rarity"],"rating"?: number,"season"?: string
+                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition"?: string,"event_id"?: number | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id"?: number,"rarity"?: Database["public"]['Enums']["rarity"],"rating"?: number,"season"?: string,"stats"?: Json | null
                   }
                   Relationships: [
                     {
@@ -574,6 +574,12 @@ isOneToOne: false
       columns: ["club_id"]
 isOneToOne: false
       referencedRelation: "clubs"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "card_templates_event_id_fkey"
+      columns: ["event_id"]
+isOneToOne: false
+      referencedRelation: "game_events"
       referencedColumns: ["id"]
     },{
       foreignKeyName: "card_templates_player_id_fkey"
@@ -945,6 +951,60 @@ isOneToOne: false
 isOneToOne: false
       referencedRelation: "private_leagues"
       referencedColumns: ["id"]
+    }
+                  ]
+                },"event_calls": {
+                  Row: {
+                    "called_at": string,"job": string,"slot": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "called_at"?: string,"job": string,"slot": string
+                  }
+                  Update: {
+                    "called_at"?: string,"job"?: string,"slot"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"event_themes": {
+                  Row: {
+                    "boost": number,"color": string,"name": string,"rule": NonNullable<Json>,"slug": string,"sort_order": number,"stat_bonus": NonNullable<Json>,"tagline": string,"window_end": string | null,"window_start": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "boost": number,"color": string,"name": string,"rule": NonNullable<Json>,"slug": string,"sort_order"?: number,"stat_bonus"?: NonNullable<Json>,"tagline": string,"window_end"?: string | null,"window_start"?: string | null
+                  }
+                  Update: {
+                    "boost"?: number,"color"?: string,"name"?: string,"rule"?: NonNullable<Json>,"slug"?: string,"sort_order"?: number,"stat_bonus"?: NonNullable<Json>,"tagline"?: string,"window_end"?: string | null,"window_start"?: string | null
+                  }
+                  Relationships: [
+                    
+                  ]
+                },"game_events": {
+                  Row: {
+                    "booster_id": number | null,"color": string,"created_at": string,"ends_at": string,"id": number,"kind": string,"name": string,"slot": string,"starts_at": string,"tagline": string | null,"theme": string | null
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "booster_id"?: number | null,"color": string,"created_at"?: string,"ends_at": string,"id"?: never,"kind": string,"name": string,"slot": string,"starts_at"?: string,"tagline"?: string | null,"theme"?: string | null
+                  }
+                  Update: {
+                    "booster_id"?: number | null,"color"?: string,"created_at"?: string,"ends_at"?: string,"id"?: never,"kind"?: string,"name"?: string,"slot"?: string,"starts_at"?: string,"tagline"?: string | null,"theme"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "game_events_booster_id_fkey"
+      columns: ["booster_id"]
+isOneToOne: false
+      referencedRelation: "boosters"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "game_events_theme_fkey"
+      columns: ["theme"]
+isOneToOne: false
+      referencedRelation: "event_themes"
+      referencedColumns: ["slug"]
     }
                   ]
                 },"leaderboard_top10": {
@@ -1821,6 +1881,20 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"totw_scorer_snapshots": {
+                  Row: {
+                    "assists": number,"competition": string,"fd_player": number,"goals": number,"taken_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "assists": number,"competition": string,"fd_player": number,"goals": number,"taken_at"?: string
+                  }
+                  Update: {
+                    "assists"?: number,"competition"?: string,"fd_player"?: number,"goals"?: number,"taken_at"?: string
+                  }
+                  Relationships: [
+                    
+                  ]
                 },"trade_items": {
                   Row: {
                     "from_user_id": string,"instance_id": string,"trade_id": string
@@ -2024,6 +2098,9 @@ isOneToOne: false
 "_apply_coins":
 { Args: { "p_amount": number,"p_description"?: string,"p_ref_id"?: string,"p_ref_type"?: string,"p_type": Database["public"]['Enums']["coin_tx_type"],"p_user": string }; Returns: number
                            },
+"_boost_stats":
+{ Args: { "p_bonus": Json,"p_boost": number,"p_stats": Json }; Returns: Json
+                           },
 "_clan_event":
 { Args: { "p_amount": number,"p_event": string,"p_user": string }; Returns: undefined
                            },
@@ -2048,6 +2125,9 @@ isOneToOne: false
                            },
 "_club_league_code":
 { Args: { "p_club_code": string }; Returns: string
+                           },
+"_create_event_cards":
+{ Args: { "p_bonus": Json,"p_boost": number,"p_event": number,"p_label": string,"p_templates": (number)[] }; Returns: number
                            },
 "_discord_announce":
 { Args: { "p_color": number,"p_description": string,"p_thumbnail"?: string,"p_title": string }; Returns: undefined
@@ -2097,6 +2177,9 @@ isOneToOne: false
 "_is_league_member":
 { Args: { "p_league": string }; Returns: boolean
                            },
+"_last_slot":
+{ Args: { "p_isodow": number }; Returns: string
+                           },
 "_leaderboard_metrics":
 { Args: Record<PropertyKey, never>; Returns: (string)[]
                            },
@@ -2111,6 +2194,9 @@ isOneToOne: false
                            },
 "_my_clan":
 { Args: Record<PropertyKey, never>; Returns: string
+                           },
+"_open_event_booster":
+{ Args: { "p_event": number,"p_price": number,"p_slug": string }; Returns: number
                            },
 "_penalty_ai_direction":
 { Args: { "p_follow": boolean,"p_habit": string }; Returns: string
@@ -2321,6 +2407,9 @@ isOneToOne: false
               "avatar_url": string,"elo": number,"is_me": boolean,"played": number,"rank": number,"user_id": string,"username": string
             }[]
                            },
+"events_tick":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
 "expire_trades":
 { Args: Record<PropertyKey, never>; Returns: number
                            },
@@ -2343,6 +2432,9 @@ isOneToOne: false
                            },
 "kick_clan_member":
 { Args: { "p_user": string }; Returns: undefined
+                           },
+"launch_weekly_event":
+{ Args: { "p_slot"?: string,"p_theme"?: string }; Returns: number
                            },
 "league_detail":
 { Args: { "p_league": string }; Returns: Json
@@ -2395,6 +2487,9 @@ isOneToOne: false
                            },
 "propose_trade":
 { Args: { "p_message"?: string,"p_offered"?: (string)[],"p_parent"?: string,"p_proposer_coins"?: number,"p_recipient": string,"p_recipient_coins"?: number,"p_requested"?: (string)[] }; Returns: string
+                           },
+"publish_totw":
+{ Args: { "p_period": string,"p_picks": Json,"p_slot": string }; Returns: number
                            },
 "rarity_rank":
 { Args: { "r": Database["public"]['Enums']["rarity"] }; Returns: number
@@ -2451,6 +2546,9 @@ isOneToOne: false
                            },
 "submit_sbc":
 { Args: { "p_challenge_id": number,"p_instance_ids": (string)[] }; Returns: Json
+                           },
+"totw_due":
+{ Args: Record<PropertyKey, never>; Returns: string
                            },
 "unblock_player":
 { Args: { "p_blocked": string }; Returns: undefined

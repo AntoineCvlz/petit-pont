@@ -15,6 +15,8 @@ import { getActivityFeed } from "@/lib/data/activity";
 import { listAlbums } from "@/lib/data/albums";
 import { getWishlistMatches } from "@/lib/data/community";
 import { getDailyBonusStatus } from "@/lib/data/economy";
+import { getActiveEvents } from "@/lib/data/events";
+import { formatDate } from "@/lib/format";
 import { getMissionsStatus } from "@/lib/data/farm";
 import { listRecentSales } from "@/lib/data/market";
 import { countPendingReceived } from "@/lib/data/trades";
@@ -34,7 +36,7 @@ type Todo = { href: string; label: string; icon: "trade" | "album" };
 
 export default async function AccueilPage() {
   const profile = await requireProfile();
-  const [recent, total, stats, feed, freeBooster, albums, dailyBonus, sales, pendingTrades, matches, missions] =
+  const [recent, total, stats, feed, freeBooster, albums, dailyBonus, sales, pendingTrades, matches, missions, events] =
     await Promise.all([
       getRecentCards(profile.id, 8),
       getCollectionTotal(),
@@ -47,6 +49,7 @@ export default async function AccueilPage() {
       countPendingReceived(profile.id),
       getWishlistMatches(4),
       getMissionsStatus(),
+      getActiveEvents(),
     ]);
   const inProgress = albums
     .filter((a) => !a.completedAt)
@@ -138,6 +141,38 @@ export default async function AccueilPage() {
           )}
         </div>
       </section>
+
+      {/* Événements en cours : vendredi (thème) et équipe de la semaine */}
+      {events.length > 0 && (
+        <ul className="grid gap-3 md:grid-cols-2">
+          {events.map((e) => (
+            <li key={e.id}>
+              <Link
+                href={e.boosterSlug ? `/boosters/${e.boosterSlug}` : "/boosters"}
+                className="group relative flex h-full flex-col gap-1 overflow-hidden rounded-xl border p-4 transition-colors duration-150"
+                style={{
+                  borderColor: `color-mix(in srgb, ${e.color} 55%, transparent)`,
+                  background: `linear-gradient(120deg, color-mix(in srgb, ${e.color} 28%, #0d1813), #0d1813 70%)`,
+                }}
+              >
+                <span className="font-display text-xs font-bold tracking-widest uppercase" style={{ color: e.color }}>
+                  {e.kind === "totw" ? "Équipe de la semaine" : "Événement de la semaine"}
+                </span>
+                <span className="font-display text-2xl leading-tight font-extrabold tracking-wide uppercase italic">
+                  {e.name}
+                </span>
+                {e.tagline && <span className="text-sm text-chalk-muted">{e.tagline}</span>}
+                <span className="mt-1 text-xs text-chalk-faint">
+                  {e.cards} cartes boostées · jusqu&apos;au {formatDate(e.endsAt)}
+                </span>
+                <span className="mt-2 text-sm font-semibold group-hover:underline" style={{ color: e.color }}>
+                  Voir le booster →
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
 
       {todo.length > 0 && (
         <ul className="flex flex-wrap gap-2" aria-label="À faire">

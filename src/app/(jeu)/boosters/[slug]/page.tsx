@@ -70,6 +70,7 @@ export default async function BoosterPage({ params, searchParams }: PageProps<"/
               name: booster.name,
               kind: booster.kind,
               slug: booster.slug,
+              eventColor: booster.eventColor,
               price: booster.price,
               cardsCount: booster.cardsCount,
               imageUrl: booster.imageUrl,

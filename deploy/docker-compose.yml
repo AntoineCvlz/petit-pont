@@ -160,6 +160,8 @@ services:
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
       SUPABASE_SECRET_KEY: ${SERVICE_ROLE_KEY}
+      # Équipe de la semaine : jeton gratuit football-data.org (performances réelles), facultatif
+      FOOTBALL_DATA_TOKEN: ${FOOTBALL_DATA_TOKEN:-}
     mem_limit: 384m
 
   caddy:

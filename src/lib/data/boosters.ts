@@ -4,9 +4,10 @@ import { TEMPLATE_SELECT, toTemplateView, type CardTemplateView } from "@/lib/da
 import { normalizeOdds, parseAvailability, type Availability, type BoosterKind, type Odds } from "@/lib/boosters";
 import { RARITIES, type Rarity } from "@/lib/rarity";
 
-export type BoosterCategory = "classique" | "europe" | "championnat" | "nation" | "style";
+export type BoosterCategory = "evenement" | "classique" | "europe" | "championnat" | "nation" | "style";
 
 export const BOOSTER_CATEGORY_LABELS: Record<BoosterCategory, string> = {
+  evenement: "Événements de la semaine",
   classique: "Boosters classiques",
   europe: "Coupes d'Europe",
   championnat: "Par championnat",
@@ -30,12 +31,14 @@ export type BoosterView = {
   stockRemaining: number | null;
   imageUrl: string | null;
   category: BoosterCategory;
+  /** Booster d'événement : couleur du thème (habillage du paquet). */
+  eventColor: string | null;
   odds: Odds;
   availability: Availability;
 };
 
 const BOOSTER_SELECT =
-  "id, slug, name, description, kind, price, cards_count, guarantee_rarity, guarantee_count, starts_at, ends_at, stock_total, stock_remaining, image_url, category, booster_odds ( rarity, probability )";
+  "id, slug, name, description, kind, price, cards_count, guarantee_rarity, guarantee_count, starts_at, ends_at, stock_total, stock_remaining, image_url, category, booster_odds ( rarity, probability ), game_events ( color )";
 
 type BoosterRow = {
   id: number;
@@ -54,6 +57,7 @@ type BoosterRow = {
   image_url: string | null;
   category: BoosterCategory;
   booster_odds: { rarity: Rarity; probability: number }[];
+  game_events: { color: string }[] | null;
 };
 
 async function withAvailability(rows: BoosterRow[]): Promise<BoosterView[]> {
@@ -77,6 +81,7 @@ async function withAvailability(rows: BoosterRow[]): Promise<BoosterView[]> {
     stockRemaining: b.stock_remaining,
     imageUrl: b.image_url,
     category: b.category,
+    eventColor: b.game_events?.[0]?.color ?? null,
     odds: normalizeOdds(b.booster_odds),
     availability: availabilities[i]!,
   }));

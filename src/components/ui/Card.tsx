@@ -191,10 +191,13 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
   const shared = {
     className: clsx("pp-card aspect-[5/7.4] shrink-0", WIDTHS[size], className),
     "data-rarity": t.rarity,
-    "data-edition": t.signatureUrl ? "signature" : undefined,
+    "data-edition": t.signatureUrl ? "signature" : t.event ? (t.event.kind === "totw" ? "totw" : "event") : undefined,
     "data-shine": String(hasShine(t.rarity)),
     "data-interactive": String(interactive),
   } as const;
+
+  // Cartes d'événement : cadre à la couleur du thème
+  const eventStyle = t.event ? ({ ["--event" as string]: t.event.color } as React.CSSProperties) : undefined;
 
   if (t.rarity === "speciale") {
     return (
@@ -204,7 +207,7 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
     );
   }
   return (
-    <div {...shared} role="img" aria-label={label}>
+    <div {...shared} style={eventStyle} role="img" aria-label={label}>
       {content}
     </div>
   );

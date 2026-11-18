@@ -120,6 +120,23 @@ body {
   );
 }
 
+/* Cartes d'événement (vendredi) : cadre à la couleur du thème ; équipe de la semaine : noir et or */
+.pp-card[data-edition="event"][data-rarity] {
+  --frame: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--event) 35%, white),
+    var(--event) 40%,
+    #10141a 68%,
+    color-mix(in srgb, var(--event) 80%, white)
+  );
+  box-shadow:
+    0 12px 28px -14px rgba(0, 0, 0, 0.85),
+    0 0 20px -6px color-mix(in srgb, var(--event) 70%, transparent);
+}
+.pp-card[data-edition="totw"] {
+  --frame: linear-gradient(160deg, #f4f7fb, #0f1218 32%, #f5c84c 55%, #0f1218 75%, #c9d3df);
+}
+
 /* Édition Signature : cadre or et noir, plus sobre que l'holographique */
 .pp-card[data-edition="signature"] {
   --frame: linear-gradient(160deg, #fff2c2, #1a1206 30%, #f5c84c 50%, #1a1206 72%, #d99a1e);

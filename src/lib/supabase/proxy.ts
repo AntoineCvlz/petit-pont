@@ -11,6 +11,8 @@ const AUTH_ROUTES = ["/auth/discord", "/auth/discord/callback", "/auth/callback"
 export async function updateSession(request: NextRequest) {
   // Webhooks entrants (Discord) : pas de session utilisateur, authentifiés par leur propre signature
   if (request.nextUrl.pathname.startsWith("/api/discord/")) return NextResponse.next();
+  // Tâches planifiées appelées par la base (sans session ; publication contrôlée côté base)
+  if (request.nextUrl.pathname.startsWith("/api/cron/")) return NextResponse.next();
   let response = NextResponse.next({ request });
   const { url, key } = supabaseEnv();
 

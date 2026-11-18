@@ -581,3 +581,19 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
   `scripts/media/signatures.mjs`). Jamais de signature imitée : pas de carte Signature sans fichier réel.
 - `players.signature_url`, `_ensure_signature_cards()` (migration + fin de seed). Rendu : signature à l'encre dorée en
   travers du portrait, cadre or et noir, sans reflet holographique. Tirées comme les autres Spéciales.
+
+### Événements du vendredi et équipe de la semaine
+- **Vendredi 19h (Paris)** : `launch_weekly_event` (pg_cron toutes les 5 min via `events_tick`, rattrapage 24 h,
+  un seul événement par créneau). Thème saisonnier si on est dans sa fenêtre (Halloween, Noël, Nouvel an,
+  Saint-Valentin), sinon rotation (Futures stars, Héros du championnat, Murailles, Artistes, Renards des surfaces,
+  Vétérans). 12 cartes boostées (note + stats, `card_templates.stats`), 40 exemplaires, booster d'événement 7 jours
+  (3 cartes, Épique 80 / Légendaire 20), pack offert à chaque joueur, notification et annonce Discord.
+- **Mercredi 19h** : la tâche appelle `/api/cron/totw` (pg_net, `site_url`) jusqu'à publication. La route lit
+  football-data.org (5 grands championnats : matchs de la semaine + buteurs ; buts/passes de la semaine par différence
+  de relevés `totw_scorer_snapshots`), rapproche joueurs/clubs du catalogue (`src/lib/totw.ts`, testé), compose un
+  4-3-3 (attaque/milieu : buts et passes ; défense/gardien : clean sheets et victoires), puis `publish_totw` crée les
+  cartes boostées (+2 à +6 selon la performance), le booster et le pack offert. Sans secret : la base n'accepte que le
+  créneau dû, une seule fois.
+- Prérequis : `FOOTBALL_DATA_TOKEN` (compte gratuit football-data.org) et `site_url` renseigné en production.
+- Accueil : bandeau des événements en cours ; boosters : section « Événements de la semaine » ; cartes d'événement au
+  cadre de la couleur du thème, équipe de la semaine en noir et or.
