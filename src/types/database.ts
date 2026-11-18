@@ -559,14 +559,14 @@ isOneToOne: false
                   ]
                 },"card_templates": {
                   Row: {
-                    "club_id": number | null,"collection_number": number | null,"created_at": string,"edition": string,"event_id": number | null,"id": number,"image_url": string | null,"is_active": boolean,"max_supply": number | null,"minted_count": number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string,"stats": Json | null
+                    "club_id": number | null,"collection_number": number | null,"created_at": string,"edition": string,"event_id": number | null,"event_note": string | null,"id": number,"image_url": string | null,"is_active": boolean,"max_supply": number | null,"minted_count": number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string,"stats": Json | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition": string,"event_id"?: number | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string,"stats"?: Json | null
+                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition": string,"event_id"?: number | null,"event_note"?: string | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id": number,"rarity": Database["public"]['Enums']["rarity"],"rating": number,"season": string,"stats"?: Json | null
                   }
                   Update: {
-                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition"?: string,"event_id"?: number | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id"?: number,"rarity"?: Database["public"]['Enums']["rarity"],"rating"?: number,"season"?: string,"stats"?: Json | null
+                    "club_id"?: number | null,"collection_number"?: number | null,"created_at"?: string,"edition"?: string,"event_id"?: number | null,"event_note"?: string | null,"id"?: never,"image_url"?: string | null,"is_active"?: boolean,"max_supply"?: number | null,"minted_count"?: number,"player_id"?: number,"rarity"?: Database["public"]['Enums']["rarity"],"rating"?: number,"season"?: string,"stats"?: Json | null
                   }
                   Relationships: [
                     {

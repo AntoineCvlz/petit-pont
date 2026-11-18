@@ -42,10 +42,12 @@ export type CardTemplateView = {
   signatureUrl?: string | null;
   /** Carte d'événement (vendredi) ou de l'équipe de la semaine : couleur du cadre. */
   event?: { kind: "weekly" | "totw"; color: string } | null;
+  /** Raison de la sélection (équipe de la semaine). */
+  eventNote?: string | null;
 };
 
 export const TEMPLATE_SELECT = `
-  id, season, edition, rarity, rating, collection_number, max_supply, minted_count, image_url, stats,
+  id, season, edition, rarity, rating, collection_number, max_supply, minted_count, image_url, stats, event_note,
   game_events ( kind, color ),
   players!inner ( slug, display_name, position, image_url, signature_url, position_detail, weak_foot, skill_moves, stats,
     nations!inner ( code, name, flag_colors, flag_layout ) ),
@@ -63,6 +65,7 @@ type TemplateRow = {
   minted_count: number;
   image_url: string | null;
   stats: unknown;
+  event_note: string | null;
   game_events: { kind: string; color: string } | null;
   players: {
     slug: string;
@@ -122,6 +125,7 @@ export function toTemplateView(row: TemplateRow): CardTemplateView {
     // Cartes d'événement : stats boostées propres à la carte
     stats: ((row.stats ?? row.players.stats) as Record<string, number> | null) ?? null,
     event: row.game_events ? { kind: row.game_events.kind as "weekly" | "totw", color: row.game_events.color } : null,
+    eventNote: row.event_note,
     signatureUrl: row.edition === "Signature" ? row.players.signature_url : null,
   };
 }

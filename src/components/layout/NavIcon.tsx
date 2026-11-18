@@ -3,6 +3,7 @@ import type { NavIcon as NavIconName } from "@/lib/navigation";
 
 const PATHS: Record<NavIconName | "more", ReactNode> = {
   home: <path d="M4 11.5 12 5l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5h-5v5H5a1 1 0 0 1-1-1z" />,
+  event: <path d="m12 3 2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4l-5.3 3 1.2-6L3.4 9.3l6-.7z" />,
   booster: <path d="M7 3h10l-1 3 1 3-1 3 1 3-1 3 1 3H7l1-3-1-3 1-3-1-3 1-3z" />,
   collection: (
     <>

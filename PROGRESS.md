@@ -597,3 +597,5 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 - Prérequis : `FOOTBALL_DATA_TOKEN` (compte gratuit football-data.org) et `site_url` renseigné en production.
 - Accueil : bandeau des événements en cours ; boosters : section « Événements de la semaine » ; cartes d'événement au
   cadre de la couleur du thème, équipe de la semaine en noir et or.
+- **Page Événements** (`/evenements`, menu) : événements en cours puis éditions précédentes ; équipe de la semaine sur un
+  terrain en 4-3-3 avec la raison de chaque sélection (`card_templates.event_note`), événements du vendredi en grille.

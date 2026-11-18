@@ -148,7 +148,7 @@ export default async function AccueilPage() {
           {events.map((e) => (
             <li key={e.id}>
               <Link
-                href={e.boosterSlug ? `/boosters/${e.boosterSlug}` : "/boosters"}
+                href={`/evenements#evenement-${e.id}`}
                 className="group relative flex h-full flex-col gap-1 overflow-hidden rounded-xl border p-4 transition-colors duration-150"
                 style={{
                   borderColor: `color-mix(in srgb, ${e.color} 55%, transparent)`,
@@ -166,7 +166,7 @@ export default async function AccueilPage() {
                   {e.cards} cartes boostées · jusqu&apos;au {formatDate(e.endsAt)}
                 </span>
                 <span className="mt-2 text-sm font-semibold group-hover:underline" style={{ color: e.color }}>
-                  Voir le booster →
+                  {e.kind === "totw" ? "Voir l'équipe →" : "Voir les cartes →"}
                 </span>
               </Link>
             </li>
