@@ -18,6 +18,16 @@ import { draftChemistry, draftScore, type DraftFormation } from "@/lib/draft";
 
 export const metadata: Metadata = { title: "Draft" };
 
+/** 5 compositions tirées au hasard parmi toutes (nouveau tirage à chaque visite de la page). */
+function pickFormations(all: DraftFormation[], n: number): DraftFormation[] {
+  const pool = [...all];
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j]!, pool[i]!];
+  }
+  return pool.slice(0, n);
+}
+
 async function DraftBoard({ draft, formation, total }: { draft: DraftState; formation: DraftFormation; total: number }) {
   const cards = await resolveDraftCards([...Object.values(draft.picks), ...draft.offer]);
   const picks: Record<string, DraftCard> = {};
@@ -78,7 +88,7 @@ export default async function DraftPage() {
         <div className="grid gap-5 lg:grid-cols-[1fr_380px]">
           <div className="space-y-5">
             <Panel title="Nouveau draft">
-              <DraftStart formations={formations} remaining={status.remaining} />
+              <DraftStart formations={pickFormations(formations, 5)} remaining={status.remaining} />
             </Panel>
             <Panel title="Les liens">
               <LinkLegend />

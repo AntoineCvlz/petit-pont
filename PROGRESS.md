@@ -552,3 +552,11 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 - Migration : e-mails Discord déjà stockés remplacés par l'adresse technique et retirés des métadonnées.
 - Prérequis : l'URL `https://<site>/auth/discord/callback` doit figurer dans les redirections OAuth2 de l'application
   Discord (portail développeur).
+
+### Draft : 30 compositions, tirage au hasard, glisser-déposer
+- 30 compositions classiques (3-1-4-2 … 5-4-1, variantes « (2) » à « (5) ») générées par `scripts/draft/formations.mjs`
+  (postes, coordonnées, liens : gardien ↔ défenseurs centraux, voisins d'une ligne, plus proche voisin entre lignes).
+  Les 4 anciennes gardent leurs clés et leur ordre (drafts en cours compatibles).
+- Au lancement : 5 compositions tirées au hasard à chaque visite.
+- Échange : glisser un joueur sur un autre de la même ligne (souris ou doigt), ou les toucher l'un après l'autre.
+  Correctif : le glisser natif des images annulait le geste quand on attrapait la photo du joueur.

@@ -36,17 +36,11 @@ export function DraftPitchEditor({
     setPicks(initialPicks);
   }
 
-  function click(slot: string) {
-    if (pending) return;
-    setError(null);
-    if (selected === null) return setSelected(slot);
-    if (selected === slot) return setSelected(null);
-    const a = selected;
-    setSelected(null);
+  function swap(a: string, b: string) {
     const before = picks;
-    setPicks({ ...picks, [a]: picks[slot], [slot]: picks[a] });
+    setPicks({ ...picks, [a]: picks[b], [b]: picks[a] });
     start(async () => {
-      const r = await swapDraft(draftId, a, slot);
+      const r = await swapDraft(draftId, a, b);
       if (!r.ok) {
         setPicks(before);
         setError(r.message);
@@ -55,15 +49,39 @@ export function DraftPitchEditor({
     });
   }
 
+  function click(slot: string) {
+    if (pending) return;
+    setError(null);
+    if (selected === null) return setSelected(slot);
+    if (selected === slot) return setSelected(null);
+    const a = selected;
+    setSelected(null);
+    swap(a, slot);
+  }
+
+  function drop(from: string, to: string) {
+    if (pending) return;
+    setError(null);
+    setSelected(null);
+    swap(from, to);
+  }
+
   const filled = Object.keys(picks).length;
   return (
     <div className="space-y-2">
-      <DraftPitch formation={formation} picks={picks} currentSlot={currentSlot} selected={selected} onSlotClick={click} />
+      <DraftPitch
+        formation={formation}
+        picks={picks}
+        currentSlot={currentSlot}
+        selected={selected}
+        onSlotClick={click}
+        onSwap={drop}
+      />
       <p className="text-center text-xs text-chalk-faint" aria-live="polite">
         {selected
           ? "Touche un joueur de la même ligne pour les échanger (ou le même pour annuler)."
           : filled >= 2
-            ? "Astuce : touche deux joueurs de la même ligne pour les échanger, le collectif s'adapte."
+            ? "Glisse un joueur sur un autre de la même ligne (ou touche-les l'un après l'autre) pour les échanger : le collectif s'adapte."
             : null}
       </p>
       {error && <FormMessage>{error}</FormMessage>}

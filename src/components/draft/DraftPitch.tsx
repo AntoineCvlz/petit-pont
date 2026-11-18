@@ -1,3 +1,6 @@
+"use client";
+
+import { useRef, useState } from "react";
 import { clsx } from "clsx";
 import { Silhouette } from "@/components/ui/Card";
 import { Crest } from "@/components/ui/Crest";
@@ -26,24 +29,40 @@ function shortName(name: string): string {
   return parts.length > 1 ? parts.slice(1).join(" ") : name;
 }
 
+type Drag = { from: string; pointer: number; x0: number; y0: number; dx: number; dy: number; active: boolean };
+
 /**
  * Terrain du draft : postes de la formation, liens entre voisins (vert / orange / rouge, gris si incomplet)
- * et collectif de chaque joueur. Sans état ; `onSlotClick` rend les joueurs cliquables (échange, DraftPitchEditor).
+ * et collectif de chaque joueur. Avec `onSlotClick` / `onSwap` (DraftPitchEditor), les joueurs se touchent
+ * deux à deux ou se glissent l'un sur l'autre (souris ou doigt) pour être échangés sur la même ligne.
  */
 export function DraftPitch({
   formation,
   picks,
   currentSlot = null,
-  selected = null,
+  selected: selectedProp = null,
   onSlotClick,
+  onSwap,
 }: {
   formation: DraftFormation;
   picks: Partial<Record<string, DraftCard>>;
   currentSlot?: string | null;
   selected?: string | null;
   onSlotClick?: (slotKey: string) => void;
+  onSwap?: (from: string, to: string) => void;
 }) {
+  const [drag, setDrag] = useState<Drag | null>(null);
+  const justDragged = useRef(false);
+  const selected = drag?.active ? drag.from : selectedProp;
   const selectedPos = selected ? formation.slots.find((s) => s.key === selected)?.pos : undefined;
+
+  function dropTarget(x: number, y: number, from: string): string | null {
+    for (const el of document.elementsFromPoint(x, y)) {
+      const key = el.closest<HTMLElement>("[data-slot]")?.dataset.slot;
+      if (key && key !== from) return key;
+    }
+    return null;
+  }
   const identities = Object.fromEntries(Object.entries(picks).map(([k, c]) => [k, identity(c!)]));
   const links = draftLinks(formation, identities);
   const { perSlot } = draftChemistry(formation, identities);
@@ -122,6 +141,7 @@ export function DraftPitch({
                 <img
                   src={c.imageUrl}
                   alt=""
+                  draggable={false}
                   className="absolute bottom-0 left-1/2 h-full w-auto max-w-none -translate-x-1/2 object-contain object-bottom"
                 />
               ) : (
@@ -145,8 +165,18 @@ export function DraftPitch({
         return (
           <div
             key={s.key}
-            className="absolute w-[19%] max-w-[92px] -translate-x-1/2 -translate-y-1/2"
-            style={{ left: `${s.x}%`, top: `${s.y}%` }}
+            data-slot={s.key}
+            className={clsx(
+              "absolute w-[19%] max-w-[92px] -translate-x-1/2 -translate-y-1/2",
+              drag?.active && drag.from === s.key && "z-20",
+            )}
+            style={{
+              left: `${s.x}%`,
+              top: `${s.y}%`,
+              ...(drag?.active && drag.from === s.key
+                ? { translate: `calc(-50% + ${drag.dx}px) calc(-50% + ${drag.dy}px)`, scale: "1.08" }
+                : {}),
+            }}
           >
             {c && (
               <span
@@ -160,9 +190,48 @@ export function DraftPitch({
               onSlotClick ? (
                 <button
                   type="button"
-                  onClick={() => onSlotClick(s.key)}
-                  disabled={dimmed}
-                  className="block w-full rounded-lg text-left focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turf disabled:cursor-not-allowed"
+                  onClick={() => {
+                    // Un glisser-déposer se termine par un clic : il ne doit pas compter comme une sélection
+                    if (justDragged.current) {
+                      justDragged.current = false;
+                      return;
+                    }
+                    onSlotClick(s.key);
+                  }}
+                  onPointerDown={(e) => {
+                    if (!onSwap || e.button !== 0) return;
+                    e.currentTarget.setPointerCapture(e.pointerId);
+                    setDrag({
+                      from: s.key,
+                      pointer: e.pointerId,
+                      x0: e.clientX,
+                      y0: e.clientY,
+                      dx: 0,
+                      dy: 0,
+                      active: false,
+                    });
+                  }}
+                  onPointerMove={(e) => {
+                    if (!drag || drag.pointer !== e.pointerId) return;
+                    const dx = e.clientX - drag.x0;
+                    const dy = e.clientY - drag.y0;
+                    setDrag({ ...drag, dx, dy, active: drag.active || Math.hypot(dx, dy) > 8 });
+                  }}
+                  onPointerUp={(e) => {
+                    if (!drag || drag.pointer !== e.pointerId) return;
+                    if (drag.active) {
+                      justDragged.current = true;
+                      const to = dropTarget(e.clientX, e.clientY, drag.from);
+                      const toSlot = to ? formation.slots.find((x) => x.key === to) : undefined;
+                      if (to && toSlot?.pos === s.pos && picks[to]) onSwap?.(drag.from, to);
+                    }
+                    setDrag(null);
+                  }}
+                  onPointerCancel={() => setDrag(null)}
+                  // Sinon le navigateur lance son propre glisser (image) et annule le nôtre
+                  onDragStart={(e) => e.preventDefault()}
+                  disabled={dimmed && !drag?.active}
+                  className="block w-full touch-none rounded-lg text-left select-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-turf disabled:cursor-not-allowed"
                   aria-pressed={isSelected}
                   aria-label={
                     isSelected

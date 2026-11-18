@@ -11,7 +11,7 @@ function fail(error: { code?: string; message: string }): DraftActionResult {
 
 /** Lance un draft : la base tire les propositions, le client ne fournit que la formation. */
 export async function startDraft(formation: string): Promise<DraftActionResult> {
-  if (!/^[0-9]{3,4}$/.test(formation)) return { ok: false, message: "Formation inconnue." };
+  if (!/^[0-9]{3,5}[a-e]?$/.test(formation)) return { ok: false, message: "Formation inconnue." };
   const supabase = await createClient();
   const { data, error } = await supabase.rpc("start_draft", { p_formation: formation });
   if (error) return fail(error);

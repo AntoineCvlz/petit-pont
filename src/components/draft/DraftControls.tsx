@@ -133,8 +133,10 @@ export function DraftStart({ formations, remaining }: { formations: DraftFormati
   return (
     <div>
       <fieldset>
-        <legend className="mb-2 text-sm text-chalk-muted">Choisis ta formation</legend>
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <legend className="mb-2 text-sm text-chalk-muted">
+          Choisis ta formation parmi 5 tirées au hasard (nouveau tirage à chaque visite)
+        </legend>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
           {formations.map((f) => (
             <label
               key={f.code}
