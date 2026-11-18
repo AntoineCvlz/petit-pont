@@ -15,7 +15,6 @@ import {
  * Sans secret : la base n'accepte la publication que pour le créneau dû et une seule fois (totw_due / publish_totw),
  * et la route ne contacte football-data.org que si une publication est due.
  */
-export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 const FD = "https://api.football-data.org/v4";
