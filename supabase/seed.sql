@@ -844,3 +844,6 @@ select public.refresh_leaderboards();
 
 -- Réserves des boosters à règle (les migrations passent avant le seed)
 select public.refresh_booster_pools();
+
+-- Cartes Signature (joueurs créés par ce seed, après les migrations)
+select public._ensure_signature_cards();

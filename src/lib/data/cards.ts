@@ -38,11 +38,13 @@ export type CardTemplateView = {
   weakFoot: number | null;
   skillMoves: number | null;
   stats: Record<string, number> | null;
+  /** Signature réelle (édition « Signature » uniquement, fichier libre de droits). */
+  signatureUrl?: string | null;
 };
 
 export const TEMPLATE_SELECT = `
   id, season, edition, rarity, rating, collection_number, max_supply, minted_count, image_url,
-  players!inner ( slug, display_name, position, image_url, position_detail, weak_foot, skill_moves, stats,
+  players!inner ( slug, display_name, position, image_url, signature_url, position_detail, weak_foot, skill_moves, stats,
     nations!inner ( code, name, flag_colors, flag_layout ) ),
   clubs ( code, name, short_name, color_primary, color_secondary, crest_url )
 ` as const;
@@ -62,6 +64,7 @@ type TemplateRow = {
     display_name: string;
     position: PlayerPosition;
     image_url: string | null;
+    signature_url: string | null;
     position_detail: string | null;
     weak_foot: number | null;
     skill_moves: number | null;
@@ -112,6 +115,7 @@ export function toTemplateView(row: TemplateRow): CardTemplateView {
     weakFoot: row.players.weak_foot,
     skillMoves: row.players.skill_moves,
     stats: (row.players.stats as Record<string, number> | null) ?? null,
+    signatureUrl: row.edition === "Signature" ? row.players.signature_url : null,
   };
 }
 

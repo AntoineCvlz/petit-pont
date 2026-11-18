@@ -120,6 +120,11 @@ body {
   );
 }
 
+/* Édition Signature : cadre or et noir, plus sobre que l'holographique */
+.pp-card[data-edition="signature"] {
+  --frame: linear-gradient(160deg, #fff2c2, #1a1206 30%, #f5c84c 50%, #1a1206 72%, #d99a1e);
+}
+
 .pp-card[data-rarity="legendaire"],
 .pp-card[data-rarity="iconique"],
 .pp-card[data-rarity="speciale"] {

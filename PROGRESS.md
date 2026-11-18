@@ -574,3 +574,10 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 - Boosters à thème : 68 / 25 / 5,5 / 1,2 / 0,25 / 0,05 (au moins une Rare).
 - Simulation de 300 packs gratuits : 72 % Communes, 21 % Rares, 5 % Épiques, 0,9 % Légendaires
   (avant : 22 packs en production → 14 Légendaires).
+
+### Édition « Signature »
+- Version Spéciale (10 exemplaires, note de l'Iconique + 1) pour les 7 Iconiques dont la vraie signature est libre de
+  droits : Pelé, Maradona, Messi, Cristiano Ronaldo, Ronaldinho, Mbappé, Dembélé (Wikimedia Commons, domaine public,
+  `scripts/media/signatures.mjs`). Jamais de signature imitée : pas de carte Signature sans fichier réel.
+- `players.signature_url`, `_ensure_signature_cards()` (migration + fin de seed). Rendu : signature à l'encre dorée en
+  travers du portrait, cadre or et noir, sans reflet holographique. Tirées comme les autres Spéciales.

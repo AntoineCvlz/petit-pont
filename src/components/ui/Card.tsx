@@ -55,7 +55,7 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
 
   const content = (
     <div className="pp-card-inner flex flex-col">
-      {t.rarity === "speciale" && <div className="pp-holo" />}
+      {t.rarity === "speciale" && !t.signatureUrl && <div className="pp-holo" />}
 
       {/* Portrait : joueur détouré sur fond aux couleurs du club, colonne note / poste / nation / club */}
       <div
@@ -84,6 +84,29 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
         ) : (
           <div className="absolute inset-x-[12%] bottom-0 top-[14%]">
             <Silhouette color={shirt} />
+          </div>
+        )}
+
+        {/* Édition Signature : vraie signature du joueur, à l'encre dorée, en travers du portrait */}
+        {t.signatureUrl && (
+          // Le halo (filtre) est posé sur un parent : sur l'élément masqué, il serait rogné par le masque
+          <div
+            className="pointer-events-none absolute right-[1%] bottom-[4%] z-[3] h-[40%] w-[80%] -rotate-[8deg]"
+            style={{
+              filter:
+                "drop-shadow(0 0 0.5px #f5c84c) drop-shadow(0 0 0.5px #f5c84c) drop-shadow(0 1px 2px rgba(0,0,0,0.9))",
+            }}
+            role="img"
+            aria-label={`Signature de ${t.playerName}`}
+          >
+            <div
+              className="h-full w-full"
+              style={{
+                background: "linear-gradient(100deg, #fff6d5 0%, #f5c84c 35%, #fff2c2 55%, #d99a1e 100%)",
+                mask: `url(${t.signatureUrl}) center / contain no-repeat`,
+                WebkitMask: `url(${t.signatureUrl}) center / contain no-repeat`,
+              }}
+            />
           </div>
         )}
 
@@ -168,6 +191,7 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
   const shared = {
     className: clsx("pp-card aspect-[5/7.4] shrink-0", WIDTHS[size], className),
     "data-rarity": t.rarity,
+    "data-edition": t.signatureUrl ? "signature" : undefined,
     "data-shine": String(hasShine(t.rarity)),
     "data-interactive": String(interactive),
   } as const;

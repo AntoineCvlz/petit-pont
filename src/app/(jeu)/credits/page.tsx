@@ -58,6 +58,10 @@ export default function CreditsPage() {
             en silhouette sur les boosters, sont des marques de leurs organisateurs, issues de Wikipédia.
             Drapeaux : paquet flag-icons (licence MIT).
           </p>
+          <p className="mb-3 text-sm text-chalk-muted">
+            Signatures des cartes « Signature » (Pelé, Maradona, Messi, Cristiano Ronaldo, Ronaldinho, Mbappé, Dembélé) :
+            fichiers de Wikimedia Commons dans le domaine public, reproduits tels quels (jamais imités).
+          </p>
           <ul className="divide-y divide-line text-sm">
             {credits.clubs.map((c) => (
               <li key={c.code} className="flex items-center gap-2 py-1.5">

@@ -1419,14 +1419,14 @@ isOneToOne: false
                   ]
                 },"players": {
                   Row: {
-                    "alt_positions": (string)[],"bio": string | null,"birth_year": number | null,"birthdate": string | null,"display_name": string,"ext_id": number | null,"first_name": string | null,"id": number,"image_url": string | null,"is_legend": boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"position_detail": string | null,"preferred_foot": string | null,"search_text": string,"skill_moves": number | null,"slug": string,"stats": Json | null,"weak_foot": number | null
+                    "alt_positions": (string)[],"bio": string | null,"birth_year": number | null,"birthdate": string | null,"display_name": string,"ext_id": number | null,"first_name": string | null,"id": number,"image_url": string | null,"is_legend": boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"position_detail": string | null,"preferred_foot": string | null,"search_text": string,"signature_url": string | null,"skill_moves": number | null,"slug": string,"stats": Json | null,"weak_foot": number | null
                   }
                   ComputedFields: never
                   Insert: {
-                    "alt_positions"?: (string)[],"bio"?: string | null,"birth_year"?: number | null,"birthdate"?: string | null,"display_name": string,"ext_id"?: number | null,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"position_detail"?: string | null,"preferred_foot"?: string | null,"search_text"?: string,"skill_moves"?: number | null,"slug": string,"stats"?: Json | null,"weak_foot"?: number | null
+                    "alt_positions"?: (string)[],"bio"?: string | null,"birth_year"?: number | null,"birthdate"?: string | null,"display_name": string,"ext_id"?: number | null,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name": string,"nation_id": number,"position": Database["public"]['Enums']["player_position"],"position_detail"?: string | null,"preferred_foot"?: string | null,"search_text"?: string,"signature_url"?: string | null,"skill_moves"?: number | null,"slug": string,"stats"?: Json | null,"weak_foot"?: number | null
                   }
                   Update: {
-                    "alt_positions"?: (string)[],"bio"?: string | null,"birth_year"?: number | null,"birthdate"?: string | null,"display_name"?: string,"ext_id"?: number | null,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name"?: string,"nation_id"?: number,"position"?: Database["public"]['Enums']["player_position"],"position_detail"?: string | null,"preferred_foot"?: string | null,"search_text"?: string,"skill_moves"?: number | null,"slug"?: string,"stats"?: Json | null,"weak_foot"?: number | null
+                    "alt_positions"?: (string)[],"bio"?: string | null,"birth_year"?: number | null,"birthdate"?: string | null,"display_name"?: string,"ext_id"?: number | null,"first_name"?: string | null,"id"?: never,"image_url"?: string | null,"is_legend"?: boolean,"last_name"?: string,"nation_id"?: number,"position"?: Database["public"]['Enums']["player_position"],"position_detail"?: string | null,"preferred_foot"?: string | null,"search_text"?: string,"signature_url"?: string | null,"skill_moves"?: number | null,"slug"?: string,"stats"?: Json | null,"weak_foot"?: number | null
                   }
                   Relationships: [
                     {
@@ -2078,6 +2078,9 @@ isOneToOne: false
                            },
 "_duel_strength":
 { Args: { "p_user": string }; Returns: number
+                           },
+"_ensure_signature_cards":
+{ Args: Record<PropertyKey, never>; Returns: number
                            },
 "_formation_chemistry":
 { Args: { "p_formation": string,"p_picks": Json }; Returns: number
