@@ -567,3 +567,10 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 - **Albums** : recherche, filtre (commencés / clubs / autres), tri utile (récompense à réclamer, puis les plus avancés).
 - **Classement** : « Score de rareté » par défaut (la progression en % d'un catalogue de 18 000 cartes ne départage pas).
 - **Cartes** : numéro court « n°154 » hors grand format (le pied de carte débordait avec la rareté et le tirage).
+
+### Probabilités revues (18 nov. 2026)
+- Pack gratuit : **5 cartes** (2 Bronze, 2 Argent, 1 Or) au lieu de 8 (… 4 Or).
+- Argent : Commune 80 / Rare 20. Or : Rare 70 / Épique 25 / Légendaire 4 / Iconique 0,8 / Spéciale 0,2.
+- Boosters à thème : 68 / 25 / 5,5 / 1,2 / 0,25 / 0,05 (au moins une Rare).
+- Simulation de 300 packs gratuits : 72 % Communes, 21 % Rares, 5 % Épiques, 0,9 % Légendaires
+  (avant : 22 packs en production → 14 Légendaires).

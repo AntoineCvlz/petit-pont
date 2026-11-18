@@ -60,14 +60,14 @@ select ok(
     group by 1 having count(*) filter (where (c ->> 'is_new')::boolean) > 1) x),
   'Une carte n''est « nouvelle » qu''une seule fois');
 
--- --- Booster gratuit : 2 Bronze + 2 Argent + 4 Or, réserve de 10, un de plus toutes les 10 minutes
+-- --- Booster gratuit : 2 Bronze + 2 Argent + 1 Or, réserve de 10, un de plus toutes les 10 minutes
 select is((public.booster_availability((select gratuit from ids)) ->> 'stock')::int, 10, 'Gratuit : réserve pleine au départ');
 insert into results select 300 + g, public.open_booster((select gratuit from ids)) from generate_series(1, 10) g;
 select ok((select bool_and(
     (select array_agg(case when ct.rating <= 64 then 'b' when ct.rating <= 74 then 'a' else 'o' end order by o)
      from jsonb_array_elements(res -> 'cards') with ordinality c(v, o)
-     join public.card_templates ct on ct.id = (c.v ->> 'template_id')::int) = array['b','b','a','a','o','o','o','o'])
-  from results where n > 300), 'Gratuit : 2 Bronze, 2 Argent puis 4 Or (10 ouvertures cumulées)');
+     join public.card_templates ct on ct.id = (c.v ->> 'template_id')::int) = array['b','b','a','a','o'])
+  from results where n > 300), 'Gratuit : 2 Bronze, 2 Argent puis 1 Or (10 ouvertures cumulées)');
 select throws_ok($$select public.open_booster((select gratuit from ids))$$, 'P0001',
   'Ton booster gratuit n''est pas encore prêt', 'Gratuit : réserve vide après 10 ouvertures');
 select is((public.booster_availability((select gratuit from ids)) ->> 'reason'), 'cooldown', 'Disponibilité : en recharge');
