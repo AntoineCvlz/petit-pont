@@ -3,7 +3,7 @@ import Link from "next/link";
 import { clsx } from "clsx";
 import { BoosterPack } from "@/components/boosters/BoosterPack";
 import { LiveStock } from "@/components/boosters/LiveStock";
-import { OddsTable } from "@/components/boosters/OddsTable";
+import { OddsBar } from "@/components/boosters/OddsBar";
 import { CoinAmount } from "@/components/ui/CoinAmount";
 import { EmptyState, PageHeader } from "@/components/ui/Panel";
 import { RarityBadge } from "@/components/ui/RarityBadge";
@@ -46,7 +46,7 @@ function BoosterTile({ b }: { b: BoosterView }) {
             <LiveStock boosterId={b.id} initial={b.stockRemaining} total={b.stockTotal} />
           )}
           <div className="mt-auto">
-            <OddsTable odds={b.odds} compact />
+            <OddsBar odds={b.odds} />
           </div>
           {label && <p className="text-xs font-semibold text-chalk-faint uppercase">{label}</p>}
         </div>

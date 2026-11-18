@@ -560,3 +560,10 @@ sur chaque base (local et VPS). Accès au site restreint par le porteur du proje
 - Au lancement : 5 compositions tirées au hasard à chaque visite.
 - Échange : glisser un joueur sur un autre de la même ligne (souris ou doigt), ou les toucher l'un après l'autre.
   Correctif : le glisser natif des images annulait le geste quand on attrapait la photo du joueur.
+
+### UI / UX (audit du 18 nov. 2026)
+- **Filtres** (collection, marché, albums…) : sur mobile, recherche visible et listes repliées derrière « Filtres (n) ».
+- **Boosters** : barre de probabilités compacte dans la liste (`OddsBar`), tableau complet sur la page du booster.
+- **Albums** : recherche, filtre (commencés / clubs / autres), tri utile (récompense à réclamer, puis les plus avancés).
+- **Classement** : « Score de rareté » par défaut (la progression en % d'un catalogue de 18 000 cartes ne départage pas).
+- **Cartes** : numéro court « n°154 » hors grand format (le pied de carte débordait avec la rareté et le tirage).

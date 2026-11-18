@@ -25,7 +25,7 @@ export default async function ClassementPage({ searchParams }: PageProps<"/class
 
   const href = (m: Metric, p: Period) => {
     const q = new URLSearchParams();
-    if (m !== "progression") q.set("metrique", m);
+    if (m !== "rarity_score") q.set("metrique", m);
     if (p !== "all") q.set("periode", p);
     const s = q.toString();
     return s ? `/classement?${s}` : "/classement";

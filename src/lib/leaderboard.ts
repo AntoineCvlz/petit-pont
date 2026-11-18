@@ -1,9 +1,10 @@
+// Ordre des onglets ; le premier sert par défaut (le score de rareté départage mieux qu'un % d'un catalogue de 18 000 cartes)
 export const METRICS = {
-  progression: { label: "Progression", unit: "%", hint: "Part du catalogue possédée (cartes différentes)" },
+  rarity_score: { label: "Score de rareté", unit: "pts", hint: "Commune 1 · Rare 3 · Épique 8 · Légendaire 20 · Iconique 50 · Spéciale 120" },
   cards: { label: "Cartes", unit: "cartes", hint: "Nombre d'exemplaires possédés" },
   albums: { label: "Albums complétés", unit: "albums", hint: "Albums dont la récompense a été réclamée" },
-  rarity_score: { label: "Score de rareté", unit: "pts", hint: "Commune 1 · Rare 3 · Épique 8 · Légendaire 20 · Iconique 50 · Spéciale 120" },
   boosters: { label: "Boosters ouverts", unit: "boosters", hint: "Nombre de boosters ouverts" },
+  progression: { label: "Progression", unit: "%", hint: "Part du catalogue possédée (cartes différentes)" },
 } as const;
 export type Metric = keyof typeof METRICS;
 
@@ -15,7 +16,7 @@ export const PERIODS = {
 export type Period = keyof typeof PERIODS;
 
 export function parseMetric(v: unknown): Metric {
-  return typeof v === "string" && v in METRICS ? (v as Metric) : "progression";
+  return typeof v === "string" && v in METRICS ? (v as Metric) : "rarity_score";
 }
 
 export function parsePeriod(v: unknown): Period {

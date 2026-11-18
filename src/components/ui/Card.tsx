@@ -147,8 +147,11 @@ export function Card({ template, collectionTotal, serialNumber, copies, size = "
             <span className="text-chalk">{t.skillMoves}★</span>
           </p>
         )}
-        <div className="mt-auto flex items-center justify-between pt-1 font-display text-[10px] font-semibold tracking-wider text-chalk-faint">
-          <span className="tabular-nums">{formatCollectionNumber(t.collectionNumber, collectionTotal)}</span>
+        <div className="mt-auto flex items-center justify-between gap-1 pt-1 font-display text-[10px] font-semibold tracking-wider whitespace-nowrap text-chalk-faint">
+          {/* Hors grand format : numéro seul (le total du catalogue ne tient pas à côté de la rareté et du tirage) */}
+          <span className="tabular-nums" title={formatCollectionNumber(t.collectionNumber, collectionTotal)}>
+            {size === "lg" ? formatCollectionNumber(t.collectionNumber, collectionTotal) : `n°${t.collectionNumber}`}
+          </span>
           <span className="font-bold uppercase" style={{ color: "var(--rarity)" }}>
             {RARITY_LABELS[t.rarity]}
           </span>

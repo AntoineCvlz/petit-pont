@@ -4,7 +4,7 @@ import { formatMetric, parseMetric, parsePeriod, top10Label } from "@/lib/leader
 describe("classements", () => {
   it("lit la métrique et la période", () => {
     expect(parseMetric("albums")).toBe("albums");
-    expect(parseMetric("coins")).toBe("progression");
+    expect(parseMetric("coins")).toBe("rarity_score");
     expect(parsePeriod("week")).toBe("week");
     expect(parsePeriod("year")).toBe("all");
   });
